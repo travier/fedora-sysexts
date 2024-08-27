@@ -1,0 +1,15 @@
+name := "openh264"
+packages := "openh264 mozilla-openh264"
+
+import '../sysext.just'
+
+default: download-openh264 build
+
+download-openh264:
+    #!/bin/bash
+    set -euxo pipefail
+
+    rm -rf ./rpms
+    mkdir rpms
+    cd rpms
+    dnf download --arch=noarch,{{arch()}} --enablerepo=fedora-cisco-openh264 {{packages}}

@@ -1,0 +1,6 @@
+name := "debugtools"
+packages := "elfutils-debuginfod-client gdb-minimal strace"
+
+import '../sysext.just'
+
+default: download build
