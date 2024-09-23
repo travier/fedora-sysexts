@@ -5,12 +5,12 @@
 compression := "lz4"
 
 # The default list of steps to use
-all: download build
+all: download-rpms setup-rootfs install-rpms reset-selinux-labels build-erofs
 
 # Download RPMs to install. Use the following variables:
 # - packages: List of packages to download (and later install)
 # - enable_repos: List of additional repos to enable
-download:
+download-rpms:
     #!/bin/bash
     set -euxo pipefail
 
@@ -27,7 +27,8 @@ download:
 
     dnf download --arch=noarch,{{arch()}} ${enablerepos} {{packages}}
 
-build:
+# Sets up the rootfs directory and creates the extension release config
+setup-rootfs:
     #!/bin/bash
     set -euxo pipefail
 
@@ -38,14 +39,32 @@ build:
     sudo install -d -m0755 usr/lib/extension-release.d
     echo "ID=\"_any\"" | sudo tee usr/lib/extension-release.d/extension-release.{{name}}
 
+# Install (extract) RPM packages download in download-rpms recipe. Uses:
+# - packages: List of packages to install
+install-rpms:
+    #!/bin/bash
+    set -euxo pipefail
+
+    cd rootfs
+
     for rpm in ../rpms/*.rpm; do
         rpm2cpio "${rpm}" | sudo cpio -idmv
     done
 
+# Reset SELinux labels to expected values from the policy
+reset-selinux-labels:
+    #!/bin/bash
+    set -euxo pipefail
+
+    cd rootfs
+
     sudo setfiles -r . /run/host/etc/selinux/targeted/contexts/files/file_contexts .
     sudo chcon --user="system_u" --recursive .
 
-    cd ..
+# Creates the EROFS sysext file
+build-erofs:
+    #!/bin/bash
+    set -euxo pipefail
 
     mkfs.erofs -z{{compression}} {{name}}.raw rootfs
 
