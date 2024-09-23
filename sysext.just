@@ -33,10 +33,10 @@ build:
 
     cd ..
 
-    mkfs.erofs -z{{compression}} {{name}}.erofs rootfs
+    mkfs.erofs -z{{compression}} {{name}}.raw rootfs
 
 mount:
-    sudo mount -o loop {{name}}.erofs /mnt/nfs
+    sudo mount -o loop {{name}}.raw /mnt/nfs
 
 unmount:
     sudo umount /mnt/nfs

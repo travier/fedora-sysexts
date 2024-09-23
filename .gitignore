@@ -1,3 +1,4 @@
 rootfs/
 *.erofs
+*.raw
 *.rpm
