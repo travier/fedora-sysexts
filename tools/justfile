@@ -1,0 +1,34 @@
+name := "tools"
+packages := "elfutils-debuginfod-client gdb-minimal strace htop hwloc-libs bwm-ng distrobox iotop wireguard-tools zsh"
+
+import '../sysext.just'
+
+default: download-binary download-rpms setup-rootfs install-binary install-rpms reset-selinux-labels build-erofs
+
+download-binary:
+    #!/bin/bash
+    set -euxo pipefail
+
+    rm -rf ./binaries
+    mkdir binaries
+    cd binaries
+
+    destfile="bandwhich-v0.23.0-x86_64-unknown-linux-gnu.tar.gz"
+    wget "https://github.com/imsnif/bandwhich/releases/download/v0.23.0/${destfile}"
+    hash="be4ed3a35efa76e78f6ab92c708c9672145b4129f459f6950e48c0458cf727d7  ${destfile}"
+    echo "${hash}" | sha256sum -c -
+    tar xf "${destfile}"
+    gzip -9 assets/bandwhich.1
+
+install-binary:
+    #!/bin/bash
+    set -euxo pipefail
+
+    cd rootfs
+    sudo install -D -m 755 ../binaries/bandwhich             usr/bin/bandwhich
+    sudo install -D -m 644 ../binaries/assets/bandwhich.bash usr/share/bash-completion/completions/bandwhich.bash
+    sudo install -D -m 644 ../binaries/assets/_bandwhich     usr/share/zsh/site-functions/_bandwhich
+    sudo install -D -m 644 ../binaries/assets/bandwhich.fish usr/share/fish/vendor_completions.d/bandwhich.fish
+    sudo install -D -m 644 ../binaries/assets/bandwhich.1.gz usr/share/man/man1/bandwhich.1.gz
+
+    sudo chown -R root: usr

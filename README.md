@@ -22,6 +22,7 @@ Included packages for each sysext:
 - openh264: OpenH264 library from CISCO and support for Firefox
 - python: Python 3
 - semanage: Python 3 plus SELinux utilities that require Python
+- tools: Various tools that I like to have on my host
 
 ## Using
 
