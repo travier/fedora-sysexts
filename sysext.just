@@ -7,6 +7,9 @@ compression := "lz4"
 # The default list of steps to use
 all: download build
 
+# Download RPMs to install. Use the following variables:
+# - packages: List of packages to download (and later install)
+# - enable_repos: List of additional repos to enable
 download:
     #!/bin/bash
     set -euxo pipefail
@@ -14,7 +17,15 @@ download:
     rm -rf ./rpms
     mkdir rpms
     cd rpms
-    dnf download --arch=noarch,{{arch()}} {{packages}}
+
+    enablerepos=""
+    if [[ -n "{{enable_repos}}" ]]; then
+        for r in {{enable_repos}}; do
+            enablerepos+=" --enablerepo=${r}"
+        done
+    fi
+
+    dnf download --arch=noarch,{{arch()}} ${enablerepos} {{packages}}
 
 build:
     #!/bin/bash
