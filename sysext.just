@@ -75,7 +75,8 @@ build-erofs:
     #!/bin/bash
     set -euxo pipefail
 
-    mkfs.erofs -z{{compression}} {{name}}.raw rootfs
+    sudo mkfs.erofs -z{{compression}} {{name}}.raw rootfs
+    sudo chown "${USER}:" {{name}}.raw
 
 # Clean up files used for building and generated sysext
 clean:
