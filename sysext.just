@@ -68,8 +68,11 @@ build-erofs:
 
     mkfs.erofs -z{{compression}} {{name}}.raw rootfs
 
-mount:
-    sudo mount -o loop {{name}}.raw /mnt/nfs
-
-unmount:
-    sudo umount /mnt/nfs
+# Clean up files used for building and generated sysext
+clean:
+    #!/bin/bash
+    set -euxo pipefail
+    rm -rf ./rpms
+    rm -rf ./binaries
+    sudo rm -rf ./rootfs
+    rm -f {{name}}.raw
