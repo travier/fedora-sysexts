@@ -1,4 +1,13 @@
-# Do no use this justfile directly. See sub-direcotries.
+# Do no use this justfile directly. See sub-directories.
+
+# Explicitely allow to override variables in justfiles importing this one
+set allow-duplicate-variables := true
+
+# Do not download any packages by default
+packages := ""
+
+# Do not enable additional repos by default
+enable_repos := ""
 
 # zstd compression is still experimental in EROFS
 # compression := "zstd"
