@@ -4,6 +4,9 @@
 # compression := "zstd"
 compression := "lz4"
 
+# The default list of steps to use
+all: download build
+
 download:
     #!/bin/bash
     set -euxo pipefail

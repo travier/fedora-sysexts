@@ -3,4 +3,4 @@ packages := "libb2 libgomp mpdecimal python-pip-wheel python-unversioned-command
 
 import '../sysext.just'
 
-default: download build
+default: all

@@ -3,4 +3,4 @@ packages := "checkpolicy libb2 libgomp mpdecimal policycoreutils-python-utils py
 
 import '../sysext.just'
 
-default: download build
+default: all
