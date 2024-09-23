@@ -1,0 +1,6 @@
+name := "semanage"
+packages := "checkpolicy libb2 libgomp mpdecimal policycoreutils-python-utils python-pip-wheel python-unversioned-command python3 python3-audit python3-distro python3-libs python3-libselinux python3-libsemanage python3-policycoreutils python3-setools python3-setuptools"
+
+import '../sysext.just'
+
+default: download build
