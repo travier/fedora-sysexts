@@ -67,7 +67,17 @@ reset-selinux-labels:
 
     cd rootfs
 
-    sudo setfiles -r . /run/host/etc/selinux/targeted/contexts/files/file_contexts .
+    # Look in the current execution environment first
+    filecontexts="/etc/selinux/targeted/contexts/files/file_contexts"
+    if [[ ! -f "${filecontexts}" ]]; then
+        # If not found, look on the host (i.e. when running from a toolbox)
+        filecontexts="/run/host/${filecontexts}"
+    fi
+    if [[ ! -f "${filecontexts}" ]]; then
+        echo "Could not find a list of file contexts from an SELinux policy"
+        exit 1
+    fi
+    sudo setfiles -r . "${filecontexts}" .
     sudo chcon --user="system_u" --recursive .
 
 # Creates the EROFS sysext file

@@ -7,6 +7,7 @@ For Fedora CoreOS, Atomic Desktops, IoT, or other Bootable Container systems.
 Make sure that you have the following packages installed:
 - `erofs-utils`
 - [`just`](https://github.com/casey/just)
+- `selinux-policy-targeted`
 
 ```
 $ cd python
