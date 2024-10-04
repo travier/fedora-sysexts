@@ -11,7 +11,8 @@ Make sure that you have the following packages installed:
 - `selinux-policy-targeted`
 
 ```
-$ cd python
+$ SYSEXT=python
+$ cd ${SYSEXT}
 $ just
 ```
 
@@ -31,8 +32,9 @@ Included packages for each sysext:
 ## Using
 
 ```
+$ SYSEXT=python
 $ sudo install -d -m 0755 -o 0 -g 0 /var/lib/extensions/
-$ sudo install -m 644 -o 0 -g 0 python.raw /var/lib/extensions/python.raw
+$ sudo install -m 644 -o 0 -g 0 ${SYSEXT}/${SYSEXT}.raw /var/lib/extensions/${SYSEXT}.raw
 $ sudo restorecon -RFv /var/lib/extensions/
 $ sudo systemctl restart systemd-sysext.service
 $ systemd-sysext status
