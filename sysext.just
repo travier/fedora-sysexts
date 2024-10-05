@@ -9,6 +9,9 @@ packages := ""
 # Do not enable additional repos by default
 enable_repos := ""
 
+# Default to noarch + current architecture
+arch := "noarch," + arch()
+
 # zstd compression is still experimental in EROFS
 # compression := "zstd"
 compression := "lz4"
@@ -34,7 +37,7 @@ download-rpms:
         done
     fi
 
-    dnf download --arch=noarch,{{arch()}} ${enablerepos} {{packages}}
+    dnf download --arch={{arch}} ${enablerepos} {{packages}}
 
 # Sets up the rootfs directory and creates the extension release config
 setup-rootfs:
