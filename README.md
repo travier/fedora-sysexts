@@ -3,6 +3,38 @@
 For Fedora CoreOS, Atomic Desktops, IoT, or other Bootable Container systems
 (and classic otree/rpm-ostree systems).
 
+## Available sysexts
+
+See each sysext's justfile for the exact list of packages included.
+
+### Built from Fedora's repos
+
+| Name | Notes |
+|-|-|
+| debugtools | `gdb-minimal` and `strace` |
+| python | Python 3 |
+| semanage | Python 3 plus SELinux utilities that require Python |
+| tools | Various tools that I like to have on my host |
+| iwd | Better WiFi daemon and config for NetworkManager |
+| krb5-workstation| Kerberos support |
+| swtpm | `swtpm` package and dependencies (work in progress) |
+| libvirtd | `libvirtd`, `qemu` and `swtpm` (work in progress) |
+
+### Built from Cisco's OpenH264 repo
+
+| Name | Notes |
+|-|-|
+| openh264 | OpenH264 library and support for Firefox |
+
+### Built from RPM Fusion repos
+
+Install either `fedora-workstation-repositories` or RPM Fusion repositories.
+
+| Name | Notes |
+|-|-|
+| steam-devices | `steam-device` package only |
+| steam | Steam and its dependencies |
+
 ## Building
 
 Make sure that you have the following packages installed:
@@ -18,32 +50,6 @@ $ just
 
 Building requires root privileges, but you can run those commands in a
 rootless, privileged, non-SELinux confined container, such as a toolbox.
-
-## Available sysexts
-
-See each sysext's justfile for the exact list of packages included.
-
-### Built from Fedora repos
-
-- debugtools: `gdb-minimal` and `strace`
-- python: Python 3
-- semanage: Python 3 plus SELinux utilities that require Python
-- tools: Various tools that I like to have on my host
-- iwd: `iwd` WiFi daemon and config for NetworkManager
-- krb5-workstation: Kerberos support
-- swtpm: `swtpm` package and dependencies (work in progress)
-- libvirtd: `libvirtd`, `qemu` and `swtpm` (work in progress)
-
-### Built from Cisco's OpenH264 repo
-
-- openh264: OpenH264 library and support for Firefox
-
-### Built from RPM Fusion repos
-
-Install either `fedora-workstation-repositories` or RPM Fusion repositories:
-
-- steam-devices: `steam-device` package only
-- steam: Steam and its dependencies
 
 ## Using
 
