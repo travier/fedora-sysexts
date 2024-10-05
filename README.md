@@ -34,6 +34,11 @@ See each sysext's justfile for the exact list of packages included.
 
 - openh264: OpenH264 library and support for Firefox
 
+### Built from RPM Fusion repos
+
+Install either `fedora-workstation-repositories` or RPM Fusion repositories:
+
+- steam-devices: `steam-device` package only
 
 ## Using
 

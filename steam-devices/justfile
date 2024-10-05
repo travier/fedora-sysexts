@@ -1,0 +1,8 @@
+name := "steam-devices"
+packages := "steam-devices"
+enable_repos := "rpmfusion-nonfree-steam"
+arch := "i686"
+
+import '../sysext.just'
+
+default: all
