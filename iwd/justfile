@@ -1,0 +1,7 @@
+name := "iwd"
+packages := "iwd"
+files := "usr"
+
+import '../sysext.just'
+
+default: all
