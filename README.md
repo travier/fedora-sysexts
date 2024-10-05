@@ -41,6 +41,7 @@ See each sysext's justfile for the exact list of packages included.
 Install either `fedora-workstation-repositories` or RPM Fusion repositories:
 
 - steam-devices: `steam-device` package only
+- steam: Steam and its dependencies
 
 ## Using
 
