@@ -20,7 +20,7 @@ files := ""
 compression := "lz4"
 
 # The default list of steps to use
-all: download-rpms setup-rootfs install-rpms install-files reset-selinux-labels build-erofs
+all: download-rpms setup-rootfs install-rpms install-files rm-ignored reset-selinux-labels build-erofs
 
 # Download RPMs to install. Use the following variables:
 # - packages: List of packages to download (and later install)
@@ -112,6 +112,34 @@ install-files:
     echo "📁 Copying additional files from: {{files}}"
     for f in {{files}}; do
         ${SUDO} cp -a ../${f} .
+    done
+
+# Move all folders outside of /usr & /opt out of the sysext's rootfs.
+# Note: This step is still in progress. Currently only moves /var and /etc.
+rm-ignored:
+    #!/bin/bash
+    set -euo pipefail
+    # set -x
+
+    if [[ "${UID}" == "0" ]]; then
+        SUDO=""
+    else
+        SUDO="sudo"
+    fi
+
+    if [[ -d rootfs.ignored ]]; then
+        echo "🧹 Cleaning up previous rootfs.ignored"
+        ${SUDO} rm -rf ./rootfs.ignored
+    fi
+    mkdir rootfs.ignored
+
+    cd rootfs
+
+    for dir in "var" "etc"; do
+        if [[ -d ./"${dir}" ]] then
+            echo "➡️ Moving ${dir} out of rootfs"
+            ${SUDO} mv ./"${dir}" ../rootfs.ignored
+        fi
     done
 
 # Reset SELinux labels to expected values from the policy
