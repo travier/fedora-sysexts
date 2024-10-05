@@ -32,6 +32,7 @@ See each sysext's justfile for the exact list of packages included.
 - iwd: `iwd` WiFi daemon and config for NetworkManager
 - krb5-workstation: Kerberos support
 - swtpm: `swtpm` package and dependencies (work in progress)
+- libvirtd: `libvirtd`, `qemu` and `swtpm` (work in progress)
 
 ### Built from Cisco's OpenH264 repo
 
