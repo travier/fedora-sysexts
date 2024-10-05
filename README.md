@@ -30,6 +30,7 @@ See each sysext's justfile for the exact list of packages included.
 - semanage: Python 3 plus SELinux utilities that require Python
 - tools: Various tools that I like to have on my host
 - iwd: `iwd` WiFi daemon and config for NetworkManager
+- krb5-workstation: Kerberos support
 
 ### Built from Cisco's OpenH264 repo
 

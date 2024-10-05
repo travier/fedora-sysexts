@@ -1,0 +1,6 @@
+name := "krb5-workstation"
+packages := "krb5-workstation krb5-pkinit libkadm5"
+
+import '../sysext.just'
+
+default: all
