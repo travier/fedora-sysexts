@@ -47,12 +47,18 @@ setup-rootfs:
     #!/bin/bash
     set -euxo pipefail
 
-    sudo rm -rf ./rootfs
+    if [[ "${UID}" == "0" ]]; then
+        SUDO=""
+    else
+        SUDO="sudo"
+    fi
+
+    ${SUDO} rm -rf ./rootfs
     mkdir rootfs
     cd rootfs
 
-    sudo install -d -m0755 usr/lib/extension-release.d
-    echo "ID=\"_any\"" | sudo tee usr/lib/extension-release.d/extension-release.{{name}}
+    ${SUDO} install -d -m0755 usr/lib/extension-release.d
+    echo "ID=\"_any\"" | ${SUDO} tee usr/lib/extension-release.d/extension-release.{{name}}
 
 # Install (extract) RPM packages download in download-rpms recipe. Uses:
 # - packages: List of packages to install
@@ -60,10 +66,16 @@ install-rpms:
     #!/bin/bash
     set -euxo pipefail
 
+    if [[ "${UID}" == "0" ]]; then
+        SUDO=""
+    else
+        SUDO="sudo"
+    fi
+
     cd rootfs
 
     for rpm in ../rpms/*.rpm; do
-        rpm2cpio "${rpm}" | sudo cpio -idmv
+        rpm2cpio "${rpm}" | ${SUDO} cpio -idmv
     done
 
 # Install files from the current directory. Uses:
@@ -73,6 +85,12 @@ install-files:
     #!/bin/bash
     set -euxo pipefail
 
+    if [[ "${UID}" == "0" ]]; then
+        SUDO=""
+    else
+        SUDO="sudo"
+    fi
+
     cd rootfs
 
     if [[ -z "{{files}}" ]]; then
@@ -80,13 +98,19 @@ install-files:
     fi
 
     for f in {{files}}; do
-        sudo cp -a ../${f} .
+        ${SUDO} cp -a ../${f} .
     done
 
 # Reset SELinux labels to expected values from the policy
 reset-selinux-labels:
     #!/bin/bash
     set -euxo pipefail
+
+    if [[ "${UID}" == "0" ]]; then
+        SUDO=""
+    else
+        SUDO="sudo"
+    fi
 
     cd rootfs
 
@@ -100,22 +124,38 @@ reset-selinux-labels:
         echo "Could not find a list of file contexts from an SELinux policy"
         exit 1
     fi
-    sudo setfiles -r . "${filecontexts}" .
-    sudo chcon --user="system_u" --recursive .
+    ${SUDO} setfiles -r . "${filecontexts}" .
+    ${SUDO} chcon --user="system_u" --recursive .
 
 # Creates the EROFS sysext file
 build-erofs:
     #!/bin/bash
     set -euxo pipefail
 
-    sudo mkfs.erofs -z{{compression}} {{name}}.raw rootfs
-    sudo chown "${USER}:" {{name}}.raw
+    if [[ "${UID}" == "0" ]]; then
+        SUDO=""
+    else
+        SUDO="sudo"
+    fi
+
+    ${SUDO} mkfs.erofs -z{{compression}} {{name}}.raw rootfs
+
+    if [[ "${UID}" != "0" ]]; then
+        ${SUDO} chown "${USER}:" {{name}}.raw
+    fi
 
 # Clean up files used for building and generated sysext
 clean:
     #!/bin/bash
     set -euxo pipefail
+
+    if [[ "${UID}" == "0" ]]; then
+        SUDO=""
+    else
+        SUDO="sudo"
+    fi
+
     rm -rf ./rpms
     rm -rf ./binaries
-    sudo rm -rf ./rootfs
+    ${SUDO} rm -rf ./rootfs
     rm -f {{name}}.raw
