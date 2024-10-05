@@ -31,6 +31,7 @@ See each sysext's justfile for the exact list of packages included.
 - tools: Various tools that I like to have on my host
 - iwd: `iwd` WiFi daemon and config for NetworkManager
 - krb5-workstation: Kerberos support
+- swtpm: `swtpm` package and dependencies (work in progress)
 
 ### Built from Cisco's OpenH264 repo
 
