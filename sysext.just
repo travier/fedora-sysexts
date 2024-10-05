@@ -12,12 +12,15 @@ enable_repos := ""
 # Default to noarch + current architecture
 arch := "noarch," + arch()
 
+# Do not install any additional files by default
+files := ""
+
 # zstd compression is still experimental in EROFS
 # compression := "zstd"
 compression := "lz4"
 
 # The default list of steps to use
-all: download-rpms setup-rootfs install-rpms reset-selinux-labels build-erofs
+all: download-rpms setup-rootfs install-rpms install-files reset-selinux-labels build-erofs
 
 # Download RPMs to install. Use the following variables:
 # - packages: List of packages to download (and later install)
@@ -61,6 +64,23 @@ install-rpms:
 
     for rpm in ../rpms/*.rpm; do
         rpm2cpio "${rpm}" | sudo cpio -idmv
+    done
+
+# Install files from the current directory. Uses:
+# - files: List of folders or files to copy to `rootfs`. Use either `usr` or
+#   `opt` as everything else is ignored. Spaces are not supported.
+install-files:
+    #!/bin/bash
+    set -euxo pipefail
+
+    cd rootfs
+
+    if [[ -z "{{files}}" ]]; then
+        exit 0
+    fi
+
+    for f in {{files}}; do
+        sudo cp -a ../${f} .
     done
 
 # Reset SELinux labels to expected values from the policy
