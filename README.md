@@ -21,13 +21,19 @@ rootless, privileged, non-SELinux confined container, such as a toolbox.
 
 ## Available sysexts
 
-Included packages for each sysext:
+See each sysext's justfile for the exact list of packages included.
 
-- debugtools: gdb-minimal and strace
-- openh264: OpenH264 library from CISCO and support for Firefox
+### Built from Fedora repos
+
+- debugtools: `gdb-minimal` and `strace`
 - python: Python 3
 - semanage: Python 3 plus SELinux utilities that require Python
 - tools: Various tools that I like to have on my host
+
+### Built from Cisco's OpenH264 repo
+
+- openh264: OpenH264 library and support for Firefox
+
 
 ## Using
 
