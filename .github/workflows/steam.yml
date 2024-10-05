@@ -8,12 +8,14 @@ on:
     branches:
       - main
     paths:
+      - 'sysext.just'
       - 'steam/**'
       - '.github/workflows/steam.yml'
   push:
     branches:
       - main
     paths:
+      - 'sysext.just'
       - 'steam/**'
       - '.github/workflows/steam.yml'
 

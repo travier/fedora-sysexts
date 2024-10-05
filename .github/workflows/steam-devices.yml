@@ -8,12 +8,14 @@ on:
     branches:
       - main
     paths:
+      - 'sysext.just'
       - 'steam-devices/**'
       - '.github/workflows/steam-devices.yml'
   push:
     branches:
       - main
     paths:
+      - 'sysext.just'
       - 'steam-devices/**'
       - '.github/workflows/steam-devices.yml'
 

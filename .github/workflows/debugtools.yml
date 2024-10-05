@@ -8,12 +8,14 @@ on:
     branches:
       - main
     paths:
+      - 'sysext.just'
       - 'debugtools/**'
       - '.github/workflows/debugtools.yml'
   push:
     branches:
       - main
     paths:
+      - 'sysext.just'
       - 'debugtools/**'
       - '.github/workflows/debugtools.yml'
 
