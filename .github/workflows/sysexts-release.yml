@@ -31,14 +31,15 @@ jobs:
 
       - name: Install tools
         run: |
-          dnf install -y erofs-utils just selinux-policy-targeted 'dnf-command(download)' cpio wget
+          dnf install -y erofs-utils just selinux-policy-targeted 'dnf-command(download)' cpio wget fedora-workstation-repositories
 
       - name: Build sysexts
         run: |
           for d in $(ls -d ./*/); do
-          pushd $d
-          just
-          popd
+            pushd $d
+            just
+            popd
+          done
 
       # - uses: actions/upload-artifact@v4
       #   with:
