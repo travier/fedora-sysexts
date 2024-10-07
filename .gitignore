@@ -1,4 +1,5 @@
 rootfs/
+rootfs.ignored/
 binaries/
 *.erofs
 *.raw
