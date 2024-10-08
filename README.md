@@ -17,13 +17,13 @@ See each sysext's justfile for the exact list of packages included.
 | Name | Notes |
 |-|-|
 | debugtools | `gdb-minimal` and `strace` |
-| python | Python 3 |
-| semanage | Python 3 plus SELinux utilities that require Python |
+| python | Core Python 3 packages |
+| semanage | SELinux utilities, including those that require Python |
 | tools | Various tools that I like to have on my host |
-| iwd | Better WiFi daemon and config for NetworkManager |
+| iwd | Better WiFi daemon and config for NetworkManager to use it by default |
 | krb5-workstation| Kerberos support |
 | swtpm | `swtpm` package and dependencies (work in progress) |
-| libvirtd | `libvirtd`, `qemu` and `swtpm` (work in progress) |
+| libvirtd | `libvirtd`, `qemu`, `swtpm` and `guestfs-tools` (work in progress) |
 
 ### Built from Cisco's OpenH264 repo
 
@@ -33,12 +33,10 @@ See each sysext's justfile for the exact list of packages included.
 
 ### Built from RPM Fusion repos
 
-Install either `fedora-workstation-repositories` or RPM Fusion repositories.
-
 | Name | Notes |
 |-|-|
-| steam-devices | `steam-device` package only |
-| steam | Steam and its dependencies |
+| steam-devices | `steam-device` package only (work in progress) |
+| steam | Steam and its dependencies (work in progress) |
 
 ## Building
 
@@ -48,26 +46,45 @@ Make sure that you have the following packages installed:
 - `selinux-policy-targeted`
 - `cpio`
 - `wget`
+- `fedora-workstation-repositories` or RPM Fusion repositories
+
+To build the `python` sysext:
 
 ```
-$ SYSEXT=python
-$ cd ${SYSEXT}
+$ cd python
 $ just
 ```
 
-Building requires root privileges, but you can run those commands in a
-rootless, privileged, non-SELinux confined container, such as a toolbox.
+I recommend building those from a toolbox as it requires `root` privileges. It
+should work with any rootless, privileged, non-SELinux confined container.
 
 ## Using
 
+Setup the `extensions` directory:
+
+```
+$ sudo install -d -m 0755 -o 0 -g 0 /var/lib/extensions/
+$ sudo restorecon -RFv /var/lib/extensions/
+```
+
+Install the extensions:
+
 ```
 $ SYSEXT=python
-$ sudo install -d -m 0755 -o 0 -g 0 /var/lib/extensions/
 $ sudo install -m 644 -o 0 -g 0 ${SYSEXT}/${SYSEXT}.raw /var/lib/extensions/${SYSEXT}.raw
-$ sudo restorecon -RFv /var/lib/extensions/
+```
+
+Enable them (see known issue below for details):
+
+```
 $ sudo systemctl restart systemd-sysext.service
 $ systemd-sysext status
-$ python -c 'print("Hello sysext!")'
+```
+
+Try it out:
+
+```
+$ python -c 'print("Hello from a sysext!")'
 ```
 
 ## Know issues
