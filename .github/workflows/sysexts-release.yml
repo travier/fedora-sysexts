@@ -1,16 +1,26 @@
 name: "Build all sysexts for a release"
 
-on:
-  schedule:
-    - cron: '0 4 * * *'
-  workflow_dispatch:
-    inputs:
-      version:
-        description: 'Override version'
-        required: false
-        default: ''
+env:
+  GH_TOKEN: ${{ github.token }}
 
-permissions: read-all
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/sysexts-release.yml'
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/sysexts-release.yml'
+  schedule:
+    - cron: '0 0 * * MON'
+  workflow_dispatch:
+
+# Needed to allow creating a release
+permissions:
+  contents: write
 
 # Prevent multiple workflow runs from racing to ensure that pushes are made
 # sequentialy for the main branch. Also cancel in progress workflow runs for
@@ -26,12 +36,23 @@ jobs:
       image: "quay.io/fedora/fedora:40"
       options: "--privileged --security-opt label=disable --user 0:0"
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
-
       - name: Install tools
         run: |
-          dnf install -y erofs-utils just selinux-policy-targeted 'dnf-command(download)' cpio wget fedora-workstation-repositories
+          dnf install -y \
+            erofs-utils \
+            just \
+            selinux-policy-targeted \
+            'dnf-command(download)' \
+            cpio \
+            wget \
+            fedora-workstation-repositories \
+            'dnf-command(config-manager)' \
+            git
+          dnf config-manager --add-repo https://cli.github.com/packages/rpm/gh-cli.repo
+          dnf install -y gh --repo gh-cli
+
+      - name: Checkout repo
+        uses: actions/checkout@v4
 
       - name: Build sysexts
         run: |
@@ -41,7 +62,14 @@ jobs:
             popd
           done
 
-      # - uses: actions/upload-artifact@v4
-      #   with:
-      #     name: python
-      #     path: python/python.raw
+      - name: Create a release
+        if: (github.event_name == 'push' || github.event_name == 'schedule') && github.ref == 'refs/heads/main'
+        run: |
+          sysexts=()
+          for d in $(ls -d ./*/); do
+            name="$(basename $d)"
+            sysexts+=("./$name/$name.raw")
+          done
+          git config --global --add safe.directory "${PWD}"
+          gh release delete --cleanup-tag --yes f40 || true
+          gh release create --latest --title "Fedora 40 sysexts" f40 "${sysexts[@]}"
