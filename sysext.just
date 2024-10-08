@@ -10,7 +10,7 @@ packages := ""
 enable_repos := ""
 
 # Default to noarch + current architecture
-arch := "noarch," + arch()
+arch := "noarch " + arch()
 
 # Do not install any additional files by default
 files := ""
@@ -43,8 +43,13 @@ download-rpms:
         done
     fi
 
+    arch=""
+    for a in {{arch}}; do
+        arch+="--arch=${a} "
+    done
+
     echo "⬇️ Downloading packages ({{arch}}): {{packages}}"
-    dnf download --arch={{arch}} ${enablerepos} {{packages}}
+    dnf download ${arch} ${enablerepos} {{packages}}
 
 # Sets up the rootfs directory and creates the extension release config
 setup-rootfs:
