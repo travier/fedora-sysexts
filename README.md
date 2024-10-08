@@ -3,6 +3,11 @@
 For Fedora CoreOS, Atomic Desktops, IoT, or other Bootable Container systems
 (and classic otree/rpm-ostree systems).
 
+## Download
+
+See the [GitHub release](https://github.com/travier/fedora-sysexts/releases)
+for your version of Fedora.
+
 ## Available sysexts
 
 See each sysext's justfile for the exact list of packages included.
