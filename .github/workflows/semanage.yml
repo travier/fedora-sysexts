@@ -1,4 +1,4 @@
-name: "Build semanage sysext"
+name: "Build sysext: semanage"
 
 env:
   SYSEXT: "semanage"

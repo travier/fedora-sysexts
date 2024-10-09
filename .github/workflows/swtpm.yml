@@ -1,4 +1,4 @@
-name: "Build swtpm sysext"
+name: "Build sysext: swtpm"
 
 env:
   SYSEXT: "swtpm"

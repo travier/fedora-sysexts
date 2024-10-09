@@ -1,4 +1,4 @@
-name: "Build libvirtd sysext"
+name: "Build sysext: libvirtd"
 
 env:
   SYSEXT: "libvirtd"

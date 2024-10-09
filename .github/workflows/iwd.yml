@@ -1,4 +1,4 @@
-name: "Build iwd sysext"
+name: "Build sysext: iwd"
 
 env:
   SYSEXT: "iwd"

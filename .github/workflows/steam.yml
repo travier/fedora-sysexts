@@ -1,4 +1,4 @@
-name: "Build steam sysext"
+name: "Build sysext: steam"
 
 env:
   SYSEXT: "steam"

@@ -1,4 +1,4 @@
-name: "Build tools sysext"
+name: "Build sysext: tools"
 
 env:
   SYSEXT: "tools"

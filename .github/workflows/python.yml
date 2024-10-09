@@ -1,4 +1,4 @@
-name: "Build python sysext"
+name: "Build sysext: python"
 
 env:
   SYSEXT: "python"

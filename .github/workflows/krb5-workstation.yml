@@ -1,4 +1,4 @@
-name: "Build krb5-workstation sysext"
+name: "Build sysext: krb5-workstation"
 
 env:
   SYSEXT: "krb5-workstation"
