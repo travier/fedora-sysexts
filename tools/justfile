@@ -1,5 +1,5 @@
 name := "tools"
-packages := "strace htop hwloc-libs bwm-ng distrobox iotop wireguard-tools zsh btop igt-gpu-tools"
+packages := "strace htop hwloc-libs bwm-ng distrobox iotop wireguard-tools zsh btop rocm-smi igt-gpu-tools"
 
 import '../sysext.just'
 
