@@ -30,6 +30,11 @@ download-rpms:
     set -euo pipefail
     # set -x
 
+    # Skip this step if we have not been asked to download packages
+    if [[ -z "{{packages}}" ]]; then
+        exit 0
+    fi
+
     echo "🧹 Cleaning up previous RPMs"
     rm -rf ./rpms
     mkdir rpms
@@ -79,6 +84,11 @@ install-rpms:
     set -euo pipefail
     # set -x
 
+    # Skip this step if we have not been asked to install packages
+    if [[ -z "{{packages}}" ]]; then
+        exit 0
+    fi
+
     if [[ "${UID}" == "0" ]]; then
         SUDO=""
     else
@@ -102,6 +112,11 @@ install-files:
     set -euo pipefail
     # set -x
 
+    # Skip this step if we have not been asked to copy files
+    if [[ -z "{{files}}" ]]; then
+        exit 0
+    fi
+
     if [[ "${UID}" == "0" ]]; then
         SUDO=""
     else
@@ -109,10 +124,6 @@ install-files:
     fi
 
     cd rootfs
-
-    if [[ -z "{{files}}" ]]; then
-        exit 0
-    fi
 
     echo "📁 Copying additional files from: {{files}}"
     for f in {{files}}; do
