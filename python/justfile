@@ -1,5 +1,13 @@
 name := "python"
-packages := "libb2 libgomp mpdecimal python-pip-wheel python-unversioned-command python3 python3-libs"
+packages := "
+libb2
+libgomp
+mpdecimal
+python-pip-wheel
+python-unversioned-command
+python3
+python3-libs
+"
 
 import '../sysext.just'
 

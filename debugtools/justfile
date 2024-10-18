@@ -1,5 +1,9 @@
 name := "debugtools"
-packages := "elfutils-debuginfod-client gdb-minimal strace"
+packages := "
+elfutils-debuginfod-client
+gdb-minimal
+strace
+"
 
 import '../sysext.just'
 

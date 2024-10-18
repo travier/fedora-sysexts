@@ -1,5 +1,9 @@
 name := "krb5-workstation"
-packages := "krb5-workstation krb5-pkinit libkadm5"
+packages := "
+krb5-pkinit
+krb5-workstation
+libkadm5
+"
 
 import '../sysext.just'
 

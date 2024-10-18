@@ -1,5 +1,8 @@
 name := "openh264"
-packages := "openh264 mozilla-openh264"
+packages := "
+mozilla-openh264
+openh264
+"
 enable_repos := "fedora-cisco-openh264"
 
 import '../sysext.just'
