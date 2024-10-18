@@ -3,13 +3,18 @@ packages := "
 btop
 bwm-ng
 distrobox
+git-absorb
+git-delta
 htop
 hwloc-libs
 igt-gpu-tools
 iotop
+just
+ripgrep
 rocm-smi
 strace
 wireguard-tools
+zoxide
 zsh
 "
 
