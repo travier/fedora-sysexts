@@ -53,8 +53,13 @@ download-rpms:
         arch+="--arch=${a} "
     done
 
-    echo "⬇️ Downloading packages ({{arch}}): {{packages}}"
-    dnf download ${arch} ${enablerepos} {{packages}}
+    packages=()
+    for p in "{{packages}}"; do
+        packages+=(${p})
+    done
+
+    echo "⬇️ Downloading packages ({{arch}}): ${packages[@]}"
+    dnf download ${arch} ${enablerepos} ${packages[@]}
 
 # Sets up the rootfs directory and creates the extension release config
 setup-rootfs:
