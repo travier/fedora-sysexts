@@ -30,7 +30,7 @@ concurrency:
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
-  build-push-image:
+  build-release-sysexts:
     runs-on: "ubuntu-24.04"
     strategy:
       matrix:
