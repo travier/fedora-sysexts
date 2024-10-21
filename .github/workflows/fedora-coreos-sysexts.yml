@@ -1,0 +1,237 @@
+name: "Build sysexts for Fedora CoreOS"
+
+env:
+  REGISTRY: "quay.io/travier"
+  NAME: "fedora-coreos/sysexts"
+  BASE: "quay.io/fedora/fedora-coreos"
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - '*/Containerfile'
+      - '.github/workflows/fedora-coreos-sysexts.yml'
+  push:
+    branches:
+      - main
+    paths:
+      - '*/Containerfile'
+      - '.github/workflows/fedora-coreos-sysexts.yml'
+  schedule:
+    - cron:  '0 0 * * MON'
+  workflow_dispatch:
+
+permissions: read-all
+
+# Prevent multiple workflow runs from racing to ensure that pushes are made
+# sequentialy for the main branch. Also cancel in progress workflow runs for
+# pull requests only.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  build-push-image:
+    strategy:
+      matrix:
+        release:
+          - 'next'
+          # - 'stable'
+          # - 'testing'
+
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Reclaim disk space
+        run: |
+          sudo docker image prune --all --force
+          sudo rm -rf "/usr/local/lib/android"
+
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: "Build container image: debugtools"
+        uses: redhat-actions/buildah-build@v2
+        with:
+          context: debugtools
+          image: ${{ env.NAME }}
+          tags: ${{ matrix.release }}.debugtools
+          containerfiles: debugtools/Containerfile
+          layers: false
+          oci: true
+          extra-args:
+            --from
+            ${{ env.BASE }}:${{ matrix.release }}
+
+      - name: "Build container image: libvirtd"
+        uses: redhat-actions/buildah-build@v2
+        with:
+          context: libvirtd
+          image: ${{ env.NAME }}
+          tags: ${{ matrix.release }}.libvirtd
+          containerfiles: libvirtd/Containerfile
+          layers: false
+          oci: true
+          extra-args:
+            --from
+            ${{ env.BASE }}:${{ matrix.release }}
+
+      - name: "Build container image: python"
+        uses: redhat-actions/buildah-build@v2
+        with:
+          context: python
+          image: ${{ env.NAME }}
+          tags: ${{ matrix.release }}.python
+          containerfiles: python/Containerfile
+          layers: false
+          oci: true
+          extra-args:
+            --from
+            ${{ env.BASE }}:${{ matrix.release }}
+
+      - name: "Build container image: semanage"
+        uses: redhat-actions/buildah-build@v2
+        with:
+          context: semanage
+          image: ${{ env.NAME }}
+          tags: ${{ matrix.release }}.semanage
+          containerfiles: semanage/Containerfile
+          layers: false
+          oci: true
+          extra-args:
+            --from
+            ${{ env.BASE }}:${{ matrix.release }}
+
+      - name: "Build container image: tools"
+        uses: redhat-actions/buildah-build@v2
+        with:
+          context: tools
+          image: ${{ env.NAME }}
+          tags: ${{ matrix.release }}.tools
+          containerfiles: tools/Containerfile
+          layers: false
+          oci: true
+          extra-args:
+            --from
+            ${{ env.BASE }}:${{ matrix.release }}
+
+      - name: "Push to Container Registry: debugtools"
+        uses: redhat-actions/push-to-registry@v2
+        id: push-debugtools
+        if: (github.event_name == 'push' || github.event_name == 'schedule') && github.ref == 'refs/heads/main'
+        with:
+          username: ${{ secrets.BOT_USERNAME }}
+          password: ${{ secrets.BOT_SECRET }}
+          image: ${{ env.NAME }}
+          registry: ${{ env.REGISTRY }}
+          tags: ${{ matrix.release }}.debugtools
+          extra-args: |
+            --compression-format=zstd:chunked
+            --compression-level=19
+
+      - name: "Push to Container Registry: libvirtd"
+        uses: redhat-actions/push-to-registry@v2
+        id: push-libvirtd
+        if: (github.event_name == 'push' || github.event_name == 'schedule') && github.ref == 'refs/heads/main'
+        with:
+          username: ${{ secrets.BOT_USERNAME }}
+          password: ${{ secrets.BOT_SECRET }}
+          image: ${{ env.NAME }}
+          registry: ${{ env.REGISTRY }}
+          tags: ${{ matrix.release }}.libvirtd
+          extra-args: |
+            --compression-format=zstd:chunked
+            --compression-level=19
+
+      - name: "Push to Container Registry: python"
+        uses: redhat-actions/push-to-registry@v2
+        id: push-python
+        if: (github.event_name == 'push' || github.event_name == 'schedule') && github.ref == 'refs/heads/main'
+        with:
+          username: ${{ secrets.BOT_USERNAME }}
+          password: ${{ secrets.BOT_SECRET }}
+          image: ${{ env.NAME }}
+          registry: ${{ env.REGISTRY }}
+          tags: ${{ matrix.release }}.python
+          extra-args: |
+            --compression-format=zstd:chunked
+            --compression-level=19
+
+      - name: "Push to Container Registry: semanage"
+        uses: redhat-actions/push-to-registry@v2
+        id: push-semanage
+        if: (github.event_name == 'push' || github.event_name == 'schedule') && github.ref == 'refs/heads/main'
+        with:
+          username: ${{ secrets.BOT_USERNAME }}
+          password: ${{ secrets.BOT_SECRET }}
+          image: ${{ env.NAME }}
+          registry: ${{ env.REGISTRY }}
+          tags: ${{ matrix.release }}.semanage
+          extra-args: |
+            --compression-format=zstd:chunked
+            --compression-level=19
+
+      - name: "Push to Container Registry: tools"
+        uses: redhat-actions/push-to-registry@v2
+        id: push-tools
+        if: (github.event_name == 'push' || github.event_name == 'schedule') && github.ref == 'refs/heads/main'
+        with:
+          username: ${{ secrets.BOT_USERNAME }}
+          password: ${{ secrets.BOT_SECRET }}
+          image: ${{ env.NAME }}
+          registry: ${{ env.REGISTRY }}
+          tags: ${{ matrix.release }}.tools
+          extra-args: |
+            --compression-format=zstd:chunked
+            --compression-level=19
+
+      - name: Login to Container Registry
+        uses: redhat-actions/podman-login@v1
+        if: (github.event_name == 'push' || github.event_name == 'schedule') && github.ref == 'refs/heads/main'
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ secrets.BOT_USERNAME }}
+          password: ${{ secrets.BOT_SECRET }}
+
+      - uses: sigstore/cosign-installer@v3.7.0
+        if: (github.event_name == 'push' || github.event_name == 'schedule') && github.ref == 'refs/heads/main'
+
+      - name: "Sign container image: debugtools"
+        if: (github.event_name == 'push' || github.event_name == 'schedule') && github.ref == 'refs/heads/main'
+        run: |
+          cosign sign -y --key env://COSIGN_PRIVATE_KEY ${{ env.REGISTRY }}/${{ env.NAME }}@${{ steps.push-debugtools.outputs.digest }}
+        env:
+          COSIGN_EXPERIMENTAL: false
+          COSIGN_PRIVATE_KEY: ${{ secrets.COSIGN_PRIVATE_KEY }}
+
+      - name: "Sign container image: libvirtd"
+        if: (github.event_name == 'push' || github.event_name == 'schedule') && github.ref == 'refs/heads/main'
+        run: |
+          cosign sign -y --key env://COSIGN_PRIVATE_KEY ${{ env.REGISTRY }}/${{ env.NAME }}@${{ steps.push-libvirtd.outputs.digest }}
+        env:
+          COSIGN_EXPERIMENTAL: false
+          COSIGN_PRIVATE_KEY: ${{ secrets.COSIGN_PRIVATE_KEY }}
+
+      - name: "Sign container image: python"
+        if: (github.event_name == 'push' || github.event_name == 'schedule') && github.ref == 'refs/heads/main'
+        run: |
+          cosign sign -y --key env://COSIGN_PRIVATE_KEY ${{ env.REGISTRY }}/${{ env.NAME }}@${{ steps.push-python.outputs.digest }}
+        env:
+          COSIGN_EXPERIMENTAL: false
+          COSIGN_PRIVATE_KEY: ${{ secrets.COSIGN_PRIVATE_KEY }}
+
+      - name: "Sign container image: semanage"
+        if: (github.event_name == 'push' || github.event_name == 'schedule') && github.ref == 'refs/heads/main'
+        run: |
+          cosign sign -y --key env://COSIGN_PRIVATE_KEY ${{ env.REGISTRY }}/${{ env.NAME }}@${{ steps.push-semanage.outputs.digest }}
+        env:
+          COSIGN_EXPERIMENTAL: false
+          COSIGN_PRIVATE_KEY: ${{ secrets.COSIGN_PRIVATE_KEY }}
+
+      - name: "Sign container image: tools"
+        if: (github.event_name == 'push' || github.event_name == 'schedule') && github.ref == 'refs/heads/main'
+        run: |
+          cosign sign -y --key env://COSIGN_PRIVATE_KEY ${{ env.REGISTRY }}/${{ env.NAME }}@${{ steps.push-tools.outputs.digest }}
+        env:
+          COSIGN_EXPERIMENTAL: false
+          COSIGN_PRIVATE_KEY: ${{ secrets.COSIGN_PRIVATE_KEY }}
