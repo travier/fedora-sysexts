@@ -1,5 +1,8 @@
 name := "iwd"
-packages := "iwd"
+packages := "
+iwd
+libell
+"
 files := "usr"
 
 import '../sysext.just'
