@@ -1,0 +1,7 @@
+FROM baseimage
+
+RUN dnf install -y \
+    mozilla-openh264 \
+    openh264 \
+    && \
+    dnf clean all

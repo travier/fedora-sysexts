@@ -1,0 +1,6 @@
+FROM baseimage
+
+RUN dnf install -y --enablerepo=rpmfusion-nonfree-steam \
+    steam-devices \
+    && \
+    dnf clean all

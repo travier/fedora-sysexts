@@ -1,0 +1,7 @@
+FROM baseimage
+
+RUN dnf install -y \
+    gdb-minimal \
+    strace \
+    && \
+    dnf clean all
