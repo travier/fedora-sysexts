@@ -3,6 +3,9 @@
 # Explicitely allow to override variables in justfiles importing this one
 set allow-duplicate-variables := true
 
+# sysexts must explicitely say which base operating system images they target
+base_images := ""
+
 # Do not download any packages by default
 packages := ""
 
@@ -20,12 +23,43 @@ files := ""
 compression := "lz4"
 
 # The default list of steps to use
-all: download-rpms setup-rootfs install-rpms install-files rm-ignored reset-selinux-labels build-erofs
+all target: (check target) (download-rpms target) setup-rootfs install-rpms install-files rm-ignored (reset-selinux-labels target) build-erofs
+
+# Sanity check that some variables are set
+check target:
+    #!/bin/bash
+    set -euo pipefail
+    # set -x
+
+    # Make sure that the sysext lists the base images that it supports
+    if [[ -z "{{base_images}}" ]]; then
+        echo "sysexts must explicitely say which base operating system images they support"
+        exit 1
+    fi
+
+    # Make sure that the current target is in the supported list
+    found=false
+    for base in {{base_images}}; do
+        if [[ "${base}" == {{target}} ]]; tnen
+            found=true
+            break
+        fi
+    done
+    if [[ ${found} == "false ]]; then
+        echo "{{target}} is not listed as a supported base image for this sysext"
+        exit
+    fi
+
+    # Make sure that we install at least a package or some files
+    if [[ -z "{{packages}}" ]] && [[ -z "{{files}}" ]]; then
+        echo "sysexts must include at least one package or file tree"
+        exit 1
+    fi
 
 # Download RPMs to install. Use the following variables:
 # - packages: List of packages to download (and later install)
 # - enable_repos: List of additional repos to enable
-download-rpms:
+download-rpms target:
     #!/bin/bash
     set -euo pipefail
     # set -x
@@ -34,11 +68,6 @@ download-rpms:
     if [[ -z "{{packages}}" ]]; then
         exit 0
     fi
-
-    echo "🧹 Cleaning up previous RPMs"
-    rm -rf ./rpms
-    mkdir rpms
-    cd rpms
 
     enablerepos=""
     if [[ -n "{{enable_repos}}" ]]; then
@@ -58,8 +87,18 @@ download-rpms:
         packages+=(${p})
     done
 
+    echo "🧹 Cleaning up previous RPMs"
+    rm -rf ./rpms
+    mkdir rpms
+    cd rpms
+
+    echo "⬇️ Downloading target image: {{target}}"
+    podman pull "{{target}}"
+
     echo "⬇️ Downloading packages ({{arch}}): ${packages[@]}"
-    dnf download ${arch} ${enablerepos} ${packages[@]}
+    # dnf install --downloadonly --downloaddir . ${arch} ${enablerepos} ${packages[@]}
+    podman run --rm -ti --volume "${PWD}:/var/srv" --workdir "/var/srv" --security-opt label=disable "{{target}}" \
+        dnf download --resolve ${arch} ${enablerepos} ${packages[@]}
 
 # Sets up the rootfs directory and creates the extension release config
 setup-rootfs:
@@ -164,7 +203,7 @@ rm-ignored:
     done
 
 # Reset SELinux labels to expected values from the policy
-reset-selinux-labels:
+reset-selinux-labels target:
     #!/bin/bash
     set -euo pipefail
     # set -x
@@ -175,22 +214,10 @@ reset-selinux-labels:
         SUDO="sudo"
     fi
 
-    cd rootfs
-
-    # Look in the current execution environment first
     filecontexts="/etc/selinux/targeted/contexts/files/file_contexts"
-    if [[ ! -f "${filecontexts}" ]]; then
-        # If not found, look on the host (i.e. when running from a toolbox)
-        filecontexts="/run/host/${filecontexts}"
-    fi
-    if [[ ! -f "${filecontexts}" ]]; then
-        echo "Could not find a list of file contexts from an SELinux policy"
-        exit 1
-    fi
-
     echo "🏷️ Resetting SELinux labels"
-    ${SUDO} setfiles -r . "${filecontexts}" .
-    ${SUDO} chcon --user="system_u" --recursive .
+    podman run --rm -ti --volume "${PWD}:/var/srv" --workdir "/var/srv" --security-opt label=disable "{{target}}" \
+        bash -c "dnf install -y ./rpms/*; cd rootfs ; setfiles -r . ${filecontexts} . ; chcon --user=system_u --recursive ."
 
 # Creates the EROFS sysext file
 build-erofs:
@@ -226,7 +253,7 @@ clean:
     fi
 
     echo "🧹 Cleaning up files from previous builds"
-    rm -rf ./rpms
+    rm -rf ./rpms*
     rm -rf ./binaries
-    ${SUDO} rm -rf ./rootfs
+    ${SUDO} rm -rf ./rootfs*
     rm -f ./*.raw
