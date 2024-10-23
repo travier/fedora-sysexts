@@ -53,7 +53,7 @@ jobs:
           cd ${SYSEXT}
           for t in $(just targets); do
             just build ${t}
-            folder="../artifacts/$(echo "${t}" | sed 's|-|\\x2d|g' | sed 's|/|-|g')"
+            folder="../artifacts/$(echo "${t}" | sed 's|:|-|g' | sed 's|/|-|g')"
             mkdir -p ${folder}
             mv ${SYSEXT}.raw ${folder}
           done
