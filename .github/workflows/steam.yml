@@ -43,7 +43,7 @@ jobs:
           dnf install -y \
             cpio \
             erofs-utils \
-            git-core \
+            git \
             just \
             podman \
             wget
