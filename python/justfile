@@ -4,4 +4,4 @@ base_images := "quay.io/fedora/fedora-coreos:next"
 
 import '../sysext.just'
 
-default target: (all target)
+all: default

@@ -22,8 +22,32 @@ files := ""
 # compression := "zstd"
 compression := "lz4"
 
-# The default list of steps to use
-all target: (check target) (download-rpms target) setup-rootfs install-rpms install-files rm-ignored (reset-selinux-labels target) build-erofs
+# Default, empty, just recipe
+default:
+    #!/bin/bash
+    set -euo pipefail
+    # set -x
+
+    echo "Usage: 'just build <target>'"
+    echo ""
+    echo "Valid targets for this sysext:"
+    echo "{{base_images}}"
+
+# Main recipe with all the steps to use to build a sysext
+build target: (check target) (download-rpms target) setup-rootfs install-rpms install-files rm-ignored (reset-selinux-labels target) build-erofs
+
+# List the supported targets for this sysext. To use in CI and scripting
+targets:
+    #!/bin/bash
+    set -euo pipefail
+    # set -x
+
+    if [[ -z "{{base_images}}" ]]; then
+        echo "sysexts must explicitely say which base operating system images they support"
+        exit 1
+    fi
+
+    echo "{{base_images}}" | xargs
 
 # Sanity check that some variables are set
 check target:
@@ -39,7 +63,7 @@ check target:
 
     # Make sure that the current target is in the supported list
     found=false
-    for base in $(echo "{{base_images}}" | tr '\n' ' '); do
+    for base in $(echo "{{base_images}}" | xargs); do
         if [[ "${base}" == {{target}} ]]; then
             found=true
             break

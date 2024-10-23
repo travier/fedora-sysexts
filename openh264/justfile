@@ -10,4 +10,4 @@ quay.io/fedora-ostree-desktops/kinoite:41
 
 import '../sysext.just'
 
-default target: (all target)
+all: default
