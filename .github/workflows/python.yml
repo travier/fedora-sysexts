@@ -40,9 +40,27 @@ jobs:
 
       - name: Install tools
         run: |
-          dnf install -y erofs-utils just selinux-policy-targeted 'dnf-command(download)' cpio wget
+          dnf install -y \
+            cpio \
+            erofs-utils \
+            git \
+            just \
+            wget \
 
       - name: Build sysext
         run: |
           cd ${SYSEXT}
-          just
+          for t in $(just targets); do
+            just build ${t}
+            folder="../artifacts/$(echo "${t}" | sed 's|-|\\x2d|g' | sed 's|/|-|g')"
+            mkdir -p ${folder}
+            mv ${SYSEXT}.raw ${folder}
+          done
+
+      - uses: actions/upload-artifact@v4
+        retention-days: 5
+        compression-level: 0
+        overwrite: true
+        with:
+          name: sysexts
+          path: artifacts/
