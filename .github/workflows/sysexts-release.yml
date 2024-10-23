@@ -44,11 +44,8 @@ jobs:
           dnf install -y \
             erofs-utils \
             just \
-            selinux-policy-targeted \
-            'dnf-command(download)' \
             cpio \
             wget \
-            fedora-workstation-repositories \
             git
           if [[ "$(dnf --version | head -1 | cut -f1 -d\ )" == "dnf5" ]]; then
             dnf install -y dnf5-plugins
@@ -66,7 +63,8 @@ jobs:
         run: |
           for d in $(ls -d ./*/); do
             pushd $d
-            just
+            just check "quay.io/fedora-ostree-desktops/kinoite:41" || break
+            just default "quay.io/fedora-ostree-desktops/kinoite:41"
             popd
           done
 
