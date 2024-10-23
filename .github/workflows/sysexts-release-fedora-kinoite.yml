@@ -48,7 +48,7 @@ jobs:
             erofs-utils \
             git-core \
             just \
-            wget \
+            wget
           dnf config-manager addrepo --from-repofile="https://cli.github.com/packages/rpm/gh-cli.repo"
           dnf install -y gh --repo gh-cli
 

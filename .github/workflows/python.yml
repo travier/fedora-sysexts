@@ -46,7 +46,7 @@ jobs:
             git-core \
             just \
             podman \
-            wget \
+            wget
 
       - name: Build sysext
         run: |
