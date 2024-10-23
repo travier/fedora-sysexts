@@ -240,7 +240,7 @@ reset-selinux-labels target:
 
     filecontexts="/etc/selinux/targeted/contexts/files/file_contexts"
     echo "🏷️ Resetting SELinux labels"
-    podman run --rm -ti --volume "${PWD}:/var/srv" --workdir "/var/srv" --security-opt label=disable "{{target}}" \
+    podman run --rm -ti --volume "${PWD}:/var/srv" --workdir "/var/srv" --security-opt label=disable --privileged "{{target}}" \
         bash -c "dnf install -y ./rpms/*; cd rootfs ; setfiles -r . ${filecontexts} . ; chcon --user=system_u --recursive ."
 
 # Creates the EROFS sysext file
