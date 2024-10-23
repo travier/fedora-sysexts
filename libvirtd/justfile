@@ -1,30 +1,10 @@
 name := "libvirtd"
 packages := "
-checkpolicy
-dmidecode
-gnutls-dane
-gnutls-utils
-gssproxy
 guestfs-tools
-libb2
-libev
-libgomp
 libguestfs
-libguestfs-appliance
 libguestfs-xfs
-libnbd
-libosinfo
-libpciaccess
-libretls
-libssh
-libssh-config
-libssh2
-libtpms
-liburing
-libverto-libev
 libvirt-client
 libvirt-daemon
-libvirt-daemon-common
 libvirt-daemon-config-network
 libvirt-daemon-driver-interface
 libvirt-daemon-driver-network
@@ -33,53 +13,16 @@ libvirt-daemon-driver-nwfilter
 libvirt-daemon-driver-qemu
 libvirt-daemon-driver-secret
 libvirt-daemon-driver-storage-core
-libvirt-daemon-lock
-libvirt-daemon-log
-libvirt-daemon-plugin-lockd
-libvirt-daemon-proxy
 libvirt-dbus
-libvirt-glib
-libvirt-libs
-libwsman1
-lzop
-mdevctl
-mpdecimal
-nbdkit
-nbdkit-basic-filters
-nbdkit-basic-plugins
-nbdkit-curl-plugin
-nbdkit-selinux
-nbdkit-server
-nbdkit-ssh-plugin
 netcat
-nfs-utils
-numad
-parted
-policycoreutils-python-utils
-python-pip-wheel
-python-unversioned-command
-python3
-python3-audit
-python3-distro
-python3-libs
-python3-libselinux
-python3-libsemanage
-python3-policycoreutils
-python3-setools
-python3-setuptools
 qemu-img
-quota
-quota-nls
-scrub
 swtpm
-swtpm-libs
-swtpm-selinux
-swtpm-tools
-unbound-anchor
-unbound-libs
-zlib-ng
+"
+base_images := "
+quay.io/fedora/fedora-coreos:next
+quay.io/fedora-ostree-desktops/kinoite:41
 "
 
 import '../sysext.just'
 
-default: all
+default target: (all target)

@@ -4,7 +4,10 @@ mozilla-openh264
 openh264
 "
 enable_repos := "fedora-cisco-openh264"
+base_images := "
+quay.io/fedora-ostree-desktops/kinoite:41
+"
 
 import '../sysext.just'
 
-default: all
+default target: (all target)

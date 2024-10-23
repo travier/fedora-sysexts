@@ -39,15 +39,15 @@ check target:
 
     # Make sure that the current target is in the supported list
     found=false
-    for base in {{base_images}}; do
-        if [[ "${base}" == {{target}} ]]; tnen
+    for base in $(echo "{{base_images}}" | tr '\n' ' '); do
+        if [[ "${base}" == {{target}} ]]; then
             found=true
             break
         fi
     done
-    if [[ ${found} == "false ]]; then
+    if [[ ${found} == "false" ]]; then
         echo "{{target}} is not listed as a supported base image for this sysext"
-        exit
+        exit 1
     fi
 
     # Make sure that we install at least a package or some files
