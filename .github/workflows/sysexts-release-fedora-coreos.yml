@@ -3,6 +3,8 @@ name: "Build sysexts for Fedora CoreOS next"
 env:
   GH_TOKEN: ${{ github.token }}
   TARGET: "quay.io/fedora/fedora-coreos:next"
+  NAME: "Fedora CoreOS next"
+  TAG: "fedora-coreos-next"
 
 on:
   pull_request:
@@ -48,6 +50,7 @@ jobs:
             erofs-utils \
             git \
             just \
+            podman \
             wget
           dnf config-manager addrepo --from-repofile="https://cli.github.com/packages/rpm/gh-cli.repo"
           dnf install -y gh --repo gh-cli
@@ -79,9 +82,9 @@ jobs:
           gh release delete --cleanup-tag --yes "f${RELEASE}" || true
           # TODO: Handle --latest
           gh release create \
-            --title "Fedora CoreOS next sysexts" \
-            --notes "System extensions for Fedora CoreOS next" \
-            "fedora-coreos-next" \
+            --title "${NAME} sysexts" \
+            --notes "System extensions for ${NAME}" \
+            "${TAG}" \
             "${sysexts[@]}"
         env:
           RELEASE: ${{ matrix.release }}
