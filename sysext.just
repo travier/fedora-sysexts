@@ -111,6 +111,8 @@ download-rpms target:
         packages+=(${p})
     done
 
+    mkdir -p "../dnfcache"
+
     echo "🧹 Cleaning up previous RPMs"
     rm -rf ./rpms
     mkdir rpms
@@ -121,7 +123,12 @@ download-rpms target:
 
     echo "⬇️ Downloading packages ({{arch}}): ${packages[@]}"
     # dnf install --downloadonly --downloaddir . ${arch} ${enablerepos} ${packages[@]}
-    podman run --rm -ti --volume "${PWD}:/var/srv" --workdir "/var/srv" --security-opt label=disable "{{target}}" \
+    podman run --rm -ti \
+        --volume "${PWD}:/var/srv" \
+        --volume "${PWD}/../../dnfcache:/var/cache/dnf" \
+        --workdir "/var/srv" \
+        --security-opt label=disable \
+        "{{target}}" \
         dnf download --resolve ${arch} ${enablerepos} ${packages[@]}
 
 # Sets up the rootfs directory and creates the extension release config
@@ -240,7 +247,13 @@ reset-selinux-labels target:
 
     filecontexts="/etc/selinux/targeted/contexts/files/file_contexts"
     echo "🏷️ Resetting SELinux labels"
-    podman run --rm -ti --volume "${PWD}:/var/srv" --workdir "/var/srv" --security-opt label=disable --privileged "{{target}}" \
+    podman run --rm -ti \
+        --volume "${PWD}:/var/srv" \
+        --volume "${PWD}/../dnfcache:/var/cache/dnf" \
+        --workdir "/var/srv" \
+        --security-opt label=disable \
+        --privileged \
+        "{{target}}" \
         bash -c "dnf install -y ./rpms/*; cd rootfs ; setfiles -r . ${filecontexts} . ; chcon --user=system_u --recursive ."
 
 # Creates the EROFS sysext file
