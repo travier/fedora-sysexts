@@ -64,7 +64,7 @@ jobs:
           for d in $(ls -d ./*/); do
             pushd $d
             just check "${TARGET}" || break
-            just default "${TARGET}"
+            just build "${TARGET}"
             popd
           done
 
