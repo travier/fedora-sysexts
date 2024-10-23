@@ -45,6 +45,7 @@ jobs:
             erofs-utils \
             git-core \
             just \
+            podman \
             wget \
 
       - name: Build sysext
