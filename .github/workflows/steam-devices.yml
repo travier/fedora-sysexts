@@ -43,7 +43,7 @@ jobs:
           dnf install -y \
             cpio \
             erofs-utils \
-            git \
+            git-core \
             just \
             wget \
 

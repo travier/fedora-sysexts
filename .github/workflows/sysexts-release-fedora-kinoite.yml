@@ -46,7 +46,7 @@ jobs:
             cpio \
             dnf5-plugins \
             erofs-utils \
-            git \
+            git-core \
             just \
             wget \
           dnf config-manager addrepo --from-repofile="https://cli.github.com/packages/rpm/gh-cli.repo"
