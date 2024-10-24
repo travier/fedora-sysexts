@@ -18,9 +18,9 @@ See each sysext's justfile for the exact list of packages included.
 |-|-|
 | btop | `btop` and `rocm-smi` dependency for AMD GPU support |
 | compsize | |
-| debugtools | `gdb-minimal` and `strace` |
 | distrobox | |
 | fuse2 | The `fuse` tools and library, version 2, for AppImage compatibility |
+| gdb | |
 | git-tools | `git-absorb` and `git-delta` |
 | htop | |
 | iwd | Better WiFi daemon and config for NetworkManager to use it by default |

@@ -1,7 +1,7 @@
-name: "Build sysext: debugtools"
+name: "Build sysext: gdb"
 
 env:
-  SYSEXT: "debugtools"
+  SYSEXT: "gdb"
 
 on:
   pull_request:
@@ -9,8 +9,8 @@ on:
       - main
     paths:
       - 'sysext.just'
-      - 'debugtools/**'
-      - '.github/workflows/debugtools.yml'
+      - 'gdb/**'
+      - '.github/workflows/gdb.yml'
 
 permissions: read-all
 
