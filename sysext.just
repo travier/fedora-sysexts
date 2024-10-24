@@ -312,5 +312,5 @@ clean:
     echo "🧹 Cleaning up files from previous builds"
     rm -rf ./rpms
     rm -rf ./binaries
-    ${SUDO} rm -rf ./rootfs
+    ${SUDO} rm -rf ./rootfs ./rootfs.ignored
     rm -f ./*.raw
