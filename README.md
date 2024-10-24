@@ -30,6 +30,7 @@ See each sysext's justfile for the exact list of packages included.
 | krb5-workstation | Kerberos support |
 | libvirtd | `libvirtd`, `qemu`, `swtpm` and `guestfs-tools` (work in progress) |
 | wireguard-tools | |
+| zoxide | `zoxide` and `fzf` |
 
 ### Built from Cisco's OpenH264 repo
 
