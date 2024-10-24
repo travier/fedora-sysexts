@@ -16,6 +16,7 @@ See each sysext's justfile for the exact list of packages included.
 
 | Name | Notes |
 |-|-|
+| btop | `btop` and `rocm-smi` dependency for AMD GPU support |
 | compsize | |
 | debugtools | `gdb-minimal` and `strace` |
 | fuse2 | The `fuse` tools and library, version 2, for AppImage compatibility |
