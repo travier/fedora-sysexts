@@ -16,6 +16,7 @@ See each sysext's justfile for the exact list of packages included.
 
 | Name | Notes |
 |-|-|
+| compsize | |
 | debugtools | `gdb-minimal` and `strace` |
 | python | Core Python 3 packages |
 | semanage | SELinux utilities, including those that require Python |
