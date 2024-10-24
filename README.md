@@ -31,6 +31,7 @@ See each sysext's justfile for the exact list of packages included.
 | libvirtd | `libvirtd`, `qemu`, `swtpm` and `guestfs-tools` (work in progress) |
 | wireguard-tools | |
 | zoxide | `zoxide` and `fzf` |
+| zsh | |
 
 ### Built from Cisco's OpenH264 repo
 
