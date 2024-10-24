@@ -22,6 +22,7 @@ See each sysext's justfile for the exact list of packages included.
 | distrobox | |
 | fuse2 | The `fuse` tools and library, version 2, for AppImage compatibility |
 | git-tools | `git-absorb` and `git-delta` |
+| htop | |
 | monitoring | Collection of monitoring tools: `bandwhich`, `bwm-ng`, `igt-gpu-tools`, `iotop` |
 | python | Core Python 3 packages |
 | ripgrep | |
