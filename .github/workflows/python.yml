@@ -11,13 +11,6 @@ on:
       - 'sysext.just'
       - 'python/**'
       - '.github/workflows/python.yml'
-  push:
-    branches:
-      - main
-    paths:
-      - 'sysext.just'
-      - 'python/**'
-      - '.github/workflows/python.yml'
 
 permissions: read-all
 

@@ -11,13 +11,6 @@ on:
       - 'sysext.just'
       - 'iwd/**'
       - '.github/workflows/iwd.yml'
-  push:
-    branches:
-      - main
-    paths:
-      - 'sysext.just'
-      - 'iwd/**'
-      - '.github/workflows/iwd.yml'
 
 permissions: read-all
 

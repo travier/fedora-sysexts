@@ -11,13 +11,6 @@ on:
       - 'sysext.just'
       - 'compsize/**'
       - '.github/workflows/compsize.yml'
-  push:
-    branches:
-      - main
-    paths:
-      - 'sysext.just'
-      - 'compsize/**'
-      - '.github/workflows/compsize.yml'
 
 permissions: read-all
 

@@ -11,13 +11,6 @@ on:
       - 'sysext.just'
       - 'semanage/**'
       - '.github/workflows/semanage.yml'
-  push:
-    branches:
-      - main
-    paths:
-      - 'sysext.just'
-      - 'semanage/**'
-      - '.github/workflows/semanage.yml'
 
 permissions: read-all
 

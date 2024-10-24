@@ -11,13 +11,6 @@ on:
       - 'sysext.just'
       - 'fuse2/**'
       - '.github/workflows/fuse2.yml'
-  push:
-    branches:
-      - main
-    paths:
-      - 'sysext.just'
-      - 'fuse2/**'
-      - '.github/workflows/fuse2.yml'
 
 permissions: read-all
 

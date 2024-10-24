@@ -11,13 +11,6 @@ on:
       - 'sysext.just'
       - 'krb5-workstation/**'
       - '.github/workflows/krb5-workstation.yml'
-  push:
-    branches:
-      - main
-    paths:
-      - 'sysext.just'
-      - 'krb5-workstation/**'
-      - '.github/workflows/krb5-workstation.yml'
 
 permissions: read-all
 
