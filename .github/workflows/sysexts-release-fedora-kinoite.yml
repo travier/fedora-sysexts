@@ -66,8 +66,11 @@ jobs:
         run: |
           for d in $(ls -d ./*/); do
             pushd $d
-            just check "${TARGET}" || { popd; continue }
-            just build "${TARGET}"
+            if [[ $(just check "${TARGET}" &> /dev/null || echo "skip") == "skip" ]]; then
+              echo "Skipping $d"
+            else
+              just build "${TARGET}"
+            fi
             popd
           done
 
