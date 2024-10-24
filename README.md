@@ -23,14 +23,14 @@ See each sysext's justfile for the exact list of packages included.
 | fuse2 | The `fuse` tools and library, version 2, for AppImage compatibility |
 | git-tools | `git-absorb` and `git-delta` |
 | htop | |
+| iwd | Better WiFi daemon and config for NetworkManager to use it by default |
+| krb5-workstation | Kerberos support |
+| libvirtd | `libvirtd`, `qemu`, `swtpm` and `guestfs-tools` (work in progress) |
 | monitoring | Collection of monitoring tools: `bandwhich`, `bwm-ng`, `igt-gpu-tools`, `iotop` |
 | python | Core Python 3 packages |
 | ripgrep | |
 | semanage | SELinux utilities, including those that require Python |
 | strace | |
-| iwd | Better WiFi daemon and config for NetworkManager to use it by default |
-| krb5-workstation | Kerberos support |
-| libvirtd | `libvirtd`, `qemu`, `swtpm` and `guestfs-tools` (work in progress) |
 | wireguard-tools | |
 | zoxide | `zoxide` and `fzf` |
 | zsh | |
