@@ -21,11 +21,11 @@ See each sysext's justfile for the exact list of packages included.
 | debugtools | `gdb-minimal` and `strace` |
 | distrobox | |
 | fuse2 | The `fuse` tools and library, version 2, for AppImage compatibility |
+| monitoring | Collection of monitoring tools: `bandwhich`, `bwm-ng`, `igt-gpu-tools`, `iotop` |
 | python | Core Python 3 packages |
 | ripgrep | |
 | semanage | SELinux utilities, including those that require Python |
 | strace | |
-| tools | Various tools that I like to have on my host |
 | iwd | Better WiFi daemon and config for NetworkManager to use it by default |
 | krb5-workstation | Kerberos support |
 | libvirtd | `libvirtd`, `qemu`, `swtpm` and `guestfs-tools` (work in progress) |

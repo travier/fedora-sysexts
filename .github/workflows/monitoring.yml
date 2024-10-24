@@ -1,7 +1,7 @@
-name: "Build sysext: tools"
+name: "Build sysext: monitoring"
 
 env:
-  SYSEXT: "tools"
+  SYSEXT: "monitoring"
 
 on:
   pull_request:
@@ -9,8 +9,8 @@ on:
       - main
     paths:
       - 'sysext.just'
-      - 'tools/**'
-      - '.github/workflows/tools.yml'
+      - 'monitoring/**'
+      - '.github/workflows/monitoring.yml'
 
 permissions: read-all
 

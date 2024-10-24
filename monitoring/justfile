@@ -1,20 +1,8 @@
-name := "tools"
+name := "monitoring"
 packages := "
-btop
 bwm-ng
-distrobox
-git-absorb
-git-delta
-htop
 igt-gpu-tools
 iotop
-just
-ripgrep
-rocm-smi
-strace
-wireguard-tools
-zoxide
-zsh
 "
 base_images := "
 quay.io/fedora/fedora-coreos:next
