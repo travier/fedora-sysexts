@@ -24,6 +24,7 @@ See each sysext's justfile for the exact list of packages included.
 | python | Core Python 3 packages |
 | ripgrep | |
 | semanage | SELinux utilities, including those that require Python |
+| strace | |
 | tools | Various tools that I like to have on my host |
 | iwd | Better WiFi daemon and config for NetworkManager to use it by default |
 | krb5-workstation | Kerberos support |
