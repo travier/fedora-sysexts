@@ -22,7 +22,6 @@ See each sysext's justfile for the exact list of packages included.
 | tools | Various tools that I like to have on my host |
 | iwd | Better WiFi daemon and config for NetworkManager to use it by default |
 | krb5-workstation| Kerberos support |
-| swtpm | `swtpm` package and dependencies (work in progress) |
 | libvirtd | `libvirtd`, `qemu`, `swtpm` and `guestfs-tools` (work in progress) |
 
 ### Built from Cisco's OpenH264 repo
