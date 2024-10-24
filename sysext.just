@@ -1,7 +1,8 @@
 # Do no use this justfile directly. See sub-directories.
 
-# Explicitely allow to override variables in justfiles importing this one
+# Explicitely allow overriding variables and recipes in justfiles importing this one
 set allow-duplicate-variables := true
+set allow-duplicate-recipes := true
 
 # sysexts must explicitely say which base operating system images they target
 base_images := ""
