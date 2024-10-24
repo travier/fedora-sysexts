@@ -22,6 +22,7 @@ See each sysext's justfile for the exact list of packages included.
 | distrobox | |
 | fuse2 | The `fuse` tools and library, version 2, for AppImage compatibility |
 | python | Core Python 3 packages |
+| ripgrep | |
 | semanage | SELinux utilities, including those that require Python |
 | tools | Various tools that I like to have on my host |
 | iwd | Better WiFi daemon and config for NetworkManager to use it by default |
