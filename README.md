@@ -29,6 +29,7 @@ See each sysext's justfile for the exact list of packages included.
 | iwd | Better WiFi daemon and config for NetworkManager to use it by default |
 | krb5-workstation | Kerberos support |
 | libvirtd | `libvirtd`, `qemu`, `swtpm` and `guestfs-tools` (work in progress) |
+| wireguard-tools | |
 
 ### Built from Cisco's OpenH264 repo
 

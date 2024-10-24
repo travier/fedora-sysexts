@@ -1,0 +1,7 @@
+name := "wireguard-tools"
+packages := "wireguard-tools"
+base_images := "quay.io/fedora-ostree-desktops/kinoite:41"
+
+import '../sysext.just'
+
+all: default
