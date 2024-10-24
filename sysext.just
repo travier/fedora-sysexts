@@ -111,7 +111,7 @@ download-rpms target:
         packages+=(${p})
     done
 
-    mkdir -p "../dnfcache"
+    mkdir -p "../dnf.cache"
 
     echo "🧹 Cleaning up previous RPMs"
     rm -rf ./rpms
@@ -125,7 +125,7 @@ download-rpms target:
     # dnf install --downloadonly --downloaddir . ${arch} ${enablerepos} ${packages[@]}
     podman run --rm -ti \
         --volume "${PWD}:/var/srv" \
-        --volume "${PWD}/../../dnfcache:/var/cache/dnf" \
+        --volume "${PWD}/../../dnf.cache:/var/cache/libdnf5" \
         --workdir "/var/srv" \
         --security-opt label=disable \
         "{{target}}" \
@@ -249,7 +249,7 @@ reset-selinux-labels target:
     echo "🏷️ Resetting SELinux labels"
     podman run --rm -ti \
         --volume "${PWD}:/var/srv" \
-        --volume "${PWD}/../dnfcache:/var/cache/dnf" \
+        --volume "${PWD}/../dnf.cache:/var/cache/libdnf5" \
         --workdir "/var/srv" \
         --security-opt label=disable \
         --privileged \
