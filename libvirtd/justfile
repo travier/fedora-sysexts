@@ -18,8 +18,9 @@ netcat
 qemu-img
 swtpm
 "
+# Pending nfs-utils packaging rework:
+# quay.io/fedora/fedora-coreos:next
 base_images := "
-quay.io/fedora/fedora-coreos:next
 quay.io/fedora-ostree-desktops/kinoite:41
 "
 
