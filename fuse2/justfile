@@ -1,0 +1,10 @@
+name := "fuse2"
+packages := "
+fuse
+fuse-libs
+"
+base_images := "quay.io/fedora-ostree-desktops/kinoite:41"
+
+import '../sysext.just'
+
+all: default
