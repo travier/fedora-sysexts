@@ -1,22 +1,22 @@
-name: "Build sysexts for Fedora Kinoite 41"
+name: "Build release with sysexts for Fedora CoreOS next"
 
 env:
   GH_TOKEN: ${{ github.token }}
-  TARGET: "quay.io/fedora-ostree-desktops/kinoite:41"
-  NAME: "Fedora Kinoite 41"
-  TAG: "fedora-kinoite-41"
+  TARGET: "quay.io/fedora/fedora-coreos:next"
+  NAME: "Fedora CoreOS next"
+  TAG: "fedora-coreos-next"
 
 on:
   pull_request:
     branches:
       - main
     paths:
-      - '.github/workflows/sysexts-release.yml'
+      - '.github/workflows/release-fedora-coreos.yml'
   push:
     branches:
       - main
     paths:
-      - '.github/workflows/sysexts-release.yml'
+      - '.github/workflows/release-fedora-coreos.yml'
   schedule:
     - cron: '0 0 * * MON'
   workflow_dispatch:

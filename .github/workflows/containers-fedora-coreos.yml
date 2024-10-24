@@ -1,9 +1,9 @@
-name: "Build sysexts for Fedora Kinoite"
+name: "Build containers sysexts for Fedora CoreOS"
 
 env:
   REGISTRY: "quay.io/travier"
-  NAME: "fedora-kinoite/sysexts"
-  BASE: "quay.io/fedora-ostree-desktops/kinoite"
+  NAME: "fedora-coreos/sysexts"
+  BASE: "quay.io/fedora/fedora-coreos"
 
 on:
   pull_request:
@@ -11,13 +11,13 @@ on:
       - main
     paths:
       - '*/Containerfile'
-      - '.github/workflows/fedora-kinoite-sysexts.yml'
+      - '.github/workflows/containers-fedora-coreos.yml'
   push:
     branches:
       - main
     paths:
       - '*/Containerfile'
-      - '.github/workflows/fedora-kinoite-sysexts.yml'
+      - '.github/workflows/containers-fedora-coreos.yml'
   schedule:
     - cron:  '0 0 * * MON'
   workflow_dispatch:
@@ -36,7 +36,9 @@ jobs:
     strategy:
       matrix:
         release:
-          - '41'
+          - 'next'
+          # - 'stable'
+          # - 'testing'
 
     runs-on: ubuntu-24.04
     steps:
@@ -48,26 +50,13 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
 
-      - name: "Build container image: iwd"
+      - name: "Build container image: debugtools"
         uses: redhat-actions/buildah-build@v2
         with:
-          context: iwd
+          context: debugtools
           image: ${{ env.NAME }}
-          tags: ${{ matrix.release }}.iwd
-          containerfiles: iwd/Containerfile
-          layers: false
-          oci: true
-          extra-args:
-            --from
-            ${{ env.BASE }}:${{ matrix.release }}
-
-      - name: "Build container image: krb5-workstation"
-        uses: redhat-actions/buildah-build@v2
-        with:
-          context: krb5-workstation
-          image: ${{ env.NAME }}
-          tags: ${{ matrix.release }}.krb5-workstation
-          containerfiles: krb5-workstation/Containerfile
+          tags: ${{ matrix.release }}.debugtools
+          containerfiles: debugtools/Containerfile
           layers: false
           oci: true
           extra-args:
@@ -87,39 +76,26 @@ jobs:
             --from
             ${{ env.BASE }}:${{ matrix.release }}
 
-      - name: "Build container image: openh264"
+      - name: "Build container image: python"
         uses: redhat-actions/buildah-build@v2
         with:
-          context: openh264
+          context: python
           image: ${{ env.NAME }}
-          tags: ${{ matrix.release }}.openh264
-          containerfiles: openh264/Containerfile
+          tags: ${{ matrix.release }}.python
+          containerfiles: python/Containerfile
           layers: false
           oci: true
           extra-args:
             --from
             ${{ env.BASE }}:${{ matrix.release }}
 
-      - name: "Build container image: steam"
+      - name: "Build container image: semanage"
         uses: redhat-actions/buildah-build@v2
         with:
-          context: steam
+          context: semanage
           image: ${{ env.NAME }}
-          tags: ${{ matrix.release }}.steam
-          containerfiles: steam/Containerfile
-          layers: false
-          oci: true
-          extra-args:
-            --from
-            ${{ env.BASE }}:${{ matrix.release }}
-
-      - name: "Build container image: steam-devices"
-        uses: redhat-actions/buildah-build@v2
-        with:
-          context: steam-devices
-          image: ${{ env.NAME }}
-          tags: ${{ matrix.release }}.steam-devices
-          containerfiles: steam-devices/Containerfile
+          tags: ${{ matrix.release }}.semanage
+          containerfiles: semanage/Containerfile
           layers: false
           oci: true
           extra-args:
@@ -139,30 +115,16 @@ jobs:
             --from
             ${{ env.BASE }}:${{ matrix.release }}
 
-      - name: "Push to Container Registry: iwd"
+      - name: "Push to Container Registry: debugtools"
         uses: redhat-actions/push-to-registry@v2
-        id: push-iwd
+        id: push-debugtools
         if: (github.event_name == 'push' || github.event_name == 'schedule') && github.ref == 'refs/heads/main'
         with:
           username: ${{ secrets.BOT_USERNAME }}
           password: ${{ secrets.BOT_SECRET }}
           image: ${{ env.NAME }}
           registry: ${{ env.REGISTRY }}
-          tags: ${{ matrix.release }}.iwd
-          extra-args: |
-            --compression-format=zstd:chunked
-            --compression-level=19
-
-      - name: "Push to Container Registry: krb5-workstation"
-        uses: redhat-actions/push-to-registry@v2
-        id: push-krb5-workstation
-        if: (github.event_name == 'push' || github.event_name == 'schedule') && github.ref == 'refs/heads/main'
-        with:
-          username: ${{ secrets.BOT_USERNAME }}
-          password: ${{ secrets.BOT_SECRET }}
-          image: ${{ env.NAME }}
-          registry: ${{ env.REGISTRY }}
-          tags: ${{ matrix.release }}.krb5-workstation
+          tags: ${{ matrix.release }}.debugtools
           extra-args: |
             --compression-format=zstd:chunked
             --compression-level=19
@@ -181,44 +143,30 @@ jobs:
             --compression-format=zstd:chunked
             --compression-level=19
 
-      - name: "Push to Container Registry: openh264"
+      - name: "Push to Container Registry: python"
         uses: redhat-actions/push-to-registry@v2
-        id: push-openh264
+        id: push-python
         if: (github.event_name == 'push' || github.event_name == 'schedule') && github.ref == 'refs/heads/main'
         with:
           username: ${{ secrets.BOT_USERNAME }}
           password: ${{ secrets.BOT_SECRET }}
           image: ${{ env.NAME }}
           registry: ${{ env.REGISTRY }}
-          tags: ${{ matrix.release }}.openh264
+          tags: ${{ matrix.release }}.python
           extra-args: |
             --compression-format=zstd:chunked
             --compression-level=19
 
-      - name: "Push to Container Registry: steam"
+      - name: "Push to Container Registry: semanage"
         uses: redhat-actions/push-to-registry@v2
-        id: push-steam
+        id: push-semanage
         if: (github.event_name == 'push' || github.event_name == 'schedule') && github.ref == 'refs/heads/main'
         with:
           username: ${{ secrets.BOT_USERNAME }}
           password: ${{ secrets.BOT_SECRET }}
           image: ${{ env.NAME }}
           registry: ${{ env.REGISTRY }}
-          tags: ${{ matrix.release }}.steam
-          extra-args: |
-            --compression-format=zstd:chunked
-            --compression-level=19
-
-      - name: "Push to Container Registry: steam-devices"
-        uses: redhat-actions/push-to-registry@v2
-        id: push-steam-devices
-        if: (github.event_name == 'push' || github.event_name == 'schedule') && github.ref == 'refs/heads/main'
-        with:
-          username: ${{ secrets.BOT_USERNAME }}
-          password: ${{ secrets.BOT_SECRET }}
-          image: ${{ env.NAME }}
-          registry: ${{ env.REGISTRY }}
-          tags: ${{ matrix.release }}.steam-devices
+          tags: ${{ matrix.release }}.semanage
           extra-args: |
             --compression-format=zstd:chunked
             --compression-level=19
@@ -248,18 +196,10 @@ jobs:
       - uses: sigstore/cosign-installer@v3.7.0
         if: (github.event_name == 'push' || github.event_name == 'schedule') && github.ref == 'refs/heads/main'
 
-      - name: "Sign container image: iwd"
+      - name: "Sign container image: debugtools"
         if: (github.event_name == 'push' || github.event_name == 'schedule') && github.ref == 'refs/heads/main'
         run: |
-          cosign sign -y --key env://COSIGN_PRIVATE_KEY ${{ env.REGISTRY }}/${{ env.NAME }}@${{ steps.push-iwd.outputs.digest }}
-        env:
-          COSIGN_EXPERIMENTAL: false
-          COSIGN_PRIVATE_KEY: ${{ secrets.COSIGN_PRIVATE_KEY }}
-
-      - name: "Sign container image: krb5-workstation"
-        if: (github.event_name == 'push' || github.event_name == 'schedule') && github.ref == 'refs/heads/main'
-        run: |
-          cosign sign -y --key env://COSIGN_PRIVATE_KEY ${{ env.REGISTRY }}/${{ env.NAME }}@${{ steps.push-krb5-workstation.outputs.digest }}
+          cosign sign -y --key env://COSIGN_PRIVATE_KEY ${{ env.REGISTRY }}/${{ env.NAME }}@${{ steps.push-debugtools.outputs.digest }}
         env:
           COSIGN_EXPERIMENTAL: false
           COSIGN_PRIVATE_KEY: ${{ secrets.COSIGN_PRIVATE_KEY }}
@@ -272,26 +212,18 @@ jobs:
           COSIGN_EXPERIMENTAL: false
           COSIGN_PRIVATE_KEY: ${{ secrets.COSIGN_PRIVATE_KEY }}
 
-      - name: "Sign container image: openh264"
+      - name: "Sign container image: python"
         if: (github.event_name == 'push' || github.event_name == 'schedule') && github.ref == 'refs/heads/main'
         run: |
-          cosign sign -y --key env://COSIGN_PRIVATE_KEY ${{ env.REGISTRY }}/${{ env.NAME }}@${{ steps.push-openh264.outputs.digest }}
+          cosign sign -y --key env://COSIGN_PRIVATE_KEY ${{ env.REGISTRY }}/${{ env.NAME }}@${{ steps.push-python.outputs.digest }}
         env:
           COSIGN_EXPERIMENTAL: false
           COSIGN_PRIVATE_KEY: ${{ secrets.COSIGN_PRIVATE_KEY }}
 
-      - name: "Sign container image: steam"
+      - name: "Sign container image: semanage"
         if: (github.event_name == 'push' || github.event_name == 'schedule') && github.ref == 'refs/heads/main'
         run: |
-          cosign sign -y --key env://COSIGN_PRIVATE_KEY ${{ env.REGISTRY }}/${{ env.NAME }}@${{ steps.push-steam.outputs.digest }}
-        env:
-          COSIGN_EXPERIMENTAL: false
-          COSIGN_PRIVATE_KEY: ${{ secrets.COSIGN_PRIVATE_KEY }}
-
-      - name: "Sign container image: steam-devices"
-        if: (github.event_name == 'push' || github.event_name == 'schedule') && github.ref == 'refs/heads/main'
-        run: |
-          cosign sign -y --key env://COSIGN_PRIVATE_KEY ${{ env.REGISTRY }}/${{ env.NAME }}@${{ steps.push-steam-devices.outputs.digest }}
+          cosign sign -y --key env://COSIGN_PRIVATE_KEY ${{ env.REGISTRY }}/${{ env.NAME }}@${{ steps.push-semanage.outputs.digest }}
         env:
           COSIGN_EXPERIMENTAL: false
           COSIGN_PRIVATE_KEY: ${{ secrets.COSIGN_PRIVATE_KEY }}
