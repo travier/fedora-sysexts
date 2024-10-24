@@ -25,7 +25,7 @@ See each sysext's justfile for the exact list of packages included.
 | semanage | SELinux utilities, including those that require Python |
 | tools | Various tools that I like to have on my host |
 | iwd | Better WiFi daemon and config for NetworkManager to use it by default |
-| krb5-workstation| Kerberos support |
+| krb5-workstation | Kerberos support |
 | libvirtd | `libvirtd`, `qemu`, `swtpm` and `guestfs-tools` (work in progress) |
 
 ### Built from Cisco's OpenH264 repo
