@@ -1,0 +1,7 @@
+FROM baseimage
+
+RUN dnf install -y \
+    git-absorb \
+    git-delta \
+    && \
+    dnf clean all
