@@ -82,7 +82,7 @@ jobs:
             sysexts+=("${s}")
           done
           git config --global --add safe.directory "${PWD}"
-          gh release delete --cleanup-tag --yes "f${RELEASE}" || true
+          gh release delete --cleanup-tag --yes "${TAG}" || true
           # TODO: Handle --latest
           gh release create \
             --title "${NAME} sysexts" \
