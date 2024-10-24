@@ -1,9 +1,5 @@
 name := "krb5-workstation"
-packages := "
-krb5-pkinit
-krb5-workstation
-libkadm5
-"
+packages := "krb5-workstation"
 base_images := "quay.io/fedora-ostree-desktops/kinoite:41"
 
 import '../sysext.just'
