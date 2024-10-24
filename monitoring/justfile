@@ -13,7 +13,7 @@ import '../sysext.just'
 
 all: default
 
-build target: (check target) download-binary (download-rpms target) setup-rootfs install-binary install-rpms install-files rm-ignored (reset-selinux-labels target) build-erofs
+build target: (check target) download-binary (download-rpms target) setup-rootfs install-binary install-rpms install-files move-etc rm-ignored (reset-selinux-labels target) build-erofs
 
 download-binary:
     #!/bin/bash

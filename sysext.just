@@ -35,7 +35,7 @@ default:
     echo "{{base_images}}"
 
 # Main recipe with all the steps to use to build a sysext
-build target: (check target) (download-rpms target) setup-rootfs install-rpms install-files rm-ignored (reset-selinux-labels target) build-erofs
+build target: (check target) (download-rpms target) setup-rootfs install-rpms install-files move-etc rm-ignored (reset-selinux-labels target) build-erofs
 
 # List the supported targets for this sysext. To use in CI and scripting
 targets:
@@ -206,8 +206,27 @@ install-files:
         ${SUDO} cp -a ../${f} .
     done
 
+# Move /etc to /usr/etc. Might be converted to a confext generator.
+move-etc:
+    #!/bin/bash
+    set -euo pipefail
+    # set -x
+
+    if [[ "${UID}" == "0" ]]; then
+        SUDO=""
+    else
+        SUDO="sudo"
+    fi
+
+    cd rootfs
+
+    if [[ -d ./etc ]] then
+        echo "➡️ Moving /etc to /usr/etc"
+        ${SUDO} mv --no-clobber --no-copy ./etc ./usr/etc
+    fi
+
 # Move all folders outside of /usr & /opt out of the sysext's rootfs.
-# Note: This step is still in progress. Currently only moves /var and /etc.
+# Note: This step is still in progress. Currently only moves /var.
 rm-ignored:
     #!/bin/bash
     set -euo pipefail
