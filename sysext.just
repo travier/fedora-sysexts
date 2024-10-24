@@ -274,7 +274,7 @@ reset-selinux-labels target:
         --security-opt label=disable \
         --privileged \
         "{{target}}" \
-        bash -c "dnf install -y ./rpms/*; cd rootfs ; setfiles -r . ${filecontexts} . ; chcon --user=system_u --recursive ."
+        bash -c "dnf install -y ./rpms/* && cd rootfs && setfiles -r . ${filecontexts} . && chcon --user=system_u --recursive ."
 
 # Creates the EROFS sysext file
 build-erofs:
