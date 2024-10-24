@@ -32,7 +32,7 @@ jobs:
   build-sysext:
     runs-on: "ubuntu-24.04"
     container:
-      image: "quay.io/fedora/fedora:40"
+      image: "quay.io/fedora/fedora:41"
       options: "--privileged --security-opt label=disable --user 0:0"
     steps:
       - name: Checkout repo
@@ -40,9 +40,28 @@ jobs:
 
       - name: Install tools
         run: |
-          dnf install -y erofs-utils just selinux-policy-targeted 'dnf-command(download)' cpio wget fedora-workstation-repositories
+          dnf install -y \
+            cpio \
+            erofs-utils \
+            git \
+            just \
+            podman \
+            wget
 
       - name: Build sysext
         run: |
           cd ${SYSEXT}
-          just
+          for t in $(just targets); do
+            just build ${t}
+            folder="../artifacts/$(echo "${t}" | sed 's|:|-|g' | sed 's|/|-|g')"
+            mkdir -p ${folder}
+            mv ${SYSEXT}.raw ${folder}
+          done
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: sysexts
+          path: artifacts/
+          retention-days: 5
+          compression-level: 0
+          overwrite: true

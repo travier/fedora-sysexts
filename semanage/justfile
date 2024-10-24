@@ -17,7 +17,8 @@ python3-policycoreutils
 python3-setools
 python3-setuptools
 "
+base_images := "quay.io/fedora/fedora-coreos:next"
 
 import '../sysext.just'
 
-default: all
+all: default

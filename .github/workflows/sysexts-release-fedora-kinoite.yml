@@ -1,7 +1,10 @@
-name: "Build all sysexts for a release"
+name: "Build sysexts for Fedora Kinoite 41"
 
 env:
   GH_TOKEN: ${{ github.token }}
+  TARGET: "quay.io/fedora-ostree-desktops/kinoite:41"
+  NAME: "Fedora Kinoite 41"
+  TAG: "fedora-kinoite-41"
 
 on:
   pull_request:
@@ -34,30 +37,27 @@ jobs:
     runs-on: "ubuntu-24.04"
     strategy:
       matrix:
-        release: ['40', '41']
+        release: ['41']
     container:
       image: "quay.io/fedora/fedora:${{ matrix.release }}"
-      options: "--privileged --security-opt label=disable --user 0:0"
+      options: "--privileged --security-opt label=disable --user 0:0 --device=/dev/fuse"
     steps:
       - name: Install tools
         run: |
           dnf install -y \
-            erofs-utils \
-            just \
-            selinux-policy-targeted \
-            'dnf-command(download)' \
             cpio \
-            wget \
-            fedora-workstation-repositories \
-            git
-          if [[ "$(dnf --version | head -1 | cut -f1 -d\ )" == "dnf5" ]]; then
-            dnf install -y dnf5-plugins
-            dnf config-manager addrepo --from-repofile="https://cli.github.com/packages/rpm/gh-cli.repo"
-          else
-            dnf install -y 'dnf-command(config-manager)'
-            dnf config-manager --add-repo "https://cli.github.com/packages/rpm/gh-cli.repo"
-          fi
+            dnf5-plugins \
+            erofs-utils \
+            git \
+            just \
+            podman \
+            wget
+          dnf config-manager addrepo --from-repofile="https://cli.github.com/packages/rpm/gh-cli.repo"
           dnf install -y gh --repo gh-cli
+
+      # - name: Fixup containers/storage.conf
+      #   run: |
+      #     sed -i 's/driver = "overlay"/driver = "vfs"/' /usr/share/containers/storage.conf
 
       - name: Checkout repo
         uses: actions/checkout@v4
@@ -66,7 +66,11 @@ jobs:
         run: |
           for d in $(ls -d ./*/); do
             pushd $d
-            just
+            if [[ $(just check "${TARGET}" &> /dev/null || echo "skip") == "skip" ]]; then
+              echo "Skipping $d"
+            else
+              just build "${TARGET}"
+            fi
             popd
           done
 
@@ -74,17 +78,16 @@ jobs:
         if: (github.event_name == 'push' || github.event_name == 'schedule') && github.ref == 'refs/heads/main'
         run: |
           sysexts=()
-          for d in $(ls -d ./*/); do
-            name="$(basename $d)"
-            sysexts+=("./$name/$name.raw")
+          for s in $(ls ./*/*.raw); do
+            sysexts+=("${s}")
           done
           git config --global --add safe.directory "${PWD}"
           gh release delete --cleanup-tag --yes "f${RELEASE}" || true
           # TODO: Handle --latest
           gh release create \
-            --title "Fedora ${RELEASE} sysexts" \
-            --notes "System extensions for Fedora ${RELEASE}" \
-            "f${RELEASE}" \
+            --title "${NAME} sysexts" \
+            --notes "System extensions for ${NAME}" \
+            "${TAG}" \
             "${sysexts[@]}"
         env:
           RELEASE: ${{ matrix.release }}

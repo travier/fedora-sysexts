@@ -4,7 +4,8 @@ krb5-pkinit
 krb5-workstation
 libkadm5
 "
+base_images := "quay.io/fedora-ostree-desktops/kinoite:41"
 
 import '../sysext.just'
 
-default: all
+all: default

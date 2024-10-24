@@ -41,18 +41,28 @@ See each sysext's justfile for the exact list of packages included.
 ## Building
 
 Make sure that you have the following packages installed:
+- `cpio`
 - `erofs-utils`
 - [`just`](https://github.com/casey/just)
-- `selinux-policy-targeted`
-- `cpio`
+- `podman`
 - `wget`
-- `fedora-workstation-repositories` or RPM Fusion repositories
 
 To build the `python` sysext:
 
 ```
 $ cd python
-$ just
+```
+
+List the supported target images:
+
+```
+$ just targets
+```
+
+Build the sysext for Fedora CoreOS next:
+
+```
+$ just build "quay.io/fedora/fedora-coreos:next"
 ```
 
 I recommend building those from a toolbox as it requires `root` privileges. It

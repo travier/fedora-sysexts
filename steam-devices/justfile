@@ -2,7 +2,8 @@ name := "steam-devices"
 packages := "steam-devices"
 enable_repos := "rpmfusion-nonfree-steam"
 arch := "i686"
+base_images := "quay.io/fedora-ostree-desktops/kinoite:41"
 
 import '../sysext.just'
 
-default: all
+all: default

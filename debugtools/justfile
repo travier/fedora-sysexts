@@ -4,7 +4,11 @@ elfutils-debuginfod-client
 gdb-minimal
 strace
 "
+base_images := "
+quay.io/fedora/fedora-coreos:next
+quay.io/fedora-ostree-desktops/kinoite:41
+"
 
 import '../sysext.just'
 
-default: all
+all: default

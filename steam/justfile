@@ -181,8 +181,9 @@ xz-libs
 zlib-ng-compat
 "
 enable_repos := "rpmfusion-nonfree-steam"
-arch := "i686"
+arch := "noarch i686 x86_64"
+base_images := "quay.io/fedora-ostree-desktops/kinoite:41"
 
 import '../sysext.just'
 
-default: all
+all: default

@@ -17,10 +17,16 @@ wireguard-tools
 zoxide
 zsh
 "
+base_images := "
+quay.io/fedora/fedora-coreos:next
+quay.io/fedora-ostree-desktops/kinoite:41
+"
 
 import '../sysext.just'
 
-default: download-binary download-rpms setup-rootfs install-binary install-rpms reset-selinux-labels build-erofs
+all: default
+
+build target: (check target) download-binary (download-rpms target) setup-rootfs install-binary install-rpms install-files rm-ignored (reset-selinux-labels target) build-erofs
 
 download-binary:
     #!/bin/bash
