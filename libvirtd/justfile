@@ -28,3 +28,19 @@ quay.io/fedora-ostree-desktops/kinoite:41
 import '../sysext.just'
 
 all: default
+
+# Fixup netcat/nc as we don't run the alternatives command from scriplets
+install-manual:
+    #!/bin/bash
+    set -euo pipefail
+    # set -x
+
+    if [[ "${UID}" == "0" ]]; then
+        SUDO=""
+    else
+        SUDO="sudo"
+    fi
+
+    cd rootfs
+
+    ${SUDO} ln -snf netcat usr/bin/nc
