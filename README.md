@@ -32,6 +32,7 @@ See each sysext's justfile for the exact list of packages included.
 | ripgrep | |
 | semanage | SELinux utilities, including those that require Python |
 | strace | |
+| tree | |
 | wireguard-tools | |
 | zoxide | `zoxide` and `fzf` |
 | zsh | |
