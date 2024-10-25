@@ -26,7 +26,7 @@ See each sysext's justfile for the exact list of packages included.
 | iwd | Better WiFi daemon and config for NetworkManager to use it by default |
 | just | |
 | krb5-workstation | Kerberos support |
-| libvirtd | `libvirtd`, `qemu`, `swtpm`, `virt-install` and `guestfs-tools` (work in progress) |
+| libvirtd | `libvirtd`, `qemu`, `swtpm`, `virt-install` and `guestfs-tools` |
 | monitoring | Collection of monitoring tools: `bandwhich`, `bwm-ng`, `igt-gpu-tools`, `iotop` |
 | python | Core Python 3 packages |
 | ripgrep | |
