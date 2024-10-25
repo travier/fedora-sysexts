@@ -13,9 +13,8 @@ import '../sysext.just'
 
 all: default
 
-build target: (check target) download-binary (download-rpms target) setup-rootfs install-binary install-rpms install-files move-etc rm-ignored (reset-selinux-labels target) build-erofs
-
-download-binary:
+# Custom download step to get bandwhich
+download-manual:
     #!/bin/bash
     set -euo pipefail
     # set -x
@@ -33,7 +32,8 @@ download-binary:
     tar xf "${destfile}"
     gzip -9 assets/bandwhich.1
 
-install-binary:
+# Custom installation step to install bandwhich
+install-manual:
     #!/bin/bash
     set -euo pipefail
     # set -x

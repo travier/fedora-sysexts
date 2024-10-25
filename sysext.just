@@ -35,7 +35,7 @@ default:
     echo "{{base_images}}"
 
 # Main recipe with all the steps to use to build a sysext
-build target: (check target) (download-rpms target) setup-rootfs install-rpms install-files move-etc rm-ignored (reset-selinux-labels target) build-erofs
+build target: (check target) (download-rpms target) download-manual setup-rootfs install-rpms install-files install-manual move-etc rm-ignored (reset-selinux-labels target) build-erofs
 
 # List the supported targets for this sysext. To use in CI and scripting
 targets:
@@ -132,6 +132,13 @@ download-rpms target:
         "{{target}}" \
         dnf download --resolve ${arch} ${enablerepos} ${packages[@]}
 
+# Manual download step, that can be overridden to dowload non RPM content
+download-manual:
+    #!/bin/bash
+    set -euo pipefail
+    # set -x
+    exit 0
+
 # Sets up the rootfs directory and creates the extension release config
 setup-rootfs:
     #!/bin/bash
@@ -205,6 +212,14 @@ install-files:
     for f in {{files}}; do
         ${SUDO} cp -a ../${f} .
     done
+
+# Manual installation step, that can be overridden to install non RPM content
+# or fixup issues after RPM installation.
+install-manual:
+    #!/bin/bash
+    set -euo pipefail
+    # set -x
+    exit 0
 
 # Move /etc to /usr/etc. Might be converted to a confext generator.
 move-etc:
