@@ -17,6 +17,7 @@ libvirt-dbus
 netcat
 qemu-img
 swtpm
+virt-install
 "
 # Pending nfs-utils packaging rework:
 # quay.io/fedora/fedora-coreos:next

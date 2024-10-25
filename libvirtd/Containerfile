@@ -19,5 +19,6 @@ RUN dnf remove -y nfs-utils-coreos \
     libguestfs-xfs \
     qemu-img \
     swtpm \
+    virt-install \
     && \
     dnf clean all
