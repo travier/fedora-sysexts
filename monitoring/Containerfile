@@ -5,3 +5,5 @@ RUN dnf install -y \
     iotop \
     && \
     dnf clean all
+
+# TODO: Add bandwhich installation
