@@ -43,12 +43,23 @@ jobs:
           # - 'testing'
           # - 'stable'
         sysext:
-          - 'debugtools'
+          - 'btop'
+          - 'compsize'
+          - 'distrobox'
+          - 'gdb'
+          - 'git-tools'
+          - 'htop'
           - 'iwd'
+          - 'just'
           - 'libvirtd'
+          - 'monitoring'
           - 'python'
+          - 'ripgrep'
           - 'semanage'
-          - 'tools'
+          - 'strace'
+          - 'tree'
+          - 'zoxide'
+          - 'zsh'
 
     runs-on: ubuntu-24.04
     steps:
