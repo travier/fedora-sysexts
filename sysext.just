@@ -13,6 +13,9 @@ packages := ""
 # Do not enable additional repos by default
 enable_repos := ""
 
+# Do not enable any Copr repos by default
+copr_repos := ""
+
 # Default to noarch + current architecture
 arch := "noarch " + arch()
 
@@ -107,10 +110,17 @@ download-rpms target:
         arch+="--arch=${a} "
     done
 
-    packages=()
-    for p in "{{packages}}"; do
-        packages+=(${p})
-    done
+    packages="$(echo "{{packages}}" | xargs)"
+
+    # No pre commands by default
+    pre_commands=""
+    if [[ -n "{{copr_repos}}" ]]; then
+        pre_commands+="dnf install -y dnf5-plugins"
+        for r in "{{copr_repos}}"; do
+            pre_commands+=" ; dnf copr enable -y ${r}"
+        done
+        pre_commands+=" ; "
+    fi
 
     mkdir -p "../dnf.cache"
 
@@ -122,15 +132,15 @@ download-rpms target:
     echo "⬇️ Downloading target image: {{target}}"
     podman pull "{{target}}"
 
-    echo "⬇️ Downloading packages ({{arch}}): ${packages[@]}"
-    # dnf install --downloadonly --downloaddir . ${arch} ${enablerepos} ${packages[@]}
+    echo "⬇️ Downloading packages ({{arch}}): ${packages}"
+    # dnf install --downloadonly --downloaddir . ${arch} ${enablerepos} ${packages}
     podman run --rm -ti \
         --volume "${PWD}:/var/srv" \
         --volume "${PWD}/../../dnf.cache:/var/cache/libdnf5" \
         --workdir "/var/srv" \
         --security-opt label=disable \
         "{{target}}" \
-        dnf download --resolve ${arch} ${enablerepos} ${packages[@]}
+        bash -c "${pre_commands}dnf download --resolve ${arch} ${enablerepos} ${packages}"
 
 # Manual download step, that can be overridden to dowload non RPM content
 download-manual:
