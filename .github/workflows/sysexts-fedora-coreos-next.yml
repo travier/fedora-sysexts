@@ -104,6 +104,14 @@ jobs:
           just build ${IMAGE}
           mv "${SYSEXT}.raw" "../artifacts/"
 
+      - name: "Build sysext: incus"
+        env:
+          SYSEXT: incus
+        run: |
+          cd "${SYSEXT}"
+          just build ${IMAGE}
+          mv "${SYSEXT}.raw" "../artifacts/"
+
       - name: "Build sysext: iwd"
         env:
           SYSEXT: iwd

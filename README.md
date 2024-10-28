@@ -23,6 +23,7 @@ See each sysext's justfile for the exact list of packages included.
 | gdb | |
 | git-tools | `git-absorb` and `git-delta` |
 | htop | |
+| incus | Work in progress |
 | iwd | Better WiFi daemon and config for NetworkManager to use it by default |
 | just | |
 | krb5-workstation | Kerberos support |
