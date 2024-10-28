@@ -120,6 +120,10 @@ See:
 - https://github.com/systemd/systemd/issues/34387
 - https://github.com/systemd/systemd/pull/34414
 
+## What about using containers instead?
+
+See [README.containers.md](README.containers.md).
+
 ## License
 
 [MIT](LICENSE)
