@@ -1,0 +1,40 @@
+name: "Build containers: %%NAME%%"
+
+env:
+  IMAGE: '%%IMAGE%%'
+  RELEASE: '%%RELEASE%%'
+  NAME: '%%NAME%%'
+  REGISTRY: '%%REGISTRY%%'
+  DESTINATION: '%%DESTINATION%%'
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+  schedule:
+    - cron:  '0 0 * * MON'
+  workflow_dispatch:
+
+permissions: read-all
+
+# Prevent multiple workflow runs from racing to ensure that pushes are made
+# sequentialy for the main branch. Also cancel in progress workflow runs for
+# pull requests only.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref || github.run_id }}-${{ inputs.sysext }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Reclaim disk space
+        run: |
+          sudo docker image prune --all --force
+          sudo rm -rf "/usr/local/lib/android"
+
+      - name: Checkout repo
+        uses: actions/checkout@v4

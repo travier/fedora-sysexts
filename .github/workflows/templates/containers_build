@@ -1,0 +1,12 @@
+      - name: "Build container: %%SYSEXT%%"
+        uses: redhat-actions/buildah-build@v2
+        with:
+          context: '%%SYSEXT%%'
+          image: ${{ env.DESTINATION }}
+          tags: ${{ env.RELEASE }}.%%SYSEXT%%
+          containerfiles: '%%SYSEXT%%/Containerfile'
+          layers: false
+          oci: true
+          extra-args:
+            --from
+            ${{ env.IMAGE }}:${{ env.RELEASE }}

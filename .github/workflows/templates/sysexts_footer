@@ -1,0 +1,29 @@
+      - name: Upload sysexts as artifacts
+        if: github.event_name == 'pull_request'
+        uses: actions/upload-artifact@v4
+        with:
+          name: sysexts
+          path: artifacts/
+          retention-days: 5
+          compression-level: 0
+          overwrite: true
+
+      - name: Create a release
+        if: (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
+        run: |
+          sysexts=()
+          for s in $(ls ./artifacts/*.raw); do
+            sysexts+=("${s}")
+          done
+          git config --global --add safe.directory "${PWD}"
+          gh release delete \
+            --cleanup-tag \
+            --yes \
+            "${SHORTNAME}-${RELEASE}" \
+            || true
+          # TODO: Handle --latest
+          gh release create \
+            --title "${NAME} sysexts" \
+            --notes "System extensions for ${NAME}" \
+            "${SHORTNAME}-${RELEASE}" \
+            "${sysexts[@]}"
