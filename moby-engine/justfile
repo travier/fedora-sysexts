@@ -1,0 +1,9 @@
+name := "moby-engine"
+packages := "moby-engine"
+base_images := "
+quay.io/travier/fedora-coreos:latest
+"
+
+import '../sysext.just'
+
+all: default

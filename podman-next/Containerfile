@@ -1,0 +1,13 @@
+FROM baseimage
+
+RUN dnf install -y dnf5-plugins \
+    && \
+    dnf copr enable -y rhcontainerbot/podman-next \
+    && \
+    dnf install -y \
+    podman \
+    fuse-overlayfs \
+    slirp4netns \
+    toolbox \
+    && \
+    dnf clean all

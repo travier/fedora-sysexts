@@ -1,0 +1,14 @@
+name := "podman"
+packages := "
+podman
+fuse-overlayfs
+slirp4netns
+toolbox
+"
+base_images := "
+quay.io/travier/fedora-coreos:latest
+"
+
+import '../sysext.just'
+
+all: default

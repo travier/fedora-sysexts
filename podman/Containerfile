@@ -1,0 +1,9 @@
+FROM baseimage
+
+RUN dnf install -y \
+    podman \
+    fuse-overlayfs \
+    slirp4netns \
+    toolbox \
+    && \
+    dnf clean all

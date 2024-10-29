@@ -1,0 +1,15 @@
+name := "podman-next"
+packages := "
+podman
+fuse-overlayfs
+slirp4netns
+toolbox
+"
+copr_repos := "rhcontainerbot/podman-next"
+base_images := "
+quay.io/travier/fedora-coreos:latest
+"
+
+import '../sysext.just'
+
+all: default
