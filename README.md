@@ -109,6 +109,13 @@ Try it out:
 $ python -c 'print("Hello from a sysext!")'
 ```
 
+## What about updates?
+
+For now, you will have to manually update those sysexts.
+
+In the future, they will be managed by bootc. See
+[bootc#7](https://github.com/containers/bootc/issues/7).
+
 ## Know issues
 
 Make sure to use `systemctl restart systemd-sysext.service` instead of
