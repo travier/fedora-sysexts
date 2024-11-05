@@ -4,7 +4,7 @@ env:
   IMAGE: 'quay.io/fedora-ostree-desktops/kinoite:41'
   RELEASE: '41'
   NAME: 'Fedora Kinoite (41)'
-  SHORTNAME: 'Fedora Kinoite (41)'
+  SHORTNAME: 'fedora-kinoite'
   GH_TOKEN: ${{ github.token }}
 
 on:

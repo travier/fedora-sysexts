@@ -47,7 +47,7 @@ main() {
         -e "s|%%IMAGE%%|${image}:${release}|g" \
         -e "s|%%RELEASE%%|${release}|g" \
         -e "s|%%NAME%%|${name}|g" \
-        -e "s|%%SHORTNAME%%|${name}|g" \
+        -e "s|%%SHORTNAME%%|${shortname}|g" \
         templates/sysexts_header
     echo ""
     for s in "${sysexts[@]}"; do

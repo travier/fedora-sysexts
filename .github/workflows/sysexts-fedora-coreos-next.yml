@@ -4,7 +4,7 @@ env:
   IMAGE: 'quay.io/fedora/fedora-coreos:next'
   RELEASE: 'next'
   NAME: 'Fedora CoreOS (next)'
-  SHORTNAME: 'Fedora CoreOS (next)'
+  SHORTNAME: 'fedora-coreos'
   GH_TOKEN: ${{ github.token }}
 
 on:
