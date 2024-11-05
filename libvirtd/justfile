@@ -19,11 +19,12 @@ qemu-img
 swtpm
 virt-install
 "
-# Pending nfs-utils packaging rework:
-# quay.io/fedora/fedora-coreos:next
 base_images := "
+quay.io/fedora/fedora-coreos:next
 quay.io/fedora-ostree-desktops/kinoite:41
 "
+# Pending nfs-utils packaging rework
+pre_commands := "dnf remove -y nfs-utils-coreos"
 
 import '../sysext.just'
 
