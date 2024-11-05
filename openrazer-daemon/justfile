@@ -1,6 +1,6 @@
 name := "openrazer-daemon"
 packages := "openrazer-daemon"
-external_repos := "https://download.opensuse.org/repositories/hardware:/razer/Fedora_41/hardware:razer.repo"
+external_repos := "https://download.opensuse.org/repositories/hardware:/razer/Fedora_$(rpm -E %fedora)/hardware:razer.repo"
 base_images := "quay.io/fedora-ostree-desktops/kinoite:41"
 arch := "noarch"
 import '../sysext.just'

@@ -1,6 +1,8 @@
 FROM baseimage
 
-RUN dnf install -y \
+RUN dnf install -y dnf5-plugins \
+    dnf config-manager addrepo --from-repofile=https://download.opensuse.org/repositories/hardware:/razer/Fedora_$(rpm -E %fedora)/hardware:razer.repo \
+    dnf install -y \
     openrazer-daemon \
     && \
     dnf clean all
