@@ -168,6 +168,14 @@ jobs:
           just build ${IMAGE}
           mv "${SYSEXT}.raw" "../artifacts/"
 
+      - name: "Build sysext: openrazer-daemon"
+        env:
+          SYSEXT: openrazer-daemon
+        run: |
+          cd "${SYSEXT}"
+          just build ${IMAGE}
+          mv "${SYSEXT}.raw" "../artifacts/"
+          
       - name: "Build sysext: ripgrep"
         env:
           SYSEXT: ripgrep
