@@ -16,6 +16,9 @@ enable_repos := ""
 # Do not enable any Copr repos by default
 copr_repos := ""
 
+# Do not enable any external repos by default
+external_repos := ""
+
 # Default to noarch + current architecture
 arch := "noarch " + arch()
 
@@ -118,6 +121,13 @@ download-rpms target:
         pre_commands+="dnf install -y dnf5-plugins"
         for r in "{{copr_repos}}"; do
             pre_commands+=" ; dnf copr enable -y ${r}"
+        done
+        pre_commands+=" ; "
+    fi
+    if [[ -n "{{external_repos}}" ]]; then
+        pre_commands+="dnf install -y dnf5-plugins"
+        for r in "{{external_repos}}"; do
+            pre_commands+=" ; dnf config-manager addrepo --from-repofile=${r}"
         done
         pre_commands+=" ; "
     fi
