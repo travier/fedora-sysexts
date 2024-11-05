@@ -19,6 +19,9 @@ copr_repos := ""
 # Do not enable any external repos by default
 external_repos := ""
 
+# Do not run any commands before downloading RPMs by default
+pre_commands := ""
+
 # Default to noarch + current architecture
 arch := "noarch " + arch()
 
@@ -115,8 +118,10 @@ download-rpms target:
 
     packages="$(echo "{{packages}}" | xargs)"
 
-    # No pre commands by default
     pre_commands=""
+    if [[ -n "{{pre_commands}}" ]]; then
+        pre_commands+="{{pre_commands}} ; "
+    fi
     if [[ -n "{{copr_repos}}" ]]; then
         pre_commands+="dnf install -y dnf5-plugins"
         for r in "{{copr_repos}}"; do
