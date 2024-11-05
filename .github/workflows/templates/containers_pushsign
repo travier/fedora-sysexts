@@ -1,4 +1,4 @@
-      - name: "Push to Container Registry"
+      - name: "Push container: %%SYSEXT%%"
         uses: redhat-actions/push-to-registry@v2
         id: push-%%SYSEXT%%
         if: (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
@@ -9,7 +9,7 @@
           registry: ${{ env.REGISTRY }}
           tags: ${{ env.RELEASE }}.%%SYSEXT%%
 
-      - name: "Sign container image"
+      - name: "Sign container: %%SYSEXT%%"
         if: (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
         run: |
           cosign sign -y --key env://COSIGN_PRIVATE_KEY ${{ env.REGISTRY }}/${{ env.NAME }}@${{ steps.push-%%SYSEXT%%.outputs.digest }}

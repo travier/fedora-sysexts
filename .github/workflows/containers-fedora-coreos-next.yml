@@ -244,7 +244,7 @@ jobs:
 
       - uses: sigstore/cosign-installer@v3.7.0
         if: (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
-      - name: "Push to Container Registry"
+      - name: "Push container: btop"
         uses: redhat-actions/push-to-registry@v2
         id: push-btop
         if: (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
@@ -255,7 +255,7 @@ jobs:
           registry: ${{ env.REGISTRY }}
           tags: ${{ env.RELEASE }}.btop
 
-      - name: "Sign container image"
+      - name: "Sign container: btop"
         if: (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
         run: |
           cosign sign -y --key env://COSIGN_PRIVATE_KEY ${{ env.REGISTRY }}/${{ env.NAME }}@${{ steps.push-btop.outputs.digest }}
@@ -263,7 +263,7 @@ jobs:
           COSIGN_EXPERIMENTAL: false
           COSIGN_PRIVATE_KEY: ${{ secrets.COSIGN_PRIVATE_KEY }}
 
-      - name: "Push to Container Registry"
+      - name: "Push container: compsize"
         uses: redhat-actions/push-to-registry@v2
         id: push-compsize
         if: (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
@@ -274,7 +274,7 @@ jobs:
           registry: ${{ env.REGISTRY }}
           tags: ${{ env.RELEASE }}.compsize
 
-      - name: "Sign container image"
+      - name: "Sign container: compsize"
         if: (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
         run: |
           cosign sign -y --key env://COSIGN_PRIVATE_KEY ${{ env.REGISTRY }}/${{ env.NAME }}@${{ steps.push-compsize.outputs.digest }}
@@ -282,7 +282,7 @@ jobs:
           COSIGN_EXPERIMENTAL: false
           COSIGN_PRIVATE_KEY: ${{ secrets.COSIGN_PRIVATE_KEY }}
 
-      - name: "Push to Container Registry"
+      - name: "Push container: distrobox"
         uses: redhat-actions/push-to-registry@v2
         id: push-distrobox
         if: (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
@@ -293,7 +293,7 @@ jobs:
           registry: ${{ env.REGISTRY }}
           tags: ${{ env.RELEASE }}.distrobox
 
-      - name: "Sign container image"
+      - name: "Sign container: distrobox"
         if: (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
         run: |
           cosign sign -y --key env://COSIGN_PRIVATE_KEY ${{ env.REGISTRY }}/${{ env.NAME }}@${{ steps.push-distrobox.outputs.digest }}
@@ -301,7 +301,7 @@ jobs:
           COSIGN_EXPERIMENTAL: false
           COSIGN_PRIVATE_KEY: ${{ secrets.COSIGN_PRIVATE_KEY }}
 
-      - name: "Push to Container Registry"
+      - name: "Push container: gdb"
         uses: redhat-actions/push-to-registry@v2
         id: push-gdb
         if: (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
@@ -312,7 +312,7 @@ jobs:
           registry: ${{ env.REGISTRY }}
           tags: ${{ env.RELEASE }}.gdb
 
-      - name: "Sign container image"
+      - name: "Sign container: gdb"
         if: (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
         run: |
           cosign sign -y --key env://COSIGN_PRIVATE_KEY ${{ env.REGISTRY }}/${{ env.NAME }}@${{ steps.push-gdb.outputs.digest }}
@@ -320,7 +320,7 @@ jobs:
           COSIGN_EXPERIMENTAL: false
           COSIGN_PRIVATE_KEY: ${{ secrets.COSIGN_PRIVATE_KEY }}
 
-      - name: "Push to Container Registry"
+      - name: "Push container: git-tools"
         uses: redhat-actions/push-to-registry@v2
         id: push-git-tools
         if: (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
@@ -331,7 +331,7 @@ jobs:
           registry: ${{ env.REGISTRY }}
           tags: ${{ env.RELEASE }}.git-tools
 
-      - name: "Sign container image"
+      - name: "Sign container: git-tools"
         if: (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
         run: |
           cosign sign -y --key env://COSIGN_PRIVATE_KEY ${{ env.REGISTRY }}/${{ env.NAME }}@${{ steps.push-git-tools.outputs.digest }}
@@ -339,7 +339,7 @@ jobs:
           COSIGN_EXPERIMENTAL: false
           COSIGN_PRIVATE_KEY: ${{ secrets.COSIGN_PRIVATE_KEY }}
 
-      - name: "Push to Container Registry"
+      - name: "Push container: htop"
         uses: redhat-actions/push-to-registry@v2
         id: push-htop
         if: (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
@@ -350,7 +350,7 @@ jobs:
           registry: ${{ env.REGISTRY }}
           tags: ${{ env.RELEASE }}.htop
 
-      - name: "Sign container image"
+      - name: "Sign container: htop"
         if: (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
         run: |
           cosign sign -y --key env://COSIGN_PRIVATE_KEY ${{ env.REGISTRY }}/${{ env.NAME }}@${{ steps.push-htop.outputs.digest }}
@@ -358,7 +358,7 @@ jobs:
           COSIGN_EXPERIMENTAL: false
           COSIGN_PRIVATE_KEY: ${{ secrets.COSIGN_PRIVATE_KEY }}
 
-      - name: "Push to Container Registry"
+      - name: "Push container: iwd"
         uses: redhat-actions/push-to-registry@v2
         id: push-iwd
         if: (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
@@ -369,7 +369,7 @@ jobs:
           registry: ${{ env.REGISTRY }}
           tags: ${{ env.RELEASE }}.iwd
 
-      - name: "Sign container image"
+      - name: "Sign container: iwd"
         if: (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
         run: |
           cosign sign -y --key env://COSIGN_PRIVATE_KEY ${{ env.REGISTRY }}/${{ env.NAME }}@${{ steps.push-iwd.outputs.digest }}
@@ -377,7 +377,7 @@ jobs:
           COSIGN_EXPERIMENTAL: false
           COSIGN_PRIVATE_KEY: ${{ secrets.COSIGN_PRIVATE_KEY }}
 
-      - name: "Push to Container Registry"
+      - name: "Push container: just"
         uses: redhat-actions/push-to-registry@v2
         id: push-just
         if: (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
@@ -388,7 +388,7 @@ jobs:
           registry: ${{ env.REGISTRY }}
           tags: ${{ env.RELEASE }}.just
 
-      - name: "Sign container image"
+      - name: "Sign container: just"
         if: (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
         run: |
           cosign sign -y --key env://COSIGN_PRIVATE_KEY ${{ env.REGISTRY }}/${{ env.NAME }}@${{ steps.push-just.outputs.digest }}
@@ -396,7 +396,7 @@ jobs:
           COSIGN_EXPERIMENTAL: false
           COSIGN_PRIVATE_KEY: ${{ secrets.COSIGN_PRIVATE_KEY }}
 
-      - name: "Push to Container Registry"
+      - name: "Push container: monitoring"
         uses: redhat-actions/push-to-registry@v2
         id: push-monitoring
         if: (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
@@ -407,7 +407,7 @@ jobs:
           registry: ${{ env.REGISTRY }}
           tags: ${{ env.RELEASE }}.monitoring
 
-      - name: "Sign container image"
+      - name: "Sign container: monitoring"
         if: (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
         run: |
           cosign sign -y --key env://COSIGN_PRIVATE_KEY ${{ env.REGISTRY }}/${{ env.NAME }}@${{ steps.push-monitoring.outputs.digest }}
@@ -415,7 +415,7 @@ jobs:
           COSIGN_EXPERIMENTAL: false
           COSIGN_PRIVATE_KEY: ${{ secrets.COSIGN_PRIVATE_KEY }}
 
-      - name: "Push to Container Registry"
+      - name: "Push container: python"
         uses: redhat-actions/push-to-registry@v2
         id: push-python
         if: (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
@@ -426,7 +426,7 @@ jobs:
           registry: ${{ env.REGISTRY }}
           tags: ${{ env.RELEASE }}.python
 
-      - name: "Sign container image"
+      - name: "Sign container: python"
         if: (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
         run: |
           cosign sign -y --key env://COSIGN_PRIVATE_KEY ${{ env.REGISTRY }}/${{ env.NAME }}@${{ steps.push-python.outputs.digest }}
@@ -434,7 +434,7 @@ jobs:
           COSIGN_EXPERIMENTAL: false
           COSIGN_PRIVATE_KEY: ${{ secrets.COSIGN_PRIVATE_KEY }}
 
-      - name: "Push to Container Registry"
+      - name: "Push container: ripgrep"
         uses: redhat-actions/push-to-registry@v2
         id: push-ripgrep
         if: (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
@@ -445,7 +445,7 @@ jobs:
           registry: ${{ env.REGISTRY }}
           tags: ${{ env.RELEASE }}.ripgrep
 
-      - name: "Sign container image"
+      - name: "Sign container: ripgrep"
         if: (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
         run: |
           cosign sign -y --key env://COSIGN_PRIVATE_KEY ${{ env.REGISTRY }}/${{ env.NAME }}@${{ steps.push-ripgrep.outputs.digest }}
@@ -453,7 +453,7 @@ jobs:
           COSIGN_EXPERIMENTAL: false
           COSIGN_PRIVATE_KEY: ${{ secrets.COSIGN_PRIVATE_KEY }}
 
-      - name: "Push to Container Registry"
+      - name: "Push container: semanage"
         uses: redhat-actions/push-to-registry@v2
         id: push-semanage
         if: (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
@@ -464,7 +464,7 @@ jobs:
           registry: ${{ env.REGISTRY }}
           tags: ${{ env.RELEASE }}.semanage
 
-      - name: "Sign container image"
+      - name: "Sign container: semanage"
         if: (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
         run: |
           cosign sign -y --key env://COSIGN_PRIVATE_KEY ${{ env.REGISTRY }}/${{ env.NAME }}@${{ steps.push-semanage.outputs.digest }}
@@ -472,7 +472,7 @@ jobs:
           COSIGN_EXPERIMENTAL: false
           COSIGN_PRIVATE_KEY: ${{ secrets.COSIGN_PRIVATE_KEY }}
 
-      - name: "Push to Container Registry"
+      - name: "Push container: strace"
         uses: redhat-actions/push-to-registry@v2
         id: push-strace
         if: (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
@@ -483,7 +483,7 @@ jobs:
           registry: ${{ env.REGISTRY }}
           tags: ${{ env.RELEASE }}.strace
 
-      - name: "Sign container image"
+      - name: "Sign container: strace"
         if: (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
         run: |
           cosign sign -y --key env://COSIGN_PRIVATE_KEY ${{ env.REGISTRY }}/${{ env.NAME }}@${{ steps.push-strace.outputs.digest }}
@@ -491,7 +491,7 @@ jobs:
           COSIGN_EXPERIMENTAL: false
           COSIGN_PRIVATE_KEY: ${{ secrets.COSIGN_PRIVATE_KEY }}
 
-      - name: "Push to Container Registry"
+      - name: "Push container: tree"
         uses: redhat-actions/push-to-registry@v2
         id: push-tree
         if: (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
@@ -502,7 +502,7 @@ jobs:
           registry: ${{ env.REGISTRY }}
           tags: ${{ env.RELEASE }}.tree
 
-      - name: "Sign container image"
+      - name: "Sign container: tree"
         if: (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
         run: |
           cosign sign -y --key env://COSIGN_PRIVATE_KEY ${{ env.REGISTRY }}/${{ env.NAME }}@${{ steps.push-tree.outputs.digest }}
@@ -510,7 +510,7 @@ jobs:
           COSIGN_EXPERIMENTAL: false
           COSIGN_PRIVATE_KEY: ${{ secrets.COSIGN_PRIVATE_KEY }}
 
-      - name: "Push to Container Registry"
+      - name: "Push container: zsh"
         uses: redhat-actions/push-to-registry@v2
         id: push-zsh
         if: (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
@@ -521,7 +521,7 @@ jobs:
           registry: ${{ env.REGISTRY }}
           tags: ${{ env.RELEASE }}.zsh
 
-      - name: "Sign container image"
+      - name: "Sign container: zsh"
         if: (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
         run: |
           cosign sign -y --key env://COSIGN_PRIVATE_KEY ${{ env.REGISTRY }}/${{ env.NAME }}@${{ steps.push-zsh.outputs.digest }}
