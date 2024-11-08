@@ -144,9 +144,6 @@ download-rpms target:
     mkdir rpms
     cd rpms
 
-    echo "⬇️ Downloading target image: {{target}}"
-    podman pull "{{target}}"
-
     echo "⬇️ Downloading packages ({{arch}}): ${packages}"
     # dnf install --downloadonly --downloaddir . ${arch} ${enablerepos} ${packages}
     podman run --rm -ti \
