@@ -43,6 +43,7 @@ jobs:
             dnf5-plugins \
             erofs-utils \
             git \
+            jq \
             just \
             podman \
             wget
