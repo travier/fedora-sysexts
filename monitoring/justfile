@@ -19,8 +19,6 @@ download-manual:
     set -euo pipefail
     # set -x
 
-    echo "🧹 Cleaning up previous binaries"
-    rm -rf ./binaries
     mkdir binaries
     cd binaries
 

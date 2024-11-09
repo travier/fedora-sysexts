@@ -44,7 +44,7 @@ default:
     echo "{{base_images}}"
 
 # Main recipe with all the steps to use to build a sysext
-build target: (check target) (download-rpms target) download-manual setup-rootfs install-rpms install-files install-manual move-etc rm-ignored (reset-selinux-labels target) build-erofs
+build target: (check target) clean (download-rpms target) download-manual setup-rootfs install-rpms install-files install-manual move-etc rm-ignored (reset-selinux-labels target) build-erofs
 
 # List the supported targets for this sysext. To use in CI and scripting
 targets:
@@ -137,10 +137,8 @@ download-rpms target:
         pre_commands+=" ; "
     fi
 
-    mkdir -p "../dnf.cache"
+    mkdir -p ../dnf.cache
 
-    echo "🧹 Cleaning up previous RPMs"
-    rm -rf ./rpms
     mkdir rpms
     cd rpms
 
@@ -173,8 +171,6 @@ setup-rootfs:
         SUDO="sudo"
     fi
 
-    echo "🧹 Cleaning up previous rootfs"
-    ${SUDO} rm -rf ./rootfs
     mkdir rootfs
     cd rootfs
 
@@ -334,7 +330,7 @@ build-erofs:
 
     echo "🎉 Done!"
 
-# Clean up files used for building and generated sysext
+# Clean up files from previous builds
 clean:
     #!/bin/bash
     set -euo pipefail
