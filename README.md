@@ -51,6 +51,12 @@ See each sysext's justfile for the exact list of packages included.
 | steam-devices | `steam-device` package only (work in progress) |
 | steam | Steam and its dependencies (work in progress) |
 
+### Built from other repos or sources
+
+| Name | Notes |
+|-|-|
+| vscode | Built from Visual Studio Code official RPM |
+
 ## Building
 
 Make sure that you have the following packages installed:
