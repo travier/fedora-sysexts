@@ -1,0 +1,26 @@
+name := "vscodium"
+packages := "vscodium"
+base_images := "
+quay.io/fedora-ostree-desktops/kinoite:41
+"
+
+import '../sysext.just'
+
+all: default
+
+# Custom download step to get VSCodium RPM
+download-rpms target:
+    #!/bin/bash
+    set -euo pipefail
+    # set -x
+
+    mkdir rpms
+    cd rpms
+
+    echo "⬇️ Downloading VSCodium"
+    url="https://api.github.com/repos/VSCodium/vscodium/releases/latest"
+    release="$(curl -s "${url}" | jq -r '.tag_name')"
+    rpmurl="$(curl -s "${url}" | jq -r '.assets[] | select(.name == "codium-'${release}'-el9.x86_64.rpm") | .browser_download_url')"
+    wget "${rpmurl}"{,.sha256}
+    sha256sum -c ./*.rpm.sha256
+    rm ./*.rpm.sha256

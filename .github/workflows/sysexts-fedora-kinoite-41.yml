@@ -217,6 +217,14 @@ jobs:
           just build ${IMAGE}
           mv "${SYSEXT}.raw" "../artifacts/"
 
+      - name: "Build sysext: vscodium"
+        env:
+          SYSEXT: vscodium
+        run: |
+          cd "${SYSEXT}"
+          just build ${IMAGE}
+          mv "${SYSEXT}.raw" "../artifacts/"
+
       - name: "Build sysext: wireguard-tools"
         env:
           SYSEXT: wireguard-tools

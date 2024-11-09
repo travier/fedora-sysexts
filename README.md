@@ -56,6 +56,7 @@ See each sysext's justfile for the exact list of packages included.
 | Name | Notes |
 |-|-|
 | vscode | Built from Visual Studio Code official RPM |
+| vscodium | Built from VSCodium RPM releases |
 
 ## Building
 
