@@ -299,6 +299,19 @@ jobs:
             --from
             ${{ env.IMAGE }}:${{ env.RELEASE }}
 
+      - name: "Build container: vscodium"
+        uses: redhat-actions/buildah-build@v2
+        with:
+          context: 'vscodium'
+          image: ${{ env.DESTINATION }}
+          tags: ${{ env.RELEASE }}.vscodium
+          containerfiles: 'vscodium/Containerfile'
+          layers: false
+          oci: true
+          extra-args:
+            --from
+            ${{ env.IMAGE }}:${{ env.RELEASE }}
+
       - name: "Build container: wireguard-tools"
         uses: redhat-actions/buildah-build@v2
         with:
@@ -724,6 +737,25 @@ jobs:
         if: (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
         run: |
           cosign sign -y --key env://COSIGN_PRIVATE_KEY ${{ env.REGISTRY }}/${{ env.DESTINATION }}@${{ steps.push-vscode.outputs.digest }}
+        env:
+          COSIGN_EXPERIMENTAL: false
+          COSIGN_PRIVATE_KEY: ${{ secrets.COSIGN_PRIVATE_KEY }}
+
+      - name: "Push container: vscodium"
+        uses: redhat-actions/push-to-registry@v2
+        id: push-vscodium
+        if: (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
+        with:
+          username: ${{ secrets.BOT_USERNAME }}
+          password: ${{ secrets.BOT_SECRET }}
+          image: ${{ env.DESTINATION }}
+          registry: ${{ env.REGISTRY }}
+          tags: ${{ env.RELEASE }}.vscodium
+
+      - name: "Sign container: vscodium"
+        if: (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
+        run: |
+          cosign sign -y --key env://COSIGN_PRIVATE_KEY ${{ env.REGISTRY }}/${{ env.DESTINATION }}@${{ steps.push-vscodium.outputs.digest }}
         env:
           COSIGN_EXPERIMENTAL: false
           COSIGN_PRIVATE_KEY: ${{ secrets.COSIGN_PRIVATE_KEY }}
