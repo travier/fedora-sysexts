@@ -28,7 +28,6 @@ See each sysext's justfile for the exact list of packages included.
 | just | |
 | krb5-workstation | Kerberos support |
 | libvirtd | `libvirtd`, `qemu`, `swtpm`, `virt-install` and `guestfs-tools` |
-| monitoring | Collection of monitoring tools: `bandwhich`, `bwm-ng`, `igt-gpu-tools`, `iotop` |
 | python | Core Python 3 packages |
 | ripgrep | |
 | semanage | SELinux utilities, including those that require Python |
@@ -55,6 +54,7 @@ See each sysext's justfile for the exact list of packages included.
 
 | Name | Notes |
 |-|-|
+| monitoring | Collection of monitoring tools from Fedora RPMs (`bwm-ng`, `igt-gpu-tools`, `iotop`) and `bandwhich` from upstream binary releases |
 | vscode | Built from Visual Studio Code official RPM |
 | vscodium | Built from VSCodium RPM releases |
 
