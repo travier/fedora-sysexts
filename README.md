@@ -17,6 +17,7 @@ See each sysext's justfile for the exact list of packages included.
 | Name | Notes |
 |-|-|
 | btop | `btop` and `rocm-smi` dependency for AMD GPU support |
+| chromium | Alternative to the Flatpak which has known issues |
 | compsize | |
 | distrobox | |
 | fuse2 | The `fuse` tools and library, version 2, for AppImage compatibility |

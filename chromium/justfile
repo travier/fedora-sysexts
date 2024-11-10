@@ -1,0 +1,14 @@
+name := "chromium"
+packages := "
+chromium
+"
+# Once removed from the base image?
+# fedora-chromium-config
+# fedora-chromium-config-kde
+base_images := "
+quay.io/fedora-ostree-desktops/kinoite:41
+"
+
+import '../sysext.just'
+
+all: default
