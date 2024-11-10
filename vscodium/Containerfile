@@ -13,6 +13,6 @@ RUN url="https://api.github.com/repos/VSCodium/vscodium/releases/latest" \
     dnf install -y \
     ./*.rpm \
     && \
-    rm ./*.rpm ./*.rpm.256 \
+    rm ./*.rpm ./*.rpm.sha256 \
     && \
     dnf clean all
