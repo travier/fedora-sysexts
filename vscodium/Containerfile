@@ -8,7 +8,7 @@ RUN url="https://api.github.com/repos/VSCodium/vscodium/releases/latest" \
     && \
     wget "${rpmurl}"{,.sha256} \
     && \
-    sha256sum -c ./*rpm..256 \
+    sha256sum -c ./*rpm.sha256 \
     && \
     dnf install -y \
     ./*.rpm \
