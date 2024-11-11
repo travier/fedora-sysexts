@@ -1,4 +1,4 @@
-name := "libvirtd"
+name := "libvirtd-desktop"
 packages := "
 guestfs-tools
 libguestfs
@@ -13,25 +13,16 @@ libvirt-daemon-driver-nwfilter
 libvirt-daemon-driver-qemu
 libvirt-daemon-driver-secret
 libvirt-daemon-driver-storage-core
-libvirt-daemon-driver-storage-disk
-libvirt-daemon-driver-storage-iscsi
-libvirt-daemon-driver-storage-iscsi-direct
-libvirt-daemon-driver-storage-logical
-libvirt-daemon-driver-storage-mpath
-libvirt-daemon-driver-storage-rbd
-libvirt-daemon-driver-storage-scsi
 libvirt-dbus
 netcat
+qemu
 qemu-img
-qemu-kvm
 swtpm
 virt-install
 "
 base_images := "
-quay.io/fedora/fedora-coreos:next
+quay.io/fedora-ostree-desktops/kinoite:41
 "
-# Pending nfs-utils packaging rework
-pre_commands := "dnf remove -y nfs-utils-coreos"
 
 import '../sysext.just'
 

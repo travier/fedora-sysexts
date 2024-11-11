@@ -195,13 +195,13 @@ jobs:
             --from
             ${{ env.IMAGE }}:${{ env.RELEASE }}
 
-      - name: "Build container: libvirtd"
+      - name: "Build container: libvirtd-desktop"
         uses: redhat-actions/buildah-build@v2
         with:
-          context: 'libvirtd'
+          context: 'libvirtd-desktop'
           image: ${{ env.DESTINATION }}
-          tags: ${{ env.RELEASE }}.libvirtd
-          containerfiles: 'libvirtd/Containerfile'
+          tags: ${{ env.RELEASE }}.libvirtd-desktop
+          containerfiles: 'libvirtd-desktop/Containerfile'
           layers: false
           oci: true
           extra-args:
@@ -615,21 +615,21 @@ jobs:
           COSIGN_EXPERIMENTAL: false
           COSIGN_PRIVATE_KEY: ${{ secrets.COSIGN_PRIVATE_KEY }}
 
-      - name: "Push container: libvirtd"
+      - name: "Push container: libvirtd-desktop"
         uses: redhat-actions/push-to-registry@v2
-        id: push-libvirtd
+        id: push-libvirtd-desktop
         if: (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
         with:
           username: ${{ secrets.BOT_USERNAME }}
           password: ${{ secrets.BOT_SECRET }}
           image: ${{ env.DESTINATION }}
           registry: ${{ env.REGISTRY }}
-          tags: ${{ env.RELEASE }}.libvirtd
+          tags: ${{ env.RELEASE }}.libvirtd-desktop
 
-      - name: "Sign container: libvirtd"
+      - name: "Sign container: libvirtd-desktop"
         if: (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
         run: |
-          cosign sign -y --key env://COSIGN_PRIVATE_KEY ${{ env.REGISTRY }}/${{ env.DESTINATION }}@${{ steps.push-libvirtd.outputs.digest }}
+          cosign sign -y --key env://COSIGN_PRIVATE_KEY ${{ env.REGISTRY }}/${{ env.DESTINATION }}@${{ steps.push-libvirtd-desktop.outputs.digest }}
         env:
           COSIGN_EXPERIMENTAL: false
           COSIGN_PRIVATE_KEY: ${{ secrets.COSIGN_PRIVATE_KEY }}

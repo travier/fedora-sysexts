@@ -153,9 +153,9 @@ jobs:
           just build ${IMAGE}
           mv "${SYSEXT}.raw" "../artifacts/"
 
-      - name: "Build sysext: libvirtd"
+      - name: "Build sysext: libvirtd-desktop"
         env:
-          SYSEXT: libvirtd
+          SYSEXT: libvirtd-desktop
         run: |
           cd "${SYSEXT}"
           just build ${IMAGE}

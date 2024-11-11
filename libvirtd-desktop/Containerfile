@@ -1,8 +1,6 @@
 FROM baseimage
 
-RUN dnf remove -y nfs-utils-coreos \
-    && \
-    dnf install -y \
+RUN dnf install -y \
     guestfs-tools \
     libguestfs \
     libguestfs-xfs \
@@ -16,17 +14,10 @@ RUN dnf remove -y nfs-utils-coreos \
     libvirt-daemon-driver-qemu \
     libvirt-daemon-driver-secret \
     libvirt-daemon-driver-storage-core \
-    libvirt-daemon-driver-storage-disk \
-    libvirt-daemon-driver-storage-iscsi \
-    libvirt-daemon-driver-storage-iscsi-direct \
-    libvirt-daemon-driver-storage-logical \
-    libvirt-daemon-driver-storage-mpath \
-    libvirt-daemon-driver-storage-rbd \
-    libvirt-daemon-driver-storage-scsi \
     libvirt-dbus \
     netcat \
+    qemu \
     qemu-img \
-    qemu-kvm \
     swtpm \
     virt-install \
     && \
