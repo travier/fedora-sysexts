@@ -22,6 +22,9 @@ external_repos := ""
 # Do not run any commands before downloading RPMs by default
 pre_commands := ""
 
+# Install weak dependencies by default
+dnf_weak_deps := ""
+
 # Default to noarch + current architecture
 arch := "noarch " + arch()
 
@@ -116,6 +119,11 @@ download-rpms target:
         arch+="--arch=${a} "
     done
 
+    dnf_opts=""
+    if [[ "{{dnf_weak_deps}}" == false ]]; then
+        dnf_opts="--setopt=install_weak_deps=False"
+    fi
+
     packages="$(echo "{{packages}}" | xargs)"
 
     pre_commands=""
@@ -150,7 +158,7 @@ download-rpms target:
         --workdir "/var/srv" \
         --security-opt label=disable \
         "{{target}}" \
-        bash -c "${pre_commands}dnf download --resolve ${arch} ${enablerepos} ${packages}"
+        bash -c "${pre_commands}dnf download --resolve ${arch} ${dnf_opts} ${enablerepos} ${packages}"
 
 # Manual download step, that can be overridden to dowload non RPM content
 download-manual:
@@ -297,6 +305,11 @@ reset-selinux-labels target:
         SUDO="sudo"
     fi
 
+    dnf_opts=""
+    if [[ "{{dnf_weak_deps}}" == false ]]; then
+        dnf_opts="--setopt=install_weak_deps=False"
+    fi
+
     pre_commands=""
     if [[ -n "{{pre_commands}}" ]]; then
         pre_commands+="{{pre_commands}} ; "
@@ -311,7 +324,7 @@ reset-selinux-labels target:
         --security-opt label=disable \
         --privileged \
         "{{target}}" \
-        bash -c "${pre_commands}dnf install -y ./rpms/* && cd rootfs && setfiles -r . ${filecontexts} . && chcon --user=system_u --recursive ."
+        bash -c "${pre_commands}dnf install -y ${dnf_opts} ./rpms/* && cd rootfs && setfiles -r . ${filecontexts} . && chcon --user=system_u --recursive ."
 
 # Creates the EROFS sysext file
 build-erofs target:
