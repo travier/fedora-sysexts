@@ -4,4 +4,4 @@
         run: |
           cd "${SYSEXT}"
           just build ${IMAGE}
-          mv "${SYSEXT}.raw" "../artifacts/"
+          mv "${SYSEXT}"*".raw" "../artifacts/"

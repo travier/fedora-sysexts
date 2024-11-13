@@ -63,7 +63,7 @@ jobs:
         run: |
           cd "${SYSEXT}"
           just build ${IMAGE}
-          mv "${SYSEXT}.raw" "../artifacts/"
+          mv "${SYSEXT}"*".raw" "../artifacts/"
 
       - name: "Build sysext: chromium"
         env:
@@ -71,7 +71,7 @@ jobs:
         run: |
           cd "${SYSEXT}"
           just build ${IMAGE}
-          mv "${SYSEXT}.raw" "../artifacts/"
+          mv "${SYSEXT}"*".raw" "../artifacts/"
 
       - name: "Build sysext: compsize"
         env:
@@ -79,7 +79,7 @@ jobs:
         run: |
           cd "${SYSEXT}"
           just build ${IMAGE}
-          mv "${SYSEXT}.raw" "../artifacts/"
+          mv "${SYSEXT}"*".raw" "../artifacts/"
 
       - name: "Build sysext: distrobox"
         env:
@@ -87,7 +87,7 @@ jobs:
         run: |
           cd "${SYSEXT}"
           just build ${IMAGE}
-          mv "${SYSEXT}.raw" "../artifacts/"
+          mv "${SYSEXT}"*".raw" "../artifacts/"
 
       - name: "Build sysext: fuse2"
         env:
@@ -95,7 +95,7 @@ jobs:
         run: |
           cd "${SYSEXT}"
           just build ${IMAGE}
-          mv "${SYSEXT}.raw" "../artifacts/"
+          mv "${SYSEXT}"*".raw" "../artifacts/"
 
       - name: "Build sysext: gdb"
         env:
@@ -103,7 +103,7 @@ jobs:
         run: |
           cd "${SYSEXT}"
           just build ${IMAGE}
-          mv "${SYSEXT}.raw" "../artifacts/"
+          mv "${SYSEXT}"*".raw" "../artifacts/"
 
       - name: "Build sysext: git-tools"
         env:
@@ -111,7 +111,7 @@ jobs:
         run: |
           cd "${SYSEXT}"
           just build ${IMAGE}
-          mv "${SYSEXT}.raw" "../artifacts/"
+          mv "${SYSEXT}"*".raw" "../artifacts/"
 
       - name: "Build sysext: htop"
         env:
@@ -119,7 +119,7 @@ jobs:
         run: |
           cd "${SYSEXT}"
           just build ${IMAGE}
-          mv "${SYSEXT}.raw" "../artifacts/"
+          mv "${SYSEXT}"*".raw" "../artifacts/"
 
       - name: "Build sysext: incus"
         env:
@@ -127,7 +127,7 @@ jobs:
         run: |
           cd "${SYSEXT}"
           just build ${IMAGE}
-          mv "${SYSEXT}.raw" "../artifacts/"
+          mv "${SYSEXT}"*".raw" "../artifacts/"
 
       - name: "Build sysext: iwd"
         env:
@@ -135,7 +135,7 @@ jobs:
         run: |
           cd "${SYSEXT}"
           just build ${IMAGE}
-          mv "${SYSEXT}.raw" "../artifacts/"
+          mv "${SYSEXT}"*".raw" "../artifacts/"
 
       - name: "Build sysext: just"
         env:
@@ -143,7 +143,7 @@ jobs:
         run: |
           cd "${SYSEXT}"
           just build ${IMAGE}
-          mv "${SYSEXT}.raw" "../artifacts/"
+          mv "${SYSEXT}"*".raw" "../artifacts/"
 
       - name: "Build sysext: krb5-workstation"
         env:
@@ -151,7 +151,7 @@ jobs:
         run: |
           cd "${SYSEXT}"
           just build ${IMAGE}
-          mv "${SYSEXT}.raw" "../artifacts/"
+          mv "${SYSEXT}"*".raw" "../artifacts/"
 
       - name: "Build sysext: libvirtd-desktop"
         env:
@@ -159,7 +159,7 @@ jobs:
         run: |
           cd "${SYSEXT}"
           just build ${IMAGE}
-          mv "${SYSEXT}.raw" "../artifacts/"
+          mv "${SYSEXT}"*".raw" "../artifacts/"
 
       - name: "Build sysext: monitoring"
         env:
@@ -167,7 +167,7 @@ jobs:
         run: |
           cd "${SYSEXT}"
           just build ${IMAGE}
-          mv "${SYSEXT}.raw" "../artifacts/"
+          mv "${SYSEXT}"*".raw" "../artifacts/"
 
       - name: "Build sysext: openh264"
         env:
@@ -175,7 +175,7 @@ jobs:
         run: |
           cd "${SYSEXT}"
           just build ${IMAGE}
-          mv "${SYSEXT}.raw" "../artifacts/"
+          mv "${SYSEXT}"*".raw" "../artifacts/"
 
       - name: "Build sysext: ripgrep"
         env:
@@ -183,7 +183,7 @@ jobs:
         run: |
           cd "${SYSEXT}"
           just build ${IMAGE}
-          mv "${SYSEXT}.raw" "../artifacts/"
+          mv "${SYSEXT}"*".raw" "../artifacts/"
 
       - name: "Build sysext: steam-devices"
         env:
@@ -191,7 +191,7 @@ jobs:
         run: |
           cd "${SYSEXT}"
           just build ${IMAGE}
-          mv "${SYSEXT}.raw" "../artifacts/"
+          mv "${SYSEXT}"*".raw" "../artifacts/"
 
       - name: "Build sysext: steam"
         env:
@@ -199,7 +199,7 @@ jobs:
         run: |
           cd "${SYSEXT}"
           just build ${IMAGE}
-          mv "${SYSEXT}.raw" "../artifacts/"
+          mv "${SYSEXT}"*".raw" "../artifacts/"
 
       - name: "Build sysext: strace"
         env:
@@ -207,7 +207,7 @@ jobs:
         run: |
           cd "${SYSEXT}"
           just build ${IMAGE}
-          mv "${SYSEXT}.raw" "../artifacts/"
+          mv "${SYSEXT}"*".raw" "../artifacts/"
 
       - name: "Build sysext: tree"
         env:
@@ -215,7 +215,7 @@ jobs:
         run: |
           cd "${SYSEXT}"
           just build ${IMAGE}
-          mv "${SYSEXT}.raw" "../artifacts/"
+          mv "${SYSEXT}"*".raw" "../artifacts/"
 
       - name: "Build sysext: vim"
         env:
@@ -223,7 +223,7 @@ jobs:
         run: |
           cd "${SYSEXT}"
           just build ${IMAGE}
-          mv "${SYSEXT}.raw" "../artifacts/"
+          mv "${SYSEXT}"*".raw" "../artifacts/"
 
       - name: "Build sysext: vscode"
         env:
@@ -231,7 +231,7 @@ jobs:
         run: |
           cd "${SYSEXT}"
           just build ${IMAGE}
-          mv "${SYSEXT}.raw" "../artifacts/"
+          mv "${SYSEXT}"*".raw" "../artifacts/"
 
       - name: "Build sysext: vscodium"
         env:
@@ -239,7 +239,7 @@ jobs:
         run: |
           cd "${SYSEXT}"
           just build ${IMAGE}
-          mv "${SYSEXT}.raw" "../artifacts/"
+          mv "${SYSEXT}"*".raw" "../artifacts/"
 
       - name: "Build sysext: wireguard-tools"
         env:
@@ -247,7 +247,7 @@ jobs:
         run: |
           cd "${SYSEXT}"
           just build ${IMAGE}
-          mv "${SYSEXT}.raw" "../artifacts/"
+          mv "${SYSEXT}"*".raw" "../artifacts/"
 
       - name: "Build sysext: zoxide"
         env:
@@ -255,7 +255,7 @@ jobs:
         run: |
           cd "${SYSEXT}"
           just build ${IMAGE}
-          mv "${SYSEXT}.raw" "../artifacts/"
+          mv "${SYSEXT}"*".raw" "../artifacts/"
 
       - name: "Build sysext: zsh"
         env:
@@ -263,7 +263,7 @@ jobs:
         run: |
           cd "${SYSEXT}"
           just build ${IMAGE}
-          mv "${SYSEXT}.raw" "../artifacts/"
+          mv "${SYSEXT}"*".raw" "../artifacts/"
 
       - name: Upload sysexts as artifacts
         if: github.event_name == 'pull_request'
