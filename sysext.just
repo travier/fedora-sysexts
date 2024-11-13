@@ -44,7 +44,7 @@ default:
     echo "{{base_images}}"
 
 # Main recipe with all the steps to use to build a sysext
-build target: (check target) clean (download-rpms target) download-manual setup-rootfs install-rpms install-files install-manual move-etc rm-ignored (reset-selinux-labels target) build-erofs
+build target: (check target) clean (download-rpms target) download-manual setup-rootfs install-rpms install-files install-manual move-etc rm-ignored (reset-selinux-labels target) (build-erofs target)
 
 # List the supported targets for this sysext. To use in CI and scripting
 targets:
@@ -310,7 +310,7 @@ reset-selinux-labels target:
         bash -c "dnf install -y ./rpms/* && cd rootfs && setfiles -r . ${filecontexts} . && chcon --user=system_u --recursive ."
 
 # Creates the EROFS sysext file
-build-erofs:
+build-erofs target:
     #!/bin/bash
     set -euo pipefail
     # set -x
@@ -322,10 +322,15 @@ build-erofs:
     fi
 
     echo "🔒 Creating EROFS sysext ({{compression}})"
-    ${SUDO} mkfs.erofs -z{{compression}} {{name}}.raw rootfs > /dev/null
+    version=$(podman run --rm -ti \
+        --security-opt label=disable \
+        "{{target}}" \
+        bash -c 'source /etc/os-release ; echo -n ${OSTREE_VERSION}')
+    arch=$(uname -m | sed 's/_/-/g')
+    ${SUDO} mkfs.erofs -z{{compression}} {{name}}-${version}-${arch}.raw rootfs > /dev/null
 
     if [[ "${UID}" != "0" ]]; then
-        ${SUDO} chown "${USER}:" {{name}}.raw
+        ${SUDO} chown "${USER}:" {{name}}*.raw
     fi
 
     echo "🎉 Done!"

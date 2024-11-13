@@ -103,7 +103,7 @@ Install the extensions:
 
 ```
 $ SYSEXT=python
-$ sudo install -m 644 -o 0 -g 0 ${SYSEXT}/${SYSEXT}.raw -t /var/lib/extensions/
+$ sudo install -m 644 -o 0 -g 0 ${SYSEXT}/${SYSEXT}*.raw -t /var/lib/extensions/
 ```
 
 Enable them (see known issue below for details):
