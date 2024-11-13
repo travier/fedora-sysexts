@@ -1,9 +1,15 @@
 #!/bin/bash
 
+# Re-generate the GitHub workflows based on templates. We do not use a matrix
+# build strategy in GitHub worflows to reduce overall build time and avoid
+# pulling the same base container image multiple time, once for each individual
+# job.
+
 set -euo pipefail
 # set -x
 
 main() {
+    # Re-run for each target
     if [[ ${#} -eq 0 ]]; then
         ${0} \
             'quay.io/fedora/fedora-coreos' \
@@ -31,10 +37,15 @@ main() {
     local -r registry="${5}"
     local -r destination="${6}"
 
-    # Get the list of sysexts
+    if [[ ! -d .github ]] || [[ ! -d .git ]]; then
+        echo "This script must be run at the root of the repo"
+        exit 1
+    fi
+
+    # Get the list of sysexts for a given target
     sysexts=()
-    for s in $(git ls-tree -d --name-only HEAD ../.. | grep -Ev ".github|^../$" | sed 's|../../||'); do
-        pushd "../../${s}" > /dev/null
+    for s in $(git ls-tree -d --name-only HEAD | grep -Ev ".github|templates"); do
+        pushd "${s}" > /dev/null
         if [[ $(just targets | grep -c "${image}:${release}") == "1" ]]; then
             sysexts+=("${s}")
         fi
@@ -55,7 +66,7 @@ main() {
         echo ""
     done
     cat templates/sysexts_footer
-    } > "sysexts-${shortname}-${release}.yml"
+    } > ".github/workflows/sysexts-${shortname}-${release}.yml"
 
     # Generate container sysexts workflows
     {
@@ -76,7 +87,7 @@ main() {
         sed "s|%%SYSEXT%%|${s}|g" templates/containers_pushsign
         echo ""
     done
-    } > "containers-${shortname}-${release}.yml"
+    } > ".github/workflows/containers-${shortname}-${release}.yml"
 }
 
 main "${@}"
