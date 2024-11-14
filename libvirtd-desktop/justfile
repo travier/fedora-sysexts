@@ -21,6 +21,7 @@ swtpm
 virt-install
 "
 base_images := "
+quay.io/fedora-ostree-desktops/silverblue:41
 quay.io/fedora-ostree-desktops/kinoite:41
 "
 

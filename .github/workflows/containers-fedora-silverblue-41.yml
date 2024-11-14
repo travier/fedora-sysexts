@@ -1,11 +1,11 @@
-name: "Build containers: Fedora CoreOS (next)"
+name: "Build containers: Fedora Silverblue (41)"
 
 env:
-  IMAGE: 'quay.io/fedora/fedora-coreos'
-  RELEASE: 'next'
-  NAME: 'Fedora CoreOS (next)'
+  IMAGE: 'quay.io/fedora-ostree-desktops/silverblue'
+  RELEASE: '41'
+  NAME: 'Fedora Silverblue (41)'
   REGISTRY: 'quay.io/travier'
-  DESTINATION: 'fedora-coreos-sysexts'
+  DESTINATION: 'fedora-silverblue-sysexts'
 
 on:
   pull_request:
@@ -52,6 +52,19 @@ jobs:
             --from
             ${{ env.IMAGE }}:${{ env.RELEASE }}
 
+      - name: "Build container: chromium"
+        uses: redhat-actions/buildah-build@v2
+        with:
+          context: 'chromium'
+          image: ${{ env.DESTINATION }}
+          tags: ${{ env.RELEASE }}.chromium
+          containerfiles: 'chromium/Containerfile'
+          layers: false
+          oci: true
+          extra-args:
+            --from
+            ${{ env.IMAGE }}:${{ env.RELEASE }}
+
       - name: "Build container: compsize"
         uses: redhat-actions/buildah-build@v2
         with:
@@ -72,6 +85,19 @@ jobs:
           image: ${{ env.DESTINATION }}
           tags: ${{ env.RELEASE }}.distrobox
           containerfiles: 'distrobox/Containerfile'
+          layers: false
+          oci: true
+          extra-args:
+            --from
+            ${{ env.IMAGE }}:${{ env.RELEASE }}
+
+      - name: "Build container: fuse2"
+        uses: redhat-actions/buildah-build@v2
+        with:
+          context: 'fuse2'
+          image: ${{ env.DESTINATION }}
+          tags: ${{ env.RELEASE }}.fuse2
+          containerfiles: 'fuse2/Containerfile'
           layers: false
           oci: true
           extra-args:
@@ -156,13 +182,26 @@ jobs:
             --from
             ${{ env.IMAGE }}:${{ env.RELEASE }}
 
-      - name: "Build container: libvirtd"
+      - name: "Build container: krb5-workstation"
         uses: redhat-actions/buildah-build@v2
         with:
-          context: 'libvirtd'
+          context: 'krb5-workstation'
           image: ${{ env.DESTINATION }}
-          tags: ${{ env.RELEASE }}.libvirtd
-          containerfiles: 'libvirtd/Containerfile'
+          tags: ${{ env.RELEASE }}.krb5-workstation
+          containerfiles: 'krb5-workstation/Containerfile'
+          layers: false
+          oci: true
+          extra-args:
+            --from
+            ${{ env.IMAGE }}:${{ env.RELEASE }}
+
+      - name: "Build container: libvirtd-desktop"
+        uses: redhat-actions/buildah-build@v2
+        with:
+          context: 'libvirtd-desktop'
+          image: ${{ env.DESTINATION }}
+          tags: ${{ env.RELEASE }}.libvirtd-desktop
+          containerfiles: 'libvirtd-desktop/Containerfile'
           layers: false
           oci: true
           extra-args:
@@ -195,13 +234,13 @@ jobs:
             --from
             ${{ env.IMAGE }}:${{ env.RELEASE }}
 
-      - name: "Build container: python"
+      - name: "Build container: openh264"
         uses: redhat-actions/buildah-build@v2
         with:
-          context: 'python'
+          context: 'openh264'
           image: ${{ env.DESTINATION }}
-          tags: ${{ env.RELEASE }}.python
-          containerfiles: 'python/Containerfile'
+          tags: ${{ env.RELEASE }}.openh264
+          containerfiles: 'openh264/Containerfile'
           layers: false
           oci: true
           extra-args:
@@ -221,13 +260,26 @@ jobs:
             --from
             ${{ env.IMAGE }}:${{ env.RELEASE }}
 
-      - name: "Build container: semanage"
+      - name: "Build container: steam-devices"
         uses: redhat-actions/buildah-build@v2
         with:
-          context: 'semanage'
+          context: 'steam-devices'
           image: ${{ env.DESTINATION }}
-          tags: ${{ env.RELEASE }}.semanage
-          containerfiles: 'semanage/Containerfile'
+          tags: ${{ env.RELEASE }}.steam-devices
+          containerfiles: 'steam-devices/Containerfile'
+          layers: false
+          oci: true
+          extra-args:
+            --from
+            ${{ env.IMAGE }}:${{ env.RELEASE }}
+
+      - name: "Build container: steam"
+        uses: redhat-actions/buildah-build@v2
+        with:
+          context: 'steam'
+          image: ${{ env.DESTINATION }}
+          tags: ${{ env.RELEASE }}.steam
+          containerfiles: 'steam/Containerfile'
           layers: false
           oci: true
           extra-args:
@@ -267,6 +319,58 @@ jobs:
           image: ${{ env.DESTINATION }}
           tags: ${{ env.RELEASE }}.vim
           containerfiles: 'vim/Containerfile'
+          layers: false
+          oci: true
+          extra-args:
+            --from
+            ${{ env.IMAGE }}:${{ env.RELEASE }}
+
+      - name: "Build container: vscode"
+        uses: redhat-actions/buildah-build@v2
+        with:
+          context: 'vscode'
+          image: ${{ env.DESTINATION }}
+          tags: ${{ env.RELEASE }}.vscode
+          containerfiles: 'vscode/Containerfile'
+          layers: false
+          oci: true
+          extra-args:
+            --from
+            ${{ env.IMAGE }}:${{ env.RELEASE }}
+
+      - name: "Build container: vscodium"
+        uses: redhat-actions/buildah-build@v2
+        with:
+          context: 'vscodium'
+          image: ${{ env.DESTINATION }}
+          tags: ${{ env.RELEASE }}.vscodium
+          containerfiles: 'vscodium/Containerfile'
+          layers: false
+          oci: true
+          extra-args:
+            --from
+            ${{ env.IMAGE }}:${{ env.RELEASE }}
+
+      - name: "Build container: wireguard-tools"
+        uses: redhat-actions/buildah-build@v2
+        with:
+          context: 'wireguard-tools'
+          image: ${{ env.DESTINATION }}
+          tags: ${{ env.RELEASE }}.wireguard-tools
+          containerfiles: 'wireguard-tools/Containerfile'
+          layers: false
+          oci: true
+          extra-args:
+            --from
+            ${{ env.IMAGE }}:${{ env.RELEASE }}
+
+      - name: "Build container: zoxide"
+        uses: redhat-actions/buildah-build@v2
+        with:
+          context: 'zoxide'
+          image: ${{ env.DESTINATION }}
+          tags: ${{ env.RELEASE }}.zoxide
+          containerfiles: 'zoxide/Containerfile'
           layers: false
           oci: true
           extra-args:
@@ -315,6 +419,25 @@ jobs:
           COSIGN_EXPERIMENTAL: false
           COSIGN_PRIVATE_KEY: ${{ secrets.COSIGN_PRIVATE_KEY }}
 
+      - name: "Push container: chromium"
+        uses: redhat-actions/push-to-registry@v2
+        id: push-chromium
+        if: (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
+        with:
+          username: ${{ secrets.BOT_USERNAME }}
+          password: ${{ secrets.BOT_SECRET }}
+          image: ${{ env.DESTINATION }}
+          registry: ${{ env.REGISTRY }}
+          tags: ${{ env.RELEASE }}.chromium
+
+      - name: "Sign container: chromium"
+        if: (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
+        run: |
+          cosign sign -y --key env://COSIGN_PRIVATE_KEY ${{ env.REGISTRY }}/${{ env.DESTINATION }}@${{ steps.push-chromium.outputs.digest }}
+        env:
+          COSIGN_EXPERIMENTAL: false
+          COSIGN_PRIVATE_KEY: ${{ secrets.COSIGN_PRIVATE_KEY }}
+
       - name: "Push container: compsize"
         uses: redhat-actions/push-to-registry@v2
         id: push-compsize
@@ -349,6 +472,25 @@ jobs:
         if: (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
         run: |
           cosign sign -y --key env://COSIGN_PRIVATE_KEY ${{ env.REGISTRY }}/${{ env.DESTINATION }}@${{ steps.push-distrobox.outputs.digest }}
+        env:
+          COSIGN_EXPERIMENTAL: false
+          COSIGN_PRIVATE_KEY: ${{ secrets.COSIGN_PRIVATE_KEY }}
+
+      - name: "Push container: fuse2"
+        uses: redhat-actions/push-to-registry@v2
+        id: push-fuse2
+        if: (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
+        with:
+          username: ${{ secrets.BOT_USERNAME }}
+          password: ${{ secrets.BOT_SECRET }}
+          image: ${{ env.DESTINATION }}
+          registry: ${{ env.REGISTRY }}
+          tags: ${{ env.RELEASE }}.fuse2
+
+      - name: "Sign container: fuse2"
+        if: (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
+        run: |
+          cosign sign -y --key env://COSIGN_PRIVATE_KEY ${{ env.REGISTRY }}/${{ env.DESTINATION }}@${{ steps.push-fuse2.outputs.digest }}
         env:
           COSIGN_EXPERIMENTAL: false
           COSIGN_PRIVATE_KEY: ${{ secrets.COSIGN_PRIVATE_KEY }}
@@ -467,21 +609,40 @@ jobs:
           COSIGN_EXPERIMENTAL: false
           COSIGN_PRIVATE_KEY: ${{ secrets.COSIGN_PRIVATE_KEY }}
 
-      - name: "Push container: libvirtd"
+      - name: "Push container: krb5-workstation"
         uses: redhat-actions/push-to-registry@v2
-        id: push-libvirtd
+        id: push-krb5-workstation
         if: (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
         with:
           username: ${{ secrets.BOT_USERNAME }}
           password: ${{ secrets.BOT_SECRET }}
           image: ${{ env.DESTINATION }}
           registry: ${{ env.REGISTRY }}
-          tags: ${{ env.RELEASE }}.libvirtd
+          tags: ${{ env.RELEASE }}.krb5-workstation
 
-      - name: "Sign container: libvirtd"
+      - name: "Sign container: krb5-workstation"
         if: (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
         run: |
-          cosign sign -y --key env://COSIGN_PRIVATE_KEY ${{ env.REGISTRY }}/${{ env.DESTINATION }}@${{ steps.push-libvirtd.outputs.digest }}
+          cosign sign -y --key env://COSIGN_PRIVATE_KEY ${{ env.REGISTRY }}/${{ env.DESTINATION }}@${{ steps.push-krb5-workstation.outputs.digest }}
+        env:
+          COSIGN_EXPERIMENTAL: false
+          COSIGN_PRIVATE_KEY: ${{ secrets.COSIGN_PRIVATE_KEY }}
+
+      - name: "Push container: libvirtd-desktop"
+        uses: redhat-actions/push-to-registry@v2
+        id: push-libvirtd-desktop
+        if: (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
+        with:
+          username: ${{ secrets.BOT_USERNAME }}
+          password: ${{ secrets.BOT_SECRET }}
+          image: ${{ env.DESTINATION }}
+          registry: ${{ env.REGISTRY }}
+          tags: ${{ env.RELEASE }}.libvirtd-desktop
+
+      - name: "Sign container: libvirtd-desktop"
+        if: (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
+        run: |
+          cosign sign -y --key env://COSIGN_PRIVATE_KEY ${{ env.REGISTRY }}/${{ env.DESTINATION }}@${{ steps.push-libvirtd-desktop.outputs.digest }}
         env:
           COSIGN_EXPERIMENTAL: false
           COSIGN_PRIVATE_KEY: ${{ secrets.COSIGN_PRIVATE_KEY }}
@@ -524,21 +685,21 @@ jobs:
           COSIGN_EXPERIMENTAL: false
           COSIGN_PRIVATE_KEY: ${{ secrets.COSIGN_PRIVATE_KEY }}
 
-      - name: "Push container: python"
+      - name: "Push container: openh264"
         uses: redhat-actions/push-to-registry@v2
-        id: push-python
+        id: push-openh264
         if: (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
         with:
           username: ${{ secrets.BOT_USERNAME }}
           password: ${{ secrets.BOT_SECRET }}
           image: ${{ env.DESTINATION }}
           registry: ${{ env.REGISTRY }}
-          tags: ${{ env.RELEASE }}.python
+          tags: ${{ env.RELEASE }}.openh264
 
-      - name: "Sign container: python"
+      - name: "Sign container: openh264"
         if: (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
         run: |
-          cosign sign -y --key env://COSIGN_PRIVATE_KEY ${{ env.REGISTRY }}/${{ env.DESTINATION }}@${{ steps.push-python.outputs.digest }}
+          cosign sign -y --key env://COSIGN_PRIVATE_KEY ${{ env.REGISTRY }}/${{ env.DESTINATION }}@${{ steps.push-openh264.outputs.digest }}
         env:
           COSIGN_EXPERIMENTAL: false
           COSIGN_PRIVATE_KEY: ${{ secrets.COSIGN_PRIVATE_KEY }}
@@ -562,21 +723,40 @@ jobs:
           COSIGN_EXPERIMENTAL: false
           COSIGN_PRIVATE_KEY: ${{ secrets.COSIGN_PRIVATE_KEY }}
 
-      - name: "Push container: semanage"
+      - name: "Push container: steam-devices"
         uses: redhat-actions/push-to-registry@v2
-        id: push-semanage
+        id: push-steam-devices
         if: (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
         with:
           username: ${{ secrets.BOT_USERNAME }}
           password: ${{ secrets.BOT_SECRET }}
           image: ${{ env.DESTINATION }}
           registry: ${{ env.REGISTRY }}
-          tags: ${{ env.RELEASE }}.semanage
+          tags: ${{ env.RELEASE }}.steam-devices
 
-      - name: "Sign container: semanage"
+      - name: "Sign container: steam-devices"
         if: (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
         run: |
-          cosign sign -y --key env://COSIGN_PRIVATE_KEY ${{ env.REGISTRY }}/${{ env.DESTINATION }}@${{ steps.push-semanage.outputs.digest }}
+          cosign sign -y --key env://COSIGN_PRIVATE_KEY ${{ env.REGISTRY }}/${{ env.DESTINATION }}@${{ steps.push-steam-devices.outputs.digest }}
+        env:
+          COSIGN_EXPERIMENTAL: false
+          COSIGN_PRIVATE_KEY: ${{ secrets.COSIGN_PRIVATE_KEY }}
+
+      - name: "Push container: steam"
+        uses: redhat-actions/push-to-registry@v2
+        id: push-steam
+        if: (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
+        with:
+          username: ${{ secrets.BOT_USERNAME }}
+          password: ${{ secrets.BOT_SECRET }}
+          image: ${{ env.DESTINATION }}
+          registry: ${{ env.REGISTRY }}
+          tags: ${{ env.RELEASE }}.steam
+
+      - name: "Sign container: steam"
+        if: (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
+        run: |
+          cosign sign -y --key env://COSIGN_PRIVATE_KEY ${{ env.REGISTRY }}/${{ env.DESTINATION }}@${{ steps.push-steam.outputs.digest }}
         env:
           COSIGN_EXPERIMENTAL: false
           COSIGN_PRIVATE_KEY: ${{ secrets.COSIGN_PRIVATE_KEY }}
@@ -634,6 +814,82 @@ jobs:
         if: (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
         run: |
           cosign sign -y --key env://COSIGN_PRIVATE_KEY ${{ env.REGISTRY }}/${{ env.DESTINATION }}@${{ steps.push-vim.outputs.digest }}
+        env:
+          COSIGN_EXPERIMENTAL: false
+          COSIGN_PRIVATE_KEY: ${{ secrets.COSIGN_PRIVATE_KEY }}
+
+      - name: "Push container: vscode"
+        uses: redhat-actions/push-to-registry@v2
+        id: push-vscode
+        if: (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
+        with:
+          username: ${{ secrets.BOT_USERNAME }}
+          password: ${{ secrets.BOT_SECRET }}
+          image: ${{ env.DESTINATION }}
+          registry: ${{ env.REGISTRY }}
+          tags: ${{ env.RELEASE }}.vscode
+
+      - name: "Sign container: vscode"
+        if: (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
+        run: |
+          cosign sign -y --key env://COSIGN_PRIVATE_KEY ${{ env.REGISTRY }}/${{ env.DESTINATION }}@${{ steps.push-vscode.outputs.digest }}
+        env:
+          COSIGN_EXPERIMENTAL: false
+          COSIGN_PRIVATE_KEY: ${{ secrets.COSIGN_PRIVATE_KEY }}
+
+      - name: "Push container: vscodium"
+        uses: redhat-actions/push-to-registry@v2
+        id: push-vscodium
+        if: (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
+        with:
+          username: ${{ secrets.BOT_USERNAME }}
+          password: ${{ secrets.BOT_SECRET }}
+          image: ${{ env.DESTINATION }}
+          registry: ${{ env.REGISTRY }}
+          tags: ${{ env.RELEASE }}.vscodium
+
+      - name: "Sign container: vscodium"
+        if: (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
+        run: |
+          cosign sign -y --key env://COSIGN_PRIVATE_KEY ${{ env.REGISTRY }}/${{ env.DESTINATION }}@${{ steps.push-vscodium.outputs.digest }}
+        env:
+          COSIGN_EXPERIMENTAL: false
+          COSIGN_PRIVATE_KEY: ${{ secrets.COSIGN_PRIVATE_KEY }}
+
+      - name: "Push container: wireguard-tools"
+        uses: redhat-actions/push-to-registry@v2
+        id: push-wireguard-tools
+        if: (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
+        with:
+          username: ${{ secrets.BOT_USERNAME }}
+          password: ${{ secrets.BOT_SECRET }}
+          image: ${{ env.DESTINATION }}
+          registry: ${{ env.REGISTRY }}
+          tags: ${{ env.RELEASE }}.wireguard-tools
+
+      - name: "Sign container: wireguard-tools"
+        if: (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
+        run: |
+          cosign sign -y --key env://COSIGN_PRIVATE_KEY ${{ env.REGISTRY }}/${{ env.DESTINATION }}@${{ steps.push-wireguard-tools.outputs.digest }}
+        env:
+          COSIGN_EXPERIMENTAL: false
+          COSIGN_PRIVATE_KEY: ${{ secrets.COSIGN_PRIVATE_KEY }}
+
+      - name: "Push container: zoxide"
+        uses: redhat-actions/push-to-registry@v2
+        id: push-zoxide
+        if: (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
+        with:
+          username: ${{ secrets.BOT_USERNAME }}
+          password: ${{ secrets.BOT_SECRET }}
+          image: ${{ env.DESTINATION }}
+          registry: ${{ env.REGISTRY }}
+          tags: ${{ env.RELEASE }}.zoxide
+
+      - name: "Sign container: zoxide"
+        if: (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
+        run: |
+          cosign sign -y --key env://COSIGN_PRIVATE_KEY ${{ env.REGISTRY }}/${{ env.DESTINATION }}@${{ steps.push-zoxide.outputs.digest }}
         env:
           COSIGN_EXPERIMENTAL: false
           COSIGN_PRIVATE_KEY: ${{ secrets.COSIGN_PRIVATE_KEY }}

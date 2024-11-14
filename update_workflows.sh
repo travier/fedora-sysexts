@@ -27,6 +27,14 @@ main() {
             'quay.io/travier' \
             'fedora-kinoite-sysexts'
 
+        ${0} \
+            'quay.io/fedora-ostree-desktops/silverblue' \
+            '41' \
+            'Fedora Silverblue (41)' \
+            'fedora-silverblue' \
+            'quay.io/travier' \
+            'fedora-silverblue-sysexts'
+
         exit 0
     fi
 
