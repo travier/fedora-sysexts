@@ -8,10 +8,6 @@
           compression-level: 0
           overwrite: true
 
-      - name: Create SHA256SUMS manifest and systemd-sysupdate configs
-        if: (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
-        run: |
-
       - name: Create a release with a SHA256SUMS manifest and systemd-sysupdate configs
         if: (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
         run: |
@@ -24,7 +20,7 @@
           sysexts=()
           for s in $(ls *.raw); do
               s="${s%-*-x86-64.raw}"
-              sed 's/%%SYSEXT%%/${s}/g' ../templates/systemd-sysupdate.conf > ${s}.conf
+              sed "s/%%SYSEXT%%/${s}/g" ../templates/systemd-sysupdate.conf > ${s}.conf
           done
 
           gh release delete \
