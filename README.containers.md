@@ -32,8 +32,9 @@ The next steps would then be to:
   - We can not include the updated RPM database for example as that would not
     make sense (there can only be one so if you have multiple sysexts, the last
     one mounted will win).
-  - Running `dnf install` will create local state in `/etc` that we don't want.
-  - We then need to move the default content from `/etc` to `/usr/etc`.
+  - Running `dnf install` will create local state in `/etc` that we don't want
+    and would have to cleanup.
+  - We then need to move the added default configs from `/etc` to `/usr/etc`.
 - Relabel the files with the SELinux policy (would have to run from the context
   of the container to use the SELinux policy from the layered image).
   - We will also have to make sure that the SELinux policy is rebuilt and
