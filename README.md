@@ -81,6 +81,7 @@ included.
 | krb5-workstation | Kerberos support |
 | libvirtd | `libvirtd`, `qemu-kvm`, `swtpm`, `virt-install` and `guestfs-tools` for server usage (no GUI support) |
 | libvirtd-desktop | `libvirtd`, `qemu`, `swtpm`, `virt-install` and `guestfs-tools` for desktop usage |
+| neovim | |
 | python | Core Python 3 packages |
 | ripgrep | |
 | semanage | SELinux utilities, including those that require Python |
