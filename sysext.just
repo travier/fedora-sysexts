@@ -198,12 +198,11 @@ install-rpms:
 
     cd rootfs
 
-    echo "📦 Extracting packages"
+    echo "📦 Extracting packages:"
     for rpm in ../rpms/*.rpm; do
-        echo -n "$(basename ${rpm}) "
+        echo "$(basename ${rpm})"
         rpm2cpio "${rpm}" | ${SUDO} cpio -idmv &> /dev/null
     done
-    echo ""
 
 # Install files from the current directory. Uses:
 # - files: List of folders or files to copy to `rootfs`. Use either `usr` or
