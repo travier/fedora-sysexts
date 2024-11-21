@@ -1,0 +1,12 @@
+FROM baseimage
+
+RUN dnf install -y \
+    cockpit-files \
+    cockpit-networkmanager \
+    cockpit-ostree \
+    cockpit-podman \
+    cockpit-storaged \
+    cockpit-system \
+    cockpit-ws \
+    && \
+    dnf clean all
