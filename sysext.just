@@ -198,12 +198,11 @@ install-rpms:
 
     cd rootfs
 
-    echo "📦 Extracting packages"
+    echo "📦 Extracting packages:"
     for rpm in ../rpms/*.rpm; do
-        echo -n "$(basename ${rpm}) "
+        echo "$(basename ${rpm})"
         rpm2cpio "${rpm}" | ${SUDO} cpio -idmv &> /dev/null
     done
-    echo ""
 
 # Install files from the current directory. Uses:
 # - files: List of folders or files to copy to `rootfs`. Use either `usr` or
@@ -259,7 +258,7 @@ move-etc:
     fi
 
 # Move all folders outside of /usr & /opt out of the sysext's rootfs.
-# Note: This step is still in progress. Currently only moves /var.
+# Note: This step is still in progress. Currently only moves /var and /run.
 rm-ignored:
     #!/bin/bash
     set -euo pipefail
@@ -279,7 +278,7 @@ rm-ignored:
 
     cd rootfs
 
-    for dir in "var" "etc"; do
+    for dir in "var" "run"; do
         if [[ -d ./"${dir}" ]] then
             echo "➡️ Moving ${dir} out of rootfs"
             ${SUDO} mv ./"${dir}" ../rootfs.ignored
