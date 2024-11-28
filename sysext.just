@@ -123,16 +123,16 @@ download-rpms target:
         pre_commands+="{{pre_commands}} ; "
     fi
     if [[ -n "{{copr_repos}}" ]]; then
-        pre_commands+="dnf install -y dnf5-plugins"
+        pre_commands+="dnf5 install -y dnf5-plugins"
         for r in "{{copr_repos}}"; do
-            pre_commands+=" ; dnf copr enable -y ${r}"
+            pre_commands+=" ; dnf5 copr enable -y ${r}"
         done
         pre_commands+=" ; "
     fi
     if [[ -n "{{external_repos}}" ]]; then
-        pre_commands+="dnf install -y dnf5-plugins"
+        pre_commands+="dnf5 install -y dnf5-plugins"
         for r in "{{external_repos}}"; do
-            pre_commands+=" ; dnf config-manager addrepo --from-repofile=${r}"
+            pre_commands+=" ; dnf5 config-manager addrepo --from-repofile=${r}"
         done
         pre_commands+=" ; "
     fi
@@ -150,7 +150,7 @@ download-rpms target:
         --workdir "/var/srv" \
         --security-opt label=disable \
         "{{target}}" \
-        bash -c "${pre_commands}dnf download --resolve ${arch} ${enablerepos} ${packages}"
+        bash -c "${pre_commands}dnf5 download --setopt=install_weak_deps=False --resolve ${arch} ${enablerepos} ${packages}"
 
 # Manual download step, that can be overridden to dowload non RPM content
 download-manual:
@@ -304,14 +304,14 @@ reset-selinux-labels target:
 
     filecontexts="/etc/selinux/targeted/contexts/files/file_contexts"
     echo "🏷️ Resetting SELinux labels"
-    podman run --rm -ti \
+    ${SUDO} podman run --rm -ti \
         --volume "${PWD}:/var/srv" \
         --volume "${PWD}/../dnf.cache:/var/cache/libdnf5" \
         --workdir "/var/srv" \
         --security-opt label=disable \
         --privileged \
         "{{target}}" \
-        bash -c "${pre_commands}dnf install -y ./rpms/* && cd rootfs && setfiles -r . ${filecontexts} . && chcon --user=system_u --recursive ."
+        bash -c "${pre_commands}dnf5 install -y --setopt=install_weak_deps=False ./rpms/* && cd rootfs && setfiles -r . ${filecontexts} . && chcon --user=system_u --recursive ."
 
 # Creates the EROFS sysext file
 build-erofs target:
@@ -326,12 +326,9 @@ build-erofs target:
     fi
 
     echo "🔒 Creating EROFS sysext ({{compression}})"
-    version=$(podman run --rm -ti \
-        --security-opt label=disable \
-        "{{target}}" \
-        bash -c 'source /etc/os-release ; echo -n ${OSTREE_VERSION}')
+    version=$(podman inspect "{{ target }}" --format '{{' {{ index .Config.Labels "org.opencontainers.image.version" }} '}}' | grep -Po '\K[0-9].*[0-9]')
     arch=$(uname -m | sed 's/_/-/g')
-    ${SUDO} mkfs.erofs -z{{compression}} {{name}}-${version}-${arch}.raw rootfs > /dev/null
+    mkfs.erofs -z{{compression}} {{name}}-${version}-${arch}.raw rootfs > /dev/null
 
     if [[ "${UID}" != "0" ]]; then
         ${SUDO} chown "${USER}:" {{name}}*.raw
