@@ -1,0 +1,6 @@
+FROM baseimage
+
+RUN dnf install -y \
+    keepassxc \
+    && \
+    dnf clean all

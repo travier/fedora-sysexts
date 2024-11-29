@@ -159,6 +159,14 @@ jobs:
           just build ${IMAGE}
           mv "${SYSEXT}"*".raw" "../artifacts/"
 
+      - name: "Build sysext: keepassxc"
+        env:
+          SYSEXT: keepassxc
+        run: |
+          cd "${SYSEXT}"
+          just build ${IMAGE}
+          mv "${SYSEXT}"*".raw" "../artifacts/"
+
       - name: "Build sysext: krb5-workstation"
         env:
           SYSEXT: krb5-workstation
