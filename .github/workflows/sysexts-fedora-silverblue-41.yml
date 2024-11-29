@@ -87,6 +87,14 @@ jobs:
           just build ${IMAGE}
           mv "${SYSEXT}"*".raw" "../artifacts/"
 
+      - name: "Build sysext: docker-ce"
+        env:
+          SYSEXT: docker-ce
+        run: |
+          cd "${SYSEXT}"
+          just build ${IMAGE}
+          mv "${SYSEXT}"*".raw" "../artifacts/"
+
       - name: "Build sysext: fuse2"
         env:
           SYSEXT: fuse2

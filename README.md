@@ -111,6 +111,7 @@ included.
 
 | Name | Notes |
 |-|-|
+| docker-ce | Docker Engine from community repos |
 | monitoring | Collection of monitoring tools from Fedora RPMs (`bwm-ng`, `igt-gpu-tools`, `iotop`) and `bandwhich` from upstream binary releases |
 | vscode | Built from Visual Studio Code official RPM |
 | vscodium | Built from VSCodium RPM releases |
