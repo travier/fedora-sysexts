@@ -55,6 +55,14 @@ jobs:
         run: |
           mkdir -p artifacts
 
+      - name: "Build sysext: 1password-cli"
+        env:
+          SYSEXT: 1password-cli
+        run: |
+          cd "${SYSEXT}"
+          just build ${IMAGE}
+          mv "${SYSEXT}"*".raw" "../artifacts/"
+
       - name: "Build sysext: btop"
         env:
           SYSEXT: btop

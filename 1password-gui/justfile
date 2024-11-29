@@ -1,0 +1,42 @@
+name := "1password-gui"
+packages := "1password"
+pre_commands := "rm -rf /opt; mkdir /opt"
+base_images := "
+quay.io/fedora-ostree-desktops/silverblue:41
+quay.io/fedora-ostree-desktops/kinoite:41
+"
+
+import '../sysext.just'
+
+all: default
+
+download-manual:
+    #!/bin/bash
+    set -euo pipefail
+    # set -x
+
+    mkdir -p rpms
+    curl -Lo rpms/1password.rpm \
+        https://downloads.1password.com/linux/rpm/stable/x86_64/1password-latest.rpm
+
+install-manual:
+    #!/bin/bash
+    set -euo pipefail
+    # set -x
+
+    if [[ "${UID}" == "0" ]]; then
+        SUDO=""
+    else
+        SUDO="sudo"
+    fi
+
+    cd rootfs
+
+    ${SUDO} mv opt/1Password usr/lib/1Password
+    ${SUDO} rmdir opt
+    ${SUDO} mkdir usr/bin
+    ${SUDO} ln -sf /usr/lib/1Password/1password usr/bin/1password
+    ${SUDO} ln -sf /usr/lib/1Password/1Password-BrowserSupport usr/bin/1Password-BrowserSupport
+    ${SUDO} ln -sf /usr/lib/1Password/1Password-Crash-Handler usr/bin/1Password-Crash-Handler
+    ${SUDO} chmod 4755 usr/lib/1Password/chrome-sandbox
+    ${SUDO} sed -i 's|^Exec=/opt/1Password|Exec=/usr/bin|g' usr/share/applications/1password.desktop
