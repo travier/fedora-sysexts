@@ -49,14 +49,15 @@ integrating with bootc.
 
 ## Know issues
 
-Make sure to use `systemctl restart systemd-sysext.service` instead of
-`systemd-sysext merge` until the issue below is resolved. `systemd-sysext
-unmerge` is safe to use.
+Until systemd v257 is released and lands in Fedora, make sure to use `systemctl
+restart systemd-sysext.service` instead of `systemd-sysext merge`.
+`systemd-sysext unmerge` is safe to use.
 
 See:
 - https://github.com/coreos/fedora-coreos-tracker/issues/1744
 - https://github.com/systemd/systemd/issues/34387
 - https://github.com/systemd/systemd/pull/34414
+- https://github.com/systemd/systemd/pull/35132
 
 ## Available sysexts
 
