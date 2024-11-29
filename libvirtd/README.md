@@ -13,7 +13,7 @@
   ```
 - Optional: Copy the default libvirtd config (note that it won't be updated automatically):
   ```
-  $ sudo cp -a /usr/etc/libvirtd /etc/
+  $ sudo cp -a /usr/etc/libvirt /etc/
   ```
 - Optional: Setup auth via polkit (example):
   ```
@@ -25,7 +25,8 @@
       }
   });
   ```
-- Enable libvirtd:
+- Enable libvirtd (via virtqemud & virtnetworkd):
   ```
-  $ sudo systemctl enable --now libvirtd
+  $ sudo systemctl enable --now virtqemud.socket virtnetworkd.socket
   ```
+- For an unknown reason yet, you will have to start them manually on each boot.
