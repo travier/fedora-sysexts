@@ -191,6 +191,14 @@ jobs:
           just build ${IMAGE}
           mv "${SYSEXT}"*".raw" "../artifacts/"
 
+      - name: "Build sysext: microsoft-edge"
+        env:
+          SYSEXT: microsoft-edge
+        run: |
+          cd "${SYSEXT}"
+          just build ${IMAGE}
+          mv "${SYSEXT}"*".raw" "../artifacts/"
+
       - name: "Build sysext: moby-engine"
         env:
           SYSEXT: moby-engine
