@@ -1,0 +1,44 @@
+name := "1password"
+packages := "
+1password
+1password-cli
+"
+
+pre_commands := "rm -rf /opt; mkdir /opt; rpm --import https://downloads.1password.com/linux/keys/1password.asc; echo -e '[1password]\nname=1Password Stable Channel\nbaseurl=https://downloads.1password.com/linux/rpm/stable/x86_64\nenabled=1\ngpgcheck=1\nrepo_gpgcheck=1\ngpgkey=https://downloads.1password.com/linux/keys/1password.asc' > /etc/yum.repos.d/1password.repo"
+
+base_images := "
+quay.io/fedora-ostree-desktops/silverblue:41
+quay.io/fedora-ostree-desktops/kinoite:41
+"
+
+import '../sysext.just'
+
+all: default
+
+# download-manual:
+#     #!/bin/bash
+#     set -euo pipefail
+#     # set -x
+#     curl -Lo rpms/1password.rpm \
+#         "https://downloads.1password.com/linux/rpm/stable/x86_64/1password-latest.rpm"
+#     exit 0
+
+install-manual:
+    #!/bin/bash
+    set -euo pipefail
+    # set -x
+
+    if [[ "${UID}" == "0" ]]; then
+        SUDO=""
+    else
+        SUDO="sudo"
+    fi
+
+    cd rootfs
+
+    ${SUDO} chmod 4755 opt/1Password/chrome-sandbox
+    ${SUDO} mkdir -p usr/bin
+    ${SUDO} ln -s /opt/1Password/1password usr/bin/1password
+
+    exit 0
+
