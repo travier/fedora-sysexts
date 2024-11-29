@@ -71,6 +71,7 @@ included.
 | chromium | Alternative to the Flatpak which has known issues |
 | cockpit | (work in progress) |
 | compsize | |
+| cri-o | |
 | distrobox | |
 | fuse2 | The `fuse` tools and library, version 2, for AppImage compatibility |
 | gdb | |

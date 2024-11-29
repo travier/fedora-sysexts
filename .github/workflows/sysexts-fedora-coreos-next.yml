@@ -79,6 +79,14 @@ jobs:
           just build ${IMAGE}
           mv "${SYSEXT}"*".raw" "../artifacts/"
 
+      - name: "Build sysext: cri-o"
+        env:
+          SYSEXT: cri-o
+        run: |
+          cd "${SYSEXT}"
+          just build ${IMAGE}
+          mv "${SYSEXT}"*".raw" "../artifacts/"
+
       - name: "Build sysext: distrobox"
         env:
           SYSEXT: distrobox
