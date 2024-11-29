@@ -1,0 +1,6 @@
+FROM baseimage
+
+RUN dnf install -y \
+    moby-engine \
+    && \
+    dnf clean all

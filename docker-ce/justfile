@@ -1,0 +1,17 @@
+name := "docker-ce"
+packages := "
+docker-ce
+docker-ce-cli
+containerd.io
+docker-buildx-plugin
+docker-compose-plugin
+"
+external_repos := "https://download.docker.com/linux/fedora/docker-ce.repo"
+base_images := "
+quay.io/fedora-ostree-desktops/silverblue:41
+quay.io/fedora-ostree-desktops/kinoite:41
+"
+
+import '../sysext.just'
+
+all: default

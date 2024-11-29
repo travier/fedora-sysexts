@@ -71,6 +71,7 @@ included.
 | chromium | Alternative to the Flatpak which has known issues |
 | cockpit | (work in progress) |
 | compsize | |
+| cri-o | |
 | distrobox | |
 | fuse2 | The `fuse` tools and library, version 2, for AppImage compatibility |
 | gdb | |
@@ -82,6 +83,7 @@ included.
 | krb5-workstation | Kerberos support |
 | libvirtd | `libvirtd`, `qemu-kvm`, `swtpm`, `virt-install` and `guestfs-tools` for server usage (no GUI support) |
 | libvirtd-desktop | `libvirtd`, `qemu`, `swtpm`, `virt-install` and `guestfs-tools` for desktop usage |
+| moby-engine | |
 | neovim | |
 | python | Core Python 3 packages |
 | ripgrep | |
@@ -109,6 +111,7 @@ included.
 
 | Name | Notes |
 |-|-|
+| docker-ce | Docker Engine from community repos |
 | monitoring | Collection of monitoring tools from Fedora RPMs (`bwm-ng`, `igt-gpu-tools`, `iotop`) and `bandwhich` from upstream binary releases |
 | vscode | Built from Visual Studio Code official RPM |
 | vscodium | Built from VSCodium RPM releases |
