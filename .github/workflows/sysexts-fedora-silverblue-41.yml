@@ -159,6 +159,14 @@ jobs:
           just build ${IMAGE}
           mv "${SYSEXT}"*".raw" "../artifacts/"
 
+      - name: "Build sysext: moby-engine"
+        env:
+          SYSEXT: moby-engine
+        run: |
+          cd "${SYSEXT}"
+          just build ${IMAGE}
+          mv "${SYSEXT}"*".raw" "../artifacts/"
+
       - name: "Build sysext: monitoring"
         env:
           SYSEXT: monitoring
