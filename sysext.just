@@ -314,6 +314,9 @@ reset-selinux-labels target:
     if [[ -n "{{pre_commands}}" ]]; then
         pre_commands+="{{pre_commands}} ; "
     fi
+    if [[ -n "{{packages}}" ]]; then
+        pre_commands+="dnf install -y ${dnf_opts} ./rpms/* && "
+    fi
 
     filecontexts="/etc/selinux/targeted/contexts/files/file_contexts"
     echo "🏷️ Resetting SELinux labels"
@@ -324,7 +327,7 @@ reset-selinux-labels target:
         --security-opt label=disable \
         --privileged \
         "{{target}}" \
-        bash -c "${pre_commands}dnf install -y ${dnf_opts} ./rpms/* && cd rootfs && setfiles -r . ${filecontexts} . && chcon --user=system_u --recursive ."
+        bash -c "${pre_commands}cd rootfs && setfiles -r . ${filecontexts} . && chcon --user=system_u --recursive ."
 
 # Creates the EROFS sysext file
 build-erofs target:
