@@ -1,5 +1,9 @@
 name := "neovim"
-packages := "neovim"
+packages := "
+neovim
+tree-sitter-cli
+"
+dnf_weak_deps := "false"
 base_images := "
 quay.io/fedora/fedora-coreos:next
 quay.io/fedora-ostree-desktops/silverblue:41
