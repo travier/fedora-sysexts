@@ -1,5 +1,6 @@
 name := "emacs"
 packages := "emacs"
+dnf_weak_deps := "false"
 base_images := "
 quay.io/fedora-ostree-desktops/silverblue:41
 quay.io/fedora-ostree-desktops/kinoite:41
