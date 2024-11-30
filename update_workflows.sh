@@ -91,6 +91,7 @@ main() {
         echo ""
     done
     cat templates/containers_logincosign
+    echo ""
     for s in "${sysexts[@]}"; do
         sed "s|%%SYSEXT%%|${s}|g" templates/containers_pushsign
         echo ""
