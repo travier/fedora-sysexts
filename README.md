@@ -61,61 +61,12 @@ See:
 
 ## Available sysexts
 
-See each sysext's justfile or Containerfile for the exact list of packages
+See each sysext's `README.md` for notes and usage instructions. See the
+`justfile` or `Containerfile` for the exact list of packages or content
 included.
 
-### Built from Fedora's repos
-
-| Name | Notes |
-|-|-|
-| btop | `btop` and `rocm-smi` dependency for AMD GPU support |
-| chromium | Alternative to the Flatpak which has known issues |
-| cockpit | (work in progress) |
-| compsize | |
-| cri-o | |
-| distrobox | |
-| fuse2 | The `fuse` tools and library, version 2, for AppImage compatibility |
-| gdb | |
-| git-tools | `git-absorb` and `git-delta` |
-| htop | |
-| incus | Work in progress |
-| iwd | Better WiFi daemon and config for NetworkManager to use it by default |
-| just | |
-| krb5-workstation | Kerberos support |
-| libvirtd | `libvirtd`, `qemu-kvm`, `swtpm`, `virt-install` and `guestfs-tools` for server usage (no GUI support) |
-| libvirtd-desktop | `libvirtd`, `qemu`, `swtpm`, `virt-install` and `guestfs-tools` for desktop usage |
-| moby-engine | |
-| neovim | |
-| python | Core Python 3 packages |
-| ripgrep | |
-| semanage | SELinux utilities, including those that require Python |
-| strace | |
-| tree | |
-| wireguard-tools | |
-| zoxide | `zoxide` and `fzf` |
-| zsh | |
-
-### Built from Cisco's OpenH264 repo
-
-| Name | Notes |
-|-|-|
-| openh264 | OpenH264 library and support for Firefox |
-
-### Built from RPM Fusion repos
-
-| Name | Notes |
-|-|-|
-| steam-devices | `steam-device` package only (work in progress) |
-| steam | Steam and its dependencies (work in progress) |
-
-### Built from other repos or sources
-
-| Name | Notes |
-|-|-|
-| docker-ce | Docker Engine from community repos |
-| monitoring | Collection of monitoring tools from Fedora RPMs (`bwm-ng`, `igt-gpu-tools`, `iotop`) and `bandwhich` from upstream binary releases |
-| vscode | Built from Visual Studio Code official RPM |
-| vscodium | Built from VSCodium RPM releases |
+All sysexts are built from RPMs downloaded from the repos included in the base
+images (i.e. Fedora's repos), unless explicitely overriden.
 
 ## Building
 
@@ -180,6 +131,11 @@ Try it out:
 ```
 $ python -c 'print("Hello from a sysext!")'
 ```
+
+## Contributing
+
+See [CONTRIBUTING](CONTRIBUTING.md) for details about the CI setup specific to
+this repo.
 
 ## License
 

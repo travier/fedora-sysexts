@@ -1,4 +1,9 @@
-# libvirtd sysext
+# libvirtd-desktop
+
+`libvirtd`, `qemu`, `swtpm`, `virt-install` and `guestfs-tools` for desktop
+usage.
+
+See the [Virtual Machine Manager Flatpak](https://flathub.org/apps/org.virt_manager.virt-manager).
 
 ## How to use
 

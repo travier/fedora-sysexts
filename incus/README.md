@@ -1,4 +1,6 @@
-# In progress Incus sysext
+# incus
+
+Work in progress sysext for Incus.
 
 See:
 - https://linuxcontainers.org/incus/docs/main/installing/
