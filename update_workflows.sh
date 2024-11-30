@@ -60,6 +60,12 @@ main() {
         popd > /dev/null
     done
 
+    local -r tmpl=".workflow-templates/"
+    if [[ ! -d "${tmpl}" ]]; then
+        echo "Could not find the templates. Is this script run from the root of the repo?"
+        exit 1
+    fi
+
     # Generate EROFS sysexts workflows
     {
     sed \
@@ -67,13 +73,13 @@ main() {
         -e "s|%%RELEASE%%|${release}|g" \
         -e "s|%%NAME%%|${name}|g" \
         -e "s|%%SHORTNAME%%|${shortname}|g" \
-        templates/sysexts_header
+        "${tmpl}/sysexts_header"
     echo ""
     for s in "${sysexts[@]}"; do
-        sed "s|%%SYSEXT%%|${s}|g" templates/sysexts_body
+        sed "s|%%SYSEXT%%|${s}|g" "${tmpl}/sysexts_body"
         echo ""
     done
-    cat templates/sysexts_footer
+    cat "${tmpl}/sysexts_footer"
     } > ".github/workflows/sysexts-${shortname}-${release}.yml"
 
     # Generate container sysexts workflows
@@ -84,16 +90,16 @@ main() {
         -e "s|%%NAME%%|${name}|g" \
         -e "s|%%REGISTRY%%|${registry}|g" \
         -e "s|%%DESTINATION%%|${destination}|g" \
-        templates/containers_header
+        "${tmpl}/containers_header"
     echo ""
     for s in "${sysexts[@]}"; do
-        sed "s|%%SYSEXT%%|${s}|g" templates/containers_build
+        sed "s|%%SYSEXT%%|${s}|g" "${tmpl}/containers_build"
         echo ""
     done
-    cat templates/containers_logincosign
+    cat "${tmpl}/containers_logincosign"
     echo ""
     for s in "${sysexts[@]}"; do
-        sed "s|%%SYSEXT%%|${s}|g" templates/containers_pushsign
+        sed "s|%%SYSEXT%%|${s}|g" "${tmpl}/containers_pushsign"
         echo ""
     done
     } > ".github/workflows/containers-${shortname}-${release}.yml"
