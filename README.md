@@ -181,6 +181,11 @@ Try it out:
 $ python -c 'print("Hello from a sysext!")'
 ```
 
+## Contributing
+
+See [CONTRIBUTING](CONTRIBUTING.md) for details about the CI setup specific to
+this repo.
+
 ## License
 
 [MIT](LICENSE)
