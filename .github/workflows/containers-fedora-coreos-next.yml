@@ -333,6 +333,7 @@ jobs:
 
       - uses: sigstore/cosign-installer@v3.7.0
         if: (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
+
       - name: "Push container: btop"
         uses: redhat-actions/push-to-registry@v2
         id: push-btop

@@ -4,4 +4,4 @@ binaries/
 *.erofs
 *.raw
 *.rpm
-/dnf.cache/
+/.dnf-cache/
