@@ -1,0 +1,26 @@
+FROM baseimage
+
+RUN mv /opt{,.bak} \
+    && \
+    mkdir /opt \
+    && \
+    dnf install -y \
+    https://downloads.1password.com/linux/rpm/stable/x86_64/1password-latest.rpm \
+    && \
+    mv /opt/1Password /usr/lib/1Password \
+    && \
+    ln -sf /usr/lib/1Password/1password /usr/bin/1password \
+    && \
+    ln -sf /usr/lib/1Password/1Password-BrowserSupport /usr/bin/1Password-BrowserSupport \
+    && \
+    ln -sf /usr/lib/1Password/1Password-Crash-Handler /usr/bin/1Password-Crash-Handler \
+    && \
+    chmod 4755 /usr/lib/1Password/chrome-sandbox \
+    && \
+    sed -i 's|^Exec=/opt/1Password|Exec=/usr/bin|g' /usr/share/applications/1password.desktop \
+    && \
+    rmdir opt \
+    && \
+    mv /opt{.bak,} \
+    && \
+    dnf clean all

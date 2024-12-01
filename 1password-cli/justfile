@@ -1,0 +1,20 @@
+name := "1password-cli"
+packages := "1password-cli"
+base_images := "
+quay.io/fedora/fedora-coreos:next
+quay.io/fedora-ostree-desktops/silverblue:41
+quay.io/fedora-ostree-desktops/kinoite:41
+"
+
+import '../sysext.just'
+
+all: default
+
+download-manual:
+    #!/bin/bash
+    set -euo pipefail
+    # set -x
+
+    mkdir -p rpms
+    curl -Lo rpms/1password-cli.rpm \
+        https://downloads.1password.com/linux/rpm/stable/x86_64/1password-cli-latest.x86_64.rpm
