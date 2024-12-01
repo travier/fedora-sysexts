@@ -1,13 +1,3 @@
-      - name: Upload sysexts as artifacts
-        if: github.event_name == 'pull_request'
-        uses: actions/upload-artifact@v4
-        with:
-          name: sysexts
-          path: artifacts/
-          retention-days: 5
-          compression-level: 0
-          overwrite: true
-
       - name: Create a release with a SHA256SUMS manifest and systemd-sysupdate configs
         if: (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
         run: |
