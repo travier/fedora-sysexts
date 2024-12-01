@@ -251,7 +251,7 @@ jobs:
           sysexts=()
           for s in $(ls *.raw); do
               s="${s%-*-x86-64.raw}"
-              sed "s/%%SYSEXT%%/${s}/g" ../templates/systemd-sysupdate.conf > ${s}.conf
+              sed "s/%%SYSEXT%%/${s}/g" ../.workflow-templates/systemd-sysupdate.conf > ${s}.conf
           done
 
           gh release delete \
