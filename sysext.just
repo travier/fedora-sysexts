@@ -40,6 +40,9 @@ dnf_arch := ""
 # Do not install any additional files by default
 files := ""
 
+# Do not setup any upholds for units by default
+upholds := ""
+
 # zstd compression is still experimental in EROFS
 # compression := "zstd"
 compression := "lz4"
@@ -261,6 +264,33 @@ setup-rootfs arch=arch:
     mkdir rootfs
     cd rootfs
 
+    # Only ask systemd to reload its configuration if we have services to
+    # uphold / start on boot
+    reload_manager="false"
+
+    # Filter the variable into an array
+    upholds=()
+    mapfile -t upholds_raw <<< "{{upholds}}"
+    for uphold in "${upholds_raw[@]}"; do
+        if [[ -z "${uphold}" ]]; then
+            continue
+        fi
+        upholds+=("${uphold}")
+    done
+    # Setup upholds if there are any
+    if [[ "${#upholds[@]}" -ne 0 ]]; then
+        # Set now, but will be used later in the extension config file
+        reload_manager="true"
+        echo "➡️ Setting up upholds for: ${upholds[@]}"
+        ${SUDO} install -d -m 0755 -o 0 -g 0 usr/lib/systemd/system/multi-user.target.d
+        {
+        echo "[Unit]"
+        for uphold in "${upholds[@]}"; do
+            echo "Upholds=${uphold}"
+        done
+        } | ${SUDO} tee "usr/lib/systemd/system/multi-user.target.d/10-{{name}}-sysext.conf" > /dev/null
+    fi
+
     echo "➡️ Setting up extension config file"
     ${SUDO} install -d -m0755 usr/lib/extension-release.d
     {
@@ -268,6 +298,9 @@ setup-rootfs arch=arch:
     # Post process architecture to match systemd architecture list
     arch="$(echo {{arch}} | sed 's/_/-/g')"
     echo "ARCHITECTURE=\"${arch}\""
+    if [[ "${reload_manager}"  == "true" ]]; then
+        echo "EXTENSION_RELOAD_MANAGER=1"
+    fi
     } | ${SUDO} tee "usr/lib/extension-release.d/extension-release.{{name}}" > /dev/null
 
 # Install (extract) RPM packages download in download-rpms recipe. Uses:
