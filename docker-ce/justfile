@@ -7,6 +7,7 @@ docker-buildx-plugin
 docker-compose-plugin
 "
 external_repos := "https://download.docker.com/linux/fedora/docker-ce.repo"
+reload_manager := "true"
 base_images := "
 quay.io/fedora-ostree-desktops/silverblue:41
 quay.io/fedora-ostree-desktops/kinoite:41
