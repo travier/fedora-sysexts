@@ -27,6 +27,11 @@ qemu-kvm
 swtpm
 virt-install
 "
+upholds := "
+virtqemud.socket
+virtnetworkd.socket
+virtstoraged.socket
+"
 base_images := "
 quay.io/fedora/fedora-coreos:stable
 "
