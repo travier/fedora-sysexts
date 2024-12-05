@@ -127,6 +127,14 @@ jobs:
           just build ${IMAGE}
           mv "${SYSEXT}"*".raw" "../artifacts/"
 
+      - name: "Build sysext: firefox"
+        env:
+          SYSEXT: firefox
+        run: |
+          cd "${SYSEXT}"
+          just build ${IMAGE}
+          mv "${SYSEXT}"*".raw" "../artifacts/"
+
       - name: "Build sysext: fuse2"
         env:
           SYSEXT: fuse2
