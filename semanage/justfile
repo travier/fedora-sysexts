@@ -1,6 +1,8 @@
 name := "semanage"
 packages := "policycoreutils-python-utils"
-base_images := "quay.io/fedora/fedora-coreos:next"
+base_images := "
+quay.io/fedora/fedora-coreos:stable
+"
 
 import '../sysext.just'
 

@@ -5,7 +5,7 @@ incus-client
 "
 copr_repos := "ganto/lxc4"
 base_images := "
-quay.io/fedora/fedora-coreos:next
+quay.io/fedora/fedora-coreos:stable
 quay.io/fedora-ostree-desktops/silverblue:41
 quay.io/fedora-ostree-desktops/kinoite:41
 "

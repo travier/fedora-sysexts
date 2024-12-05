@@ -5,7 +5,7 @@ cri-tools
 crun
 "
 base_images := "
-quay.io/fedora/fedora-coreos:next
+quay.io/fedora/fedora-coreos:stable
 "
 
 import '../sysext.just'

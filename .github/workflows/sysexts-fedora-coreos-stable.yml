@@ -1,9 +1,9 @@
-name: "Build sysexts: Fedora CoreOS (next)"
+name: "Build sysexts: Fedora CoreOS (stable)"
 
 env:
-  IMAGE: 'quay.io/fedora/fedora-coreos:next'
-  RELEASE: 'next'
-  NAME: 'Fedora CoreOS (next)'
+  IMAGE: 'quay.io/fedora/fedora-coreos:stable'
+  RELEASE: 'stable'
+  NAME: 'Fedora CoreOS (stable)'
   SHORTNAME: 'fedora-coreos'
   GH_TOKEN: ${{ github.token }}
 

@@ -1,9 +1,9 @@
-name: "Build containers: Fedora CoreOS (next)"
+name: "Build containers: Fedora CoreOS (stable)"
 
 env:
   IMAGE: 'quay.io/fedora/fedora-coreos'
-  RELEASE: 'next'
-  NAME: 'Fedora CoreOS (next)'
+  RELEASE: 'stable'
+  NAME: 'Fedora CoreOS (stable)'
   REGISTRY: 'quay.io/travier'
   DESTINATION: 'fedora-coreos-sysexts'
 

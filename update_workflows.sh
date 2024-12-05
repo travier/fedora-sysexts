@@ -13,8 +13,8 @@ main() {
     if [[ ${#} -eq 0 ]]; then
         ${0} \
             'quay.io/fedora/fedora-coreos' \
-            'next' \
-            'Fedora CoreOS (next)' \
+            'stable' \
+            'Fedora CoreOS (stable)' \
             'fedora-coreos' \
             'quay.io/travier' \
             'fedora-coreos-sysexts'
