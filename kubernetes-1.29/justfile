@@ -1,8 +1,9 @@
-name := "cri-o"
+name := "kubernetes-1.29"
 packages := "
-cri-o
-cri-tools
-crun
+kubernetes1.29
+kubernetes1.29-client
+kubernetes1.29-kubeadm
+kubernetes1.29-systemd
 "
 base_images := "
 quay.io/fedora/fedora-coreos:stable
