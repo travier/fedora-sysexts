@@ -93,17 +93,21 @@ main() {
         "${tmpl}/containers_header"
     echo ""
     for s in "${sysexts[@]}"; do
-        sed "s|%%SYSEXT%%|${s}|g" "${tmpl}/containers_build"
-        echo ""
+        if [[ -f "${s}/Containerfile" ]]; then
+            sed "s|%%SYSEXT%%|${s}|g" "${tmpl}/containers_build"
+            echo ""
+        fi
     done
     cat "${tmpl}/containers_logincosign"
     echo ""
     for s in "${sysexts[@]}"; do
-        sed \
-            -e "s|%%SYSEXT%%|${s}|g" \
-            -e "s|%%SYSEXT_NODOT%%|${s//\./_}|g" \
-            "${tmpl}/containers_pushsign"
-        echo ""
+        if [[ -f "${s}/Containerfile" ]]; then
+            sed \
+                -e "s|%%SYSEXT%%|${s}|g" \
+                -e "s|%%SYSEXT_NODOT%%|${s//\./_}|g" \
+                "${tmpl}/containers_pushsign"
+            echo ""
+        fi
     done
     } > ".github/workflows/containers-${shortname}-${release}.yml"
 }
