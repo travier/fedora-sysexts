@@ -1,9 +1,9 @@
-name: "Build containers: Fedora CoreOS (next)"
+name: "Build containers: Fedora CoreOS (stable)"
 
 env:
   IMAGE: 'quay.io/fedora/fedora-coreos'
-  RELEASE: 'next'
-  NAME: 'Fedora CoreOS (next)'
+  RELEASE: 'stable'
+  NAME: 'Fedora CoreOS (stable)'
   REGISTRY: 'quay.io/travier'
   DESTINATION: 'fedora-coreos-sysexts'
 
@@ -89,13 +89,39 @@ jobs:
             --from
             ${{ env.IMAGE }}:${{ env.RELEASE }}
 
-      - name: "Build container: cri-o"
+      - name: "Build container: cri-o-1.29"
         uses: redhat-actions/buildah-build@v2
         with:
-          context: 'cri-o'
+          context: 'cri-o-1.29'
           image: ${{ env.DESTINATION }}
-          tags: ${{ env.RELEASE }}.cri-o
-          containerfiles: 'cri-o/Containerfile'
+          tags: ${{ env.RELEASE }}.cri-o-1.29
+          containerfiles: 'cri-o-1.29/Containerfile'
+          layers: false
+          oci: true
+          extra-args:
+            --from
+            ${{ env.IMAGE }}:${{ env.RELEASE }}
+
+      - name: "Build container: cri-o-1.30"
+        uses: redhat-actions/buildah-build@v2
+        with:
+          context: 'cri-o-1.30'
+          image: ${{ env.DESTINATION }}
+          tags: ${{ env.RELEASE }}.cri-o-1.30
+          containerfiles: 'cri-o-1.30/Containerfile'
+          layers: false
+          oci: true
+          extra-args:
+            --from
+            ${{ env.IMAGE }}:${{ env.RELEASE }}
+
+      - name: "Build container: cri-o-1.31"
+        uses: redhat-actions/buildah-build@v2
+        with:
+          context: 'cri-o-1.31'
+          image: ${{ env.DESTINATION }}
+          tags: ${{ env.RELEASE }}.cri-o-1.31
+          containerfiles: 'cri-o-1.31/Containerfile'
           layers: false
           oci: true
           extra-args:
@@ -200,6 +226,45 @@ jobs:
           image: ${{ env.DESTINATION }}
           tags: ${{ env.RELEASE }}.just
           containerfiles: 'just/Containerfile'
+          layers: false
+          oci: true
+          extra-args:
+            --from
+            ${{ env.IMAGE }}:${{ env.RELEASE }}
+
+      - name: "Build container: kubernetes-1.29"
+        uses: redhat-actions/buildah-build@v2
+        with:
+          context: 'kubernetes-1.29'
+          image: ${{ env.DESTINATION }}
+          tags: ${{ env.RELEASE }}.kubernetes-1.29
+          containerfiles: 'kubernetes-1.29/Containerfile'
+          layers: false
+          oci: true
+          extra-args:
+            --from
+            ${{ env.IMAGE }}:${{ env.RELEASE }}
+
+      - name: "Build container: kubernetes-1.30"
+        uses: redhat-actions/buildah-build@v2
+        with:
+          context: 'kubernetes-1.30'
+          image: ${{ env.DESTINATION }}
+          tags: ${{ env.RELEASE }}.kubernetes-1.30
+          containerfiles: 'kubernetes-1.30/Containerfile'
+          layers: false
+          oci: true
+          extra-args:
+            --from
+            ${{ env.IMAGE }}:${{ env.RELEASE }}
+
+      - name: "Build container: kubernetes-1.31"
+        uses: redhat-actions/buildah-build@v2
+        with:
+          context: 'kubernetes-1.31'
+          image: ${{ env.DESTINATION }}
+          tags: ${{ env.RELEASE }}.kubernetes-1.31
+          containerfiles: 'kubernetes-1.31/Containerfile'
           layers: false
           oci: true
           extra-args:
@@ -423,21 +488,59 @@ jobs:
           COSIGN_EXPERIMENTAL: false
           COSIGN_PRIVATE_KEY: ${{ secrets.COSIGN_PRIVATE_KEY }}
 
-      - name: "Push container: cri-o"
+      - name: "Push container: cri-o-1.29"
         uses: redhat-actions/push-to-registry@v2
-        id: push-cri-o
+        id: push-cri-o-1_29
         if: (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
         with:
           username: ${{ secrets.BOT_USERNAME }}
           password: ${{ secrets.BOT_SECRET }}
           image: ${{ env.DESTINATION }}
           registry: ${{ env.REGISTRY }}
-          tags: ${{ env.RELEASE }}.cri-o
+          tags: ${{ env.RELEASE }}.cri-o-1.29
 
-      - name: "Sign container: cri-o"
+      - name: "Sign container: cri-o-1.29"
         if: (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
         run: |
-          cosign sign -y --key env://COSIGN_PRIVATE_KEY ${{ env.REGISTRY }}/${{ env.DESTINATION }}@${{ steps.push-cri-o.outputs.digest }}
+          cosign sign -y --key env://COSIGN_PRIVATE_KEY ${{ env.REGISTRY }}/${{ env.DESTINATION }}@${{ steps.push-cri-o-1_29.outputs.digest }}
+        env:
+          COSIGN_EXPERIMENTAL: false
+          COSIGN_PRIVATE_KEY: ${{ secrets.COSIGN_PRIVATE_KEY }}
+
+      - name: "Push container: cri-o-1.30"
+        uses: redhat-actions/push-to-registry@v2
+        id: push-cri-o-1_30
+        if: (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
+        with:
+          username: ${{ secrets.BOT_USERNAME }}
+          password: ${{ secrets.BOT_SECRET }}
+          image: ${{ env.DESTINATION }}
+          registry: ${{ env.REGISTRY }}
+          tags: ${{ env.RELEASE }}.cri-o-1.30
+
+      - name: "Sign container: cri-o-1.30"
+        if: (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
+        run: |
+          cosign sign -y --key env://COSIGN_PRIVATE_KEY ${{ env.REGISTRY }}/${{ env.DESTINATION }}@${{ steps.push-cri-o-1_30.outputs.digest }}
+        env:
+          COSIGN_EXPERIMENTAL: false
+          COSIGN_PRIVATE_KEY: ${{ secrets.COSIGN_PRIVATE_KEY }}
+
+      - name: "Push container: cri-o-1.31"
+        uses: redhat-actions/push-to-registry@v2
+        id: push-cri-o-1_31
+        if: (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
+        with:
+          username: ${{ secrets.BOT_USERNAME }}
+          password: ${{ secrets.BOT_SECRET }}
+          image: ${{ env.DESTINATION }}
+          registry: ${{ env.REGISTRY }}
+          tags: ${{ env.RELEASE }}.cri-o-1.31
+
+      - name: "Sign container: cri-o-1.31"
+        if: (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
+        run: |
+          cosign sign -y --key env://COSIGN_PRIVATE_KEY ${{ env.REGISTRY }}/${{ env.DESTINATION }}@${{ steps.push-cri-o-1_31.outputs.digest }}
         env:
           COSIGN_EXPERIMENTAL: false
           COSIGN_PRIVATE_KEY: ${{ secrets.COSIGN_PRIVATE_KEY }}
@@ -590,6 +693,63 @@ jobs:
         if: (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
         run: |
           cosign sign -y --key env://COSIGN_PRIVATE_KEY ${{ env.REGISTRY }}/${{ env.DESTINATION }}@${{ steps.push-just.outputs.digest }}
+        env:
+          COSIGN_EXPERIMENTAL: false
+          COSIGN_PRIVATE_KEY: ${{ secrets.COSIGN_PRIVATE_KEY }}
+
+      - name: "Push container: kubernetes-1.29"
+        uses: redhat-actions/push-to-registry@v2
+        id: push-kubernetes-1_29
+        if: (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
+        with:
+          username: ${{ secrets.BOT_USERNAME }}
+          password: ${{ secrets.BOT_SECRET }}
+          image: ${{ env.DESTINATION }}
+          registry: ${{ env.REGISTRY }}
+          tags: ${{ env.RELEASE }}.kubernetes-1.29
+
+      - name: "Sign container: kubernetes-1.29"
+        if: (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
+        run: |
+          cosign sign -y --key env://COSIGN_PRIVATE_KEY ${{ env.REGISTRY }}/${{ env.DESTINATION }}@${{ steps.push-kubernetes-1_29.outputs.digest }}
+        env:
+          COSIGN_EXPERIMENTAL: false
+          COSIGN_PRIVATE_KEY: ${{ secrets.COSIGN_PRIVATE_KEY }}
+
+      - name: "Push container: kubernetes-1.30"
+        uses: redhat-actions/push-to-registry@v2
+        id: push-kubernetes-1_30
+        if: (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
+        with:
+          username: ${{ secrets.BOT_USERNAME }}
+          password: ${{ secrets.BOT_SECRET }}
+          image: ${{ env.DESTINATION }}
+          registry: ${{ env.REGISTRY }}
+          tags: ${{ env.RELEASE }}.kubernetes-1.30
+
+      - name: "Sign container: kubernetes-1.30"
+        if: (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
+        run: |
+          cosign sign -y --key env://COSIGN_PRIVATE_KEY ${{ env.REGISTRY }}/${{ env.DESTINATION }}@${{ steps.push-kubernetes-1_30.outputs.digest }}
+        env:
+          COSIGN_EXPERIMENTAL: false
+          COSIGN_PRIVATE_KEY: ${{ secrets.COSIGN_PRIVATE_KEY }}
+
+      - name: "Push container: kubernetes-1.31"
+        uses: redhat-actions/push-to-registry@v2
+        id: push-kubernetes-1_31
+        if: (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
+        with:
+          username: ${{ secrets.BOT_USERNAME }}
+          password: ${{ secrets.BOT_SECRET }}
+          image: ${{ env.DESTINATION }}
+          registry: ${{ env.REGISTRY }}
+          tags: ${{ env.RELEASE }}.kubernetes-1.31
+
+      - name: "Sign container: kubernetes-1.31"
+        if: (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
+        run: |
+          cosign sign -y --key env://COSIGN_PRIVATE_KEY ${{ env.REGISTRY }}/${{ env.DESTINATION }}@${{ steps.push-kubernetes-1_31.outputs.digest }}
         env:
           COSIGN_EXPERIMENTAL: false
           COSIGN_PRIVATE_KEY: ${{ secrets.COSIGN_PRIVATE_KEY }}

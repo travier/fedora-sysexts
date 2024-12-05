@@ -1,0 +1,7 @@
+FROM baseimage
+
+RUN dnf install -y \
+    cri-o1.30 \
+    cri-tools1.30 \
+    && \
+    dnf clean all

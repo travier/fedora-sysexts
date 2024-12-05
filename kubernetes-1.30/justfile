@@ -1,0 +1,14 @@
+name := "kubernetes-1.30"
+packages := "
+kubernetes1.30
+kubernetes1.30-client
+kubernetes1.30-kubeadm
+kubernetes1.30-systemd
+"
+base_images := "
+quay.io/fedora/fedora-coreos:stable
+"
+
+import '../sysext.just'
+
+all: default

@@ -1,9 +1,9 @@
-name: "Build sysexts: Fedora CoreOS (next)"
+name: "Build sysexts: Fedora CoreOS (stable)"
 
 env:
-  IMAGE: 'quay.io/fedora/fedora-coreos:next'
-  RELEASE: 'next'
-  NAME: 'Fedora CoreOS (next)'
+  IMAGE: 'quay.io/fedora/fedora-coreos:stable'
+  RELEASE: 'stable'
+  NAME: 'Fedora CoreOS (stable)'
   SHORTNAME: 'fedora-coreos'
   GH_TOKEN: ${{ github.token }}
 
@@ -87,9 +87,25 @@ jobs:
           just build ${IMAGE}
           mv "${SYSEXT}"*".raw" "../artifacts/"
 
-      - name: "Build sysext: cri-o"
+      - name: "Build sysext: cri-o-1.29"
         env:
-          SYSEXT: cri-o
+          SYSEXT: cri-o-1.29
+        run: |
+          cd "${SYSEXT}"
+          just build ${IMAGE}
+          mv "${SYSEXT}"*".raw" "../artifacts/"
+
+      - name: "Build sysext: cri-o-1.30"
+        env:
+          SYSEXT: cri-o-1.30
+        run: |
+          cd "${SYSEXT}"
+          just build ${IMAGE}
+          mv "${SYSEXT}"*".raw" "../artifacts/"
+
+      - name: "Build sysext: cri-o-1.31"
+        env:
+          SYSEXT: cri-o-1.31
         run: |
           cd "${SYSEXT}"
           just build ${IMAGE}
@@ -154,6 +170,30 @@ jobs:
       - name: "Build sysext: just"
         env:
           SYSEXT: just
+        run: |
+          cd "${SYSEXT}"
+          just build ${IMAGE}
+          mv "${SYSEXT}"*".raw" "../artifacts/"
+
+      - name: "Build sysext: kubernetes-1.29"
+        env:
+          SYSEXT: kubernetes-1.29
+        run: |
+          cd "${SYSEXT}"
+          just build ${IMAGE}
+          mv "${SYSEXT}"*".raw" "../artifacts/"
+
+      - name: "Build sysext: kubernetes-1.30"
+        env:
+          SYSEXT: kubernetes-1.30
+        run: |
+          cd "${SYSEXT}"
+          just build ${IMAGE}
+          mv "${SYSEXT}"*".raw" "../artifacts/"
+
+      - name: "Build sysext: kubernetes-1.31"
+        env:
+          SYSEXT: kubernetes-1.31
         run: |
           cd "${SYSEXT}"
           just build ${IMAGE}

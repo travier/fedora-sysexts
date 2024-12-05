@@ -13,8 +13,8 @@ main() {
     if [[ ${#} -eq 0 ]]; then
         ${0} \
             'quay.io/fedora/fedora-coreos' \
-            'next' \
-            'Fedora CoreOS (next)' \
+            'stable' \
+            'Fedora CoreOS (stable)' \
             'fedora-coreos' \
             'quay.io/travier' \
             'fedora-coreos-sysexts'
@@ -99,7 +99,10 @@ main() {
     cat "${tmpl}/containers_logincosign"
     echo ""
     for s in "${sysexts[@]}"; do
-        sed "s|%%SYSEXT%%|${s}|g" "${tmpl}/containers_pushsign"
+        sed \
+            -e "s|%%SYSEXT%%|${s}|g" \
+            -e "s|%%SYSEXT_NODOT%%|${s//\./_}|g" \
+            "${tmpl}/containers_pushsign"
         echo ""
     done
     } > ".github/workflows/containers-${shortname}-${release}.yml"

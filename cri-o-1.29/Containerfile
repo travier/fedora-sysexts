@@ -1,8 +1,7 @@
 FROM baseimage
 
 RUN dnf install -y \
-    cri-o \
-    cri-tools \
-    crun \
+    cri-o1.29 \
+    cri-tools1.29 \
     && \
     dnf clean all

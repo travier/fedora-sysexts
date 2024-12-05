@@ -1,6 +1,8 @@
 name := "python"
 packages := "python3"
-base_images := "quay.io/fedora/fedora-coreos:next"
+base_images := "
+quay.io/fedora/fedora-coreos:stable
+"
 
 import '../sysext.just'
 

@@ -1,5 +1,8 @@
-name := "semanage"
-packages := "policycoreutils-python-utils"
+name := "cri-o-1.30"
+packages := "
+cri-o1.30
+cri-tools1.30
+"
 base_images := "
 quay.io/fedora/fedora-coreos:stable
 "

@@ -28,7 +28,7 @@ swtpm
 virt-install
 "
 base_images := "
-quay.io/fedora/fedora-coreos:next
+quay.io/fedora/fedora-coreos:stable
 "
 # Pending nfs-utils packaging rework
 pre_commands := "dnf remove -y nfs-utils-coreos"
