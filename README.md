@@ -8,7 +8,7 @@ Currently only built for:
 - Fedora Kinoite 41
 - Fedora CoreOS (stable stream)
 
-While not build for the testing and next stream for Fedora CoreOS, it is likely
+While not built for the testing and next stream for Fedora CoreOS, it is likely
 that the sysexts built for the stable one work for all of them. The only
 exception would be during Fedora major version rebases when next and finally
 testing moves to Fedora N+1 while stable stays on Fedora N.
