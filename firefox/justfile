@@ -1,0 +1,13 @@
+name := "firefox"
+packages := "
+firefox
+firefox-langpacks
+"
+base_images := "
+quay.io/fedora-ostree-desktops/silverblue:41
+quay.io/fedora-ostree-desktops/kinoite:41
+"
+
+import '../sysext.just'
+
+all: default
