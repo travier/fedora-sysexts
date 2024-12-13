@@ -1,0 +1,27 @@
+name := "mesa-git"
+packages := "
+mesa-libGL
+mesa-filesystem
+mesa-libgbm
+mesa-libglapi
+mesa-dri-drivers
+mesa-libEGL
+mesa-libGL
+mesa-va-drivers
+mesa-vulkan-drivers
+mesa-libxatracker
+libdrm
+libglvnd
+"
+base_images := "
+quay.io/fedora-ostree-desktops/silverblue:41
+quay.io/fedora-ostree-desktops/kinoite:41
+"
+copr_repos := "xxmitsu/mesa-git"
+disable_repos := "'*'"
+enable_repos := "copr:copr.fedorainfracloud.org:xxmitsu:mesa-git"
+
+
+import '../sysext.just'
+
+all: default

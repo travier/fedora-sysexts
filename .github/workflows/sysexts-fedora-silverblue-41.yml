@@ -223,6 +223,14 @@ jobs:
           just build ${IMAGE}
           mv "${SYSEXT}"*".raw" "../artifacts/"
 
+      - name: "Build sysext: mesa-git"
+        env:
+          SYSEXT: mesa-git
+        run: |
+          cd "${SYSEXT}"
+          just build ${IMAGE}
+          mv "${SYSEXT}"*".raw" "../artifacts/"
+
       - name: "Build sysext: microsoft-edge"
         env:
           SYSEXT: microsoft-edge
