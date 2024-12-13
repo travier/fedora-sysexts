@@ -1,0 +1,11 @@
+name := "containernetworking-plugins"
+packages := "
+containernetworking-plugins
+"
+base_images := "
+quay.io/fedora/fedora-coreos:stable
+"
+
+import '../sysext.just'
+
+all: default

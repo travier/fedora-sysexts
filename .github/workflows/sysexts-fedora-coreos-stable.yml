@@ -87,6 +87,14 @@ jobs:
           just build ${IMAGE}
           mv "${SYSEXT}"*".raw" "../artifacts/"
 
+      - name: "Build sysext: containernetworking-plugins"
+        env:
+          SYSEXT: containernetworking-plugins
+        run: |
+          cd "${SYSEXT}"
+          just build ${IMAGE}
+          mv "${SYSEXT}"*".raw" "../artifacts/"
+
       - name: "Build sysext: cri-o-1.29"
         env:
           SYSEXT: cri-o-1.29
