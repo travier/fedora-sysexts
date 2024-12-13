@@ -16,6 +16,9 @@ enable_repos := ""
 # Do not enable any Copr repos by default
 copr_repos := ""
 
+# Disable repos from the build container
+disable_repos := ""
+
 # Do not enable any external repos by default
 external_repos := ""
 
@@ -114,6 +117,14 @@ download-rpms target:
         done
     fi
 
+    disablerepos=""
+    if [[ -n "{{disable_repos}}" ]]; then
+        for r in {{disable_repos}}; do
+            echo "➖ Disabling repo: ${r}"
+            disablerepos+=" --disablerepo=${r}"
+        done
+    fi
+
     arch=""
     for a in {{arch}}; do
         arch+="--arch=${a} "
@@ -158,7 +169,7 @@ download-rpms target:
         --workdir "/var/srv" \
         --security-opt label=disable \
         "{{target}}" \
-        bash -c "${pre_commands}dnf download --resolve ${arch} ${dnf_opts} ${enablerepos} ${packages}"
+        bash -c "${pre_commands}dnf download --resolve ${arch} ${dnf_opts} ${disablerepos} ${enablerepos} ${packages}"
 
 # Manual download step, that can be overridden to dowload non RPM content
 download-manual:
@@ -314,8 +325,17 @@ reset-selinux-labels target:
     if [[ -n "{{pre_commands}}" ]]; then
         pre_commands+="{{pre_commands}} ; "
     fi
+
+    disablerepos=""
+    if [[ -n "{{disable_repos}}" ]]; then
+        for r in {{disable_repos}}; do
+            echo "➖ Disabling repo: ${r}"
+            disablerepos+=" --disablerepo=${r}"
+        done
+    fi
+    
     if [[ -n "{{packages}}" ]]; then
-        pre_commands+="dnf install -y ${dnf_opts} ./rpms/* && "
+        pre_commands+="dnf install -y ${dnf_opts} ${disablerepos} ./rpms/* && "
     fi
 
     filecontexts="/etc/selinux/targeted/contexts/files/file_contexts"
