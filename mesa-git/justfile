@@ -10,8 +10,6 @@ mesa-libGL
 mesa-va-drivers
 mesa-vulkan-drivers
 mesa-libxatracker
-libdrm
-libglvnd
 "
 base_images := "
 quay.io/fedora-ostree-desktops/silverblue:41
