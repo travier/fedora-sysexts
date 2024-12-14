@@ -1,0 +1,35 @@
+name := "mullvad-vpn"
+packages := "
+mullvad-vpn
+"
+pre_commands := "rm -rf /opt && mkdir /opt"
+external_repos := "https://repository.mullvad.net/rpm/stable/mullvad.repo"
+base_images := "
+quay.io/fedora-ostree-desktops/silverblue:41
+quay.io/fedora-ostree-desktops/kinoite:41
+"
+
+import '../sysext.just'
+
+all: default
+
+install-manual:
+    #!/bin/bash
+    set -euo pipefail
+    # set -x
+
+    if [[ "${UID}" == "0" ]]; then
+        SUDO=""
+    else
+        SUDO="sudo"
+    fi
+
+    cd rootfs
+
+    ${SUDO} mv "opt/Mullvad VPN" "usr/lib/Mullvad VPN"
+    ${SUDO} rmdir opt
+    ${SUDO} mkdir -p usr/bin
+    ${SUDO} ln -sf "/usr/lib/Mullvad VPN/mullvad-gui" usr/bin/mullvad-gui
+    ${SUDO} ln -sf "/usr/lib/Mullvad VPN/mullvad-vpn" usr/bin/mullvad-vpn
+    ${SUDO} chmod 4755 "usr/lib/Mullvad VPN/chrome-sandbox"
+    ${SUDO} sed -i 's|^Exec=/opt/Mullvad VPN|Exec=/usr/bin|g' usr/share/applications/mullvad-vpn.desktop

@@ -1,0 +1,25 @@
+FROM baseimage
+
+RUN mv /opt{,.bak} \
+    && \
+    mkdir /opt \
+    && \
+    dnf config-manager addrepo --from-repofile="https://repository.mullvad.net/rpm/stable/mullvad.repo" \
+    && \
+    dnf install -y mullvad-vpn \
+    && \
+    mv "/opt/Mullvad VPN" "/usr/lib/Mullvad VPN" \
+    && \
+    ln -sf "/usr/lib/Mullvad VPN/mullvad-vpn" /usr/bin/mullvad-vpn \
+    && \
+    ln -sf "/usr/lib/Mullvad VPN/mullvad-gui" /usr/bin/mullvad-gui \
+    && \
+    chmod 4755 "/usr/lib/Mullvad VPN/chrome-sandbox" \
+    && \
+    sed -i 's|^Exec=/opt/Mullvad VPN|Exec=/usr/bin|g' /usr/share/applications/mullvad-vpn.desktop \
+    && \
+    rmdir opt \
+    && \
+    mv /opt{.bak,} \
+    && \
+    dnf clean all
