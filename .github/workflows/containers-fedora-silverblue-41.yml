@@ -6,6 +6,7 @@ env:
   NAME: 'Fedora Silverblue (41)'
   REGISTRY: 'quay.io/travier'
   DESTINATION: 'fedora-silverblue-sysexts'
+  PR: ${{ github.event_name == 'pull_request' }}
 
 on:
   pull_request:
@@ -37,8 +38,30 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
 
+      - name: "Mark directory as safe"
+        run: |
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          git fetch --no-tags --prune --depth=1 origin +refs/heads/main:refs/remotes/origin/main
+
+      - name: "Checking if we need to build container: 1password-cli"
+        id: check-1password-cli
+        env:
+          SYSEXT: 1password-cli
+        run: |
+          cd "${SYSEXT}"
+          if [[ "${PR}" == "true" ]]; then
+              diff="$(git diff origin/main HEAD --stat -- .)"
+              if [[ -z "${diff}" ]]; then
+                  echo "Skipping: No changes for this sysext in this PR"
+                  echo "BUILD=false" >> "$GITHUB_OUTPUT"
+              else
+                  echo "BUILD=true" >> "$GITHUB_OUTPUT"
+              fi
+          fi
+
       - name: "Build container: 1password-cli"
         uses: redhat-actions/buildah-build@v2
+        if: (steps.check-1password-cli.outputs.BUILD == 'true')
         with:
           context: '1password-cli'
           image: ${{ env.DESTINATION }}
@@ -50,8 +73,25 @@ jobs:
             --from
             ${{ env.IMAGE }}:${{ env.RELEASE }}
 
+      - name: "Checking if we need to build container: 1password-gui"
+        id: check-1password-gui
+        env:
+          SYSEXT: 1password-gui
+        run: |
+          cd "${SYSEXT}"
+          if [[ "${PR}" == "true" ]]; then
+              diff="$(git diff origin/main HEAD --stat -- .)"
+              if [[ -z "${diff}" ]]; then
+                  echo "Skipping: No changes for this sysext in this PR"
+                  echo "BUILD=false" >> "$GITHUB_OUTPUT"
+              else
+                  echo "BUILD=true" >> "$GITHUB_OUTPUT"
+              fi
+          fi
+
       - name: "Build container: 1password-gui"
         uses: redhat-actions/buildah-build@v2
+        if: (steps.check-1password-gui.outputs.BUILD == 'true')
         with:
           context: '1password-gui'
           image: ${{ env.DESTINATION }}
@@ -63,8 +103,25 @@ jobs:
             --from
             ${{ env.IMAGE }}:${{ env.RELEASE }}
 
+      - name: "Checking if we need to build container: btop"
+        id: check-btop
+        env:
+          SYSEXT: btop
+        run: |
+          cd "${SYSEXT}"
+          if [[ "${PR}" == "true" ]]; then
+              diff="$(git diff origin/main HEAD --stat -- .)"
+              if [[ -z "${diff}" ]]; then
+                  echo "Skipping: No changes for this sysext in this PR"
+                  echo "BUILD=false" >> "$GITHUB_OUTPUT"
+              else
+                  echo "BUILD=true" >> "$GITHUB_OUTPUT"
+              fi
+          fi
+
       - name: "Build container: btop"
         uses: redhat-actions/buildah-build@v2
+        if: (steps.check-btop.outputs.BUILD == 'true')
         with:
           context: 'btop'
           image: ${{ env.DESTINATION }}
@@ -76,8 +133,25 @@ jobs:
             --from
             ${{ env.IMAGE }}:${{ env.RELEASE }}
 
+      - name: "Checking if we need to build container: chromium"
+        id: check-chromium
+        env:
+          SYSEXT: chromium
+        run: |
+          cd "${SYSEXT}"
+          if [[ "${PR}" == "true" ]]; then
+              diff="$(git diff origin/main HEAD --stat -- .)"
+              if [[ -z "${diff}" ]]; then
+                  echo "Skipping: No changes for this sysext in this PR"
+                  echo "BUILD=false" >> "$GITHUB_OUTPUT"
+              else
+                  echo "BUILD=true" >> "$GITHUB_OUTPUT"
+              fi
+          fi
+
       - name: "Build container: chromium"
         uses: redhat-actions/buildah-build@v2
+        if: (steps.check-chromium.outputs.BUILD == 'true')
         with:
           context: 'chromium'
           image: ${{ env.DESTINATION }}
@@ -89,8 +163,25 @@ jobs:
             --from
             ${{ env.IMAGE }}:${{ env.RELEASE }}
 
+      - name: "Checking if we need to build container: compsize"
+        id: check-compsize
+        env:
+          SYSEXT: compsize
+        run: |
+          cd "${SYSEXT}"
+          if [[ "${PR}" == "true" ]]; then
+              diff="$(git diff origin/main HEAD --stat -- .)"
+              if [[ -z "${diff}" ]]; then
+                  echo "Skipping: No changes for this sysext in this PR"
+                  echo "BUILD=false" >> "$GITHUB_OUTPUT"
+              else
+                  echo "BUILD=true" >> "$GITHUB_OUTPUT"
+              fi
+          fi
+
       - name: "Build container: compsize"
         uses: redhat-actions/buildah-build@v2
+        if: (steps.check-compsize.outputs.BUILD == 'true')
         with:
           context: 'compsize'
           image: ${{ env.DESTINATION }}
@@ -102,8 +193,25 @@ jobs:
             --from
             ${{ env.IMAGE }}:${{ env.RELEASE }}
 
+      - name: "Checking if we need to build container: distrobox"
+        id: check-distrobox
+        env:
+          SYSEXT: distrobox
+        run: |
+          cd "${SYSEXT}"
+          if [[ "${PR}" == "true" ]]; then
+              diff="$(git diff origin/main HEAD --stat -- .)"
+              if [[ -z "${diff}" ]]; then
+                  echo "Skipping: No changes for this sysext in this PR"
+                  echo "BUILD=false" >> "$GITHUB_OUTPUT"
+              else
+                  echo "BUILD=true" >> "$GITHUB_OUTPUT"
+              fi
+          fi
+
       - name: "Build container: distrobox"
         uses: redhat-actions/buildah-build@v2
+        if: (steps.check-distrobox.outputs.BUILD == 'true')
         with:
           context: 'distrobox'
           image: ${{ env.DESTINATION }}
@@ -115,8 +223,25 @@ jobs:
             --from
             ${{ env.IMAGE }}:${{ env.RELEASE }}
 
+      - name: "Checking if we need to build container: docker-ce"
+        id: check-docker-ce
+        env:
+          SYSEXT: docker-ce
+        run: |
+          cd "${SYSEXT}"
+          if [[ "${PR}" == "true" ]]; then
+              diff="$(git diff origin/main HEAD --stat -- .)"
+              if [[ -z "${diff}" ]]; then
+                  echo "Skipping: No changes for this sysext in this PR"
+                  echo "BUILD=false" >> "$GITHUB_OUTPUT"
+              else
+                  echo "BUILD=true" >> "$GITHUB_OUTPUT"
+              fi
+          fi
+
       - name: "Build container: docker-ce"
         uses: redhat-actions/buildah-build@v2
+        if: (steps.check-docker-ce.outputs.BUILD == 'true')
         with:
           context: 'docker-ce'
           image: ${{ env.DESTINATION }}
@@ -128,8 +253,25 @@ jobs:
             --from
             ${{ env.IMAGE }}:${{ env.RELEASE }}
 
+      - name: "Checking if we need to build container: emacs"
+        id: check-emacs
+        env:
+          SYSEXT: emacs
+        run: |
+          cd "${SYSEXT}"
+          if [[ "${PR}" == "true" ]]; then
+              diff="$(git diff origin/main HEAD --stat -- .)"
+              if [[ -z "${diff}" ]]; then
+                  echo "Skipping: No changes for this sysext in this PR"
+                  echo "BUILD=false" >> "$GITHUB_OUTPUT"
+              else
+                  echo "BUILD=true" >> "$GITHUB_OUTPUT"
+              fi
+          fi
+
       - name: "Build container: emacs"
         uses: redhat-actions/buildah-build@v2
+        if: (steps.check-emacs.outputs.BUILD == 'true')
         with:
           context: 'emacs'
           image: ${{ env.DESTINATION }}
@@ -141,8 +283,25 @@ jobs:
             --from
             ${{ env.IMAGE }}:${{ env.RELEASE }}
 
+      - name: "Checking if we need to build container: erofs-utils"
+        id: check-erofs-utils
+        env:
+          SYSEXT: erofs-utils
+        run: |
+          cd "${SYSEXT}"
+          if [[ "${PR}" == "true" ]]; then
+              diff="$(git diff origin/main HEAD --stat -- .)"
+              if [[ -z "${diff}" ]]; then
+                  echo "Skipping: No changes for this sysext in this PR"
+                  echo "BUILD=false" >> "$GITHUB_OUTPUT"
+              else
+                  echo "BUILD=true" >> "$GITHUB_OUTPUT"
+              fi
+          fi
+
       - name: "Build container: erofs-utils"
         uses: redhat-actions/buildah-build@v2
+        if: (steps.check-erofs-utils.outputs.BUILD == 'true')
         with:
           context: 'erofs-utils'
           image: ${{ env.DESTINATION }}
@@ -154,8 +313,25 @@ jobs:
             --from
             ${{ env.IMAGE }}:${{ env.RELEASE }}
 
+      - name: "Checking if we need to build container: fuse2"
+        id: check-fuse2
+        env:
+          SYSEXT: fuse2
+        run: |
+          cd "${SYSEXT}"
+          if [[ "${PR}" == "true" ]]; then
+              diff="$(git diff origin/main HEAD --stat -- .)"
+              if [[ -z "${diff}" ]]; then
+                  echo "Skipping: No changes for this sysext in this PR"
+                  echo "BUILD=false" >> "$GITHUB_OUTPUT"
+              else
+                  echo "BUILD=true" >> "$GITHUB_OUTPUT"
+              fi
+          fi
+
       - name: "Build container: fuse2"
         uses: redhat-actions/buildah-build@v2
+        if: (steps.check-fuse2.outputs.BUILD == 'true')
         with:
           context: 'fuse2'
           image: ${{ env.DESTINATION }}
@@ -167,8 +343,25 @@ jobs:
             --from
             ${{ env.IMAGE }}:${{ env.RELEASE }}
 
+      - name: "Checking if we need to build container: gdb"
+        id: check-gdb
+        env:
+          SYSEXT: gdb
+        run: |
+          cd "${SYSEXT}"
+          if [[ "${PR}" == "true" ]]; then
+              diff="$(git diff origin/main HEAD --stat -- .)"
+              if [[ -z "${diff}" ]]; then
+                  echo "Skipping: No changes for this sysext in this PR"
+                  echo "BUILD=false" >> "$GITHUB_OUTPUT"
+              else
+                  echo "BUILD=true" >> "$GITHUB_OUTPUT"
+              fi
+          fi
+
       - name: "Build container: gdb"
         uses: redhat-actions/buildah-build@v2
+        if: (steps.check-gdb.outputs.BUILD == 'true')
         with:
           context: 'gdb'
           image: ${{ env.DESTINATION }}
@@ -180,8 +373,25 @@ jobs:
             --from
             ${{ env.IMAGE }}:${{ env.RELEASE }}
 
+      - name: "Checking if we need to build container: git-tools"
+        id: check-git-tools
+        env:
+          SYSEXT: git-tools
+        run: |
+          cd "${SYSEXT}"
+          if [[ "${PR}" == "true" ]]; then
+              diff="$(git diff origin/main HEAD --stat -- .)"
+              if [[ -z "${diff}" ]]; then
+                  echo "Skipping: No changes for this sysext in this PR"
+                  echo "BUILD=false" >> "$GITHUB_OUTPUT"
+              else
+                  echo "BUILD=true" >> "$GITHUB_OUTPUT"
+              fi
+          fi
+
       - name: "Build container: git-tools"
         uses: redhat-actions/buildah-build@v2
+        if: (steps.check-git-tools.outputs.BUILD == 'true')
         with:
           context: 'git-tools'
           image: ${{ env.DESTINATION }}
@@ -193,8 +403,25 @@ jobs:
             --from
             ${{ env.IMAGE }}:${{ env.RELEASE }}
 
+      - name: "Checking if we need to build container: google-chrome"
+        id: check-google-chrome
+        env:
+          SYSEXT: google-chrome
+        run: |
+          cd "${SYSEXT}"
+          if [[ "${PR}" == "true" ]]; then
+              diff="$(git diff origin/main HEAD --stat -- .)"
+              if [[ -z "${diff}" ]]; then
+                  echo "Skipping: No changes for this sysext in this PR"
+                  echo "BUILD=false" >> "$GITHUB_OUTPUT"
+              else
+                  echo "BUILD=true" >> "$GITHUB_OUTPUT"
+              fi
+          fi
+
       - name: "Build container: google-chrome"
         uses: redhat-actions/buildah-build@v2
+        if: (steps.check-google-chrome.outputs.BUILD == 'true')
         with:
           context: 'google-chrome'
           image: ${{ env.DESTINATION }}
@@ -206,8 +433,25 @@ jobs:
             --from
             ${{ env.IMAGE }}:${{ env.RELEASE }}
 
+      - name: "Checking if we need to build container: htop"
+        id: check-htop
+        env:
+          SYSEXT: htop
+        run: |
+          cd "${SYSEXT}"
+          if [[ "${PR}" == "true" ]]; then
+              diff="$(git diff origin/main HEAD --stat -- .)"
+              if [[ -z "${diff}" ]]; then
+                  echo "Skipping: No changes for this sysext in this PR"
+                  echo "BUILD=false" >> "$GITHUB_OUTPUT"
+              else
+                  echo "BUILD=true" >> "$GITHUB_OUTPUT"
+              fi
+          fi
+
       - name: "Build container: htop"
         uses: redhat-actions/buildah-build@v2
+        if: (steps.check-htop.outputs.BUILD == 'true')
         with:
           context: 'htop'
           image: ${{ env.DESTINATION }}
@@ -219,8 +463,25 @@ jobs:
             --from
             ${{ env.IMAGE }}:${{ env.RELEASE }}
 
+      - name: "Checking if we need to build container: incus"
+        id: check-incus
+        env:
+          SYSEXT: incus
+        run: |
+          cd "${SYSEXT}"
+          if [[ "${PR}" == "true" ]]; then
+              diff="$(git diff origin/main HEAD --stat -- .)"
+              if [[ -z "${diff}" ]]; then
+                  echo "Skipping: No changes for this sysext in this PR"
+                  echo "BUILD=false" >> "$GITHUB_OUTPUT"
+              else
+                  echo "BUILD=true" >> "$GITHUB_OUTPUT"
+              fi
+          fi
+
       - name: "Build container: incus"
         uses: redhat-actions/buildah-build@v2
+        if: (steps.check-incus.outputs.BUILD == 'true')
         with:
           context: 'incus'
           image: ${{ env.DESTINATION }}
@@ -232,8 +493,25 @@ jobs:
             --from
             ${{ env.IMAGE }}:${{ env.RELEASE }}
 
+      - name: "Checking if we need to build container: iwd"
+        id: check-iwd
+        env:
+          SYSEXT: iwd
+        run: |
+          cd "${SYSEXT}"
+          if [[ "${PR}" == "true" ]]; then
+              diff="$(git diff origin/main HEAD --stat -- .)"
+              if [[ -z "${diff}" ]]; then
+                  echo "Skipping: No changes for this sysext in this PR"
+                  echo "BUILD=false" >> "$GITHUB_OUTPUT"
+              else
+                  echo "BUILD=true" >> "$GITHUB_OUTPUT"
+              fi
+          fi
+
       - name: "Build container: iwd"
         uses: redhat-actions/buildah-build@v2
+        if: (steps.check-iwd.outputs.BUILD == 'true')
         with:
           context: 'iwd'
           image: ${{ env.DESTINATION }}
@@ -245,8 +523,25 @@ jobs:
             --from
             ${{ env.IMAGE }}:${{ env.RELEASE }}
 
+      - name: "Checking if we need to build container: just"
+        id: check-just
+        env:
+          SYSEXT: just
+        run: |
+          cd "${SYSEXT}"
+          if [[ "${PR}" == "true" ]]; then
+              diff="$(git diff origin/main HEAD --stat -- .)"
+              if [[ -z "${diff}" ]]; then
+                  echo "Skipping: No changes for this sysext in this PR"
+                  echo "BUILD=false" >> "$GITHUB_OUTPUT"
+              else
+                  echo "BUILD=true" >> "$GITHUB_OUTPUT"
+              fi
+          fi
+
       - name: "Build container: just"
         uses: redhat-actions/buildah-build@v2
+        if: (steps.check-just.outputs.BUILD == 'true')
         with:
           context: 'just'
           image: ${{ env.DESTINATION }}
@@ -258,8 +553,25 @@ jobs:
             --from
             ${{ env.IMAGE }}:${{ env.RELEASE }}
 
+      - name: "Checking if we need to build container: keepassxc"
+        id: check-keepassxc
+        env:
+          SYSEXT: keepassxc
+        run: |
+          cd "${SYSEXT}"
+          if [[ "${PR}" == "true" ]]; then
+              diff="$(git diff origin/main HEAD --stat -- .)"
+              if [[ -z "${diff}" ]]; then
+                  echo "Skipping: No changes for this sysext in this PR"
+                  echo "BUILD=false" >> "$GITHUB_OUTPUT"
+              else
+                  echo "BUILD=true" >> "$GITHUB_OUTPUT"
+              fi
+          fi
+
       - name: "Build container: keepassxc"
         uses: redhat-actions/buildah-build@v2
+        if: (steps.check-keepassxc.outputs.BUILD == 'true')
         with:
           context: 'keepassxc'
           image: ${{ env.DESTINATION }}
@@ -271,8 +583,25 @@ jobs:
             --from
             ${{ env.IMAGE }}:${{ env.RELEASE }}
 
+      - name: "Checking if we need to build container: krb5-workstation"
+        id: check-krb5-workstation
+        env:
+          SYSEXT: krb5-workstation
+        run: |
+          cd "${SYSEXT}"
+          if [[ "${PR}" == "true" ]]; then
+              diff="$(git diff origin/main HEAD --stat -- .)"
+              if [[ -z "${diff}" ]]; then
+                  echo "Skipping: No changes for this sysext in this PR"
+                  echo "BUILD=false" >> "$GITHUB_OUTPUT"
+              else
+                  echo "BUILD=true" >> "$GITHUB_OUTPUT"
+              fi
+          fi
+
       - name: "Build container: krb5-workstation"
         uses: redhat-actions/buildah-build@v2
+        if: (steps.check-krb5-workstation.outputs.BUILD == 'true')
         with:
           context: 'krb5-workstation'
           image: ${{ env.DESTINATION }}
@@ -284,8 +613,25 @@ jobs:
             --from
             ${{ env.IMAGE }}:${{ env.RELEASE }}
 
+      - name: "Checking if we need to build container: libvirtd-desktop"
+        id: check-libvirtd-desktop
+        env:
+          SYSEXT: libvirtd-desktop
+        run: |
+          cd "${SYSEXT}"
+          if [[ "${PR}" == "true" ]]; then
+              diff="$(git diff origin/main HEAD --stat -- .)"
+              if [[ -z "${diff}" ]]; then
+                  echo "Skipping: No changes for this sysext in this PR"
+                  echo "BUILD=false" >> "$GITHUB_OUTPUT"
+              else
+                  echo "BUILD=true" >> "$GITHUB_OUTPUT"
+              fi
+          fi
+
       - name: "Build container: libvirtd-desktop"
         uses: redhat-actions/buildah-build@v2
+        if: (steps.check-libvirtd-desktop.outputs.BUILD == 'true')
         with:
           context: 'libvirtd-desktop'
           image: ${{ env.DESTINATION }}
@@ -297,8 +643,25 @@ jobs:
             --from
             ${{ env.IMAGE }}:${{ env.RELEASE }}
 
+      - name: "Checking if we need to build container: microsoft-edge"
+        id: check-microsoft-edge
+        env:
+          SYSEXT: microsoft-edge
+        run: |
+          cd "${SYSEXT}"
+          if [[ "${PR}" == "true" ]]; then
+              diff="$(git diff origin/main HEAD --stat -- .)"
+              if [[ -z "${diff}" ]]; then
+                  echo "Skipping: No changes for this sysext in this PR"
+                  echo "BUILD=false" >> "$GITHUB_OUTPUT"
+              else
+                  echo "BUILD=true" >> "$GITHUB_OUTPUT"
+              fi
+          fi
+
       - name: "Build container: microsoft-edge"
         uses: redhat-actions/buildah-build@v2
+        if: (steps.check-microsoft-edge.outputs.BUILD == 'true')
         with:
           context: 'microsoft-edge'
           image: ${{ env.DESTINATION }}
@@ -310,8 +673,25 @@ jobs:
             --from
             ${{ env.IMAGE }}:${{ env.RELEASE }}
 
+      - name: "Checking if we need to build container: moby-engine"
+        id: check-moby-engine
+        env:
+          SYSEXT: moby-engine
+        run: |
+          cd "${SYSEXT}"
+          if [[ "${PR}" == "true" ]]; then
+              diff="$(git diff origin/main HEAD --stat -- .)"
+              if [[ -z "${diff}" ]]; then
+                  echo "Skipping: No changes for this sysext in this PR"
+                  echo "BUILD=false" >> "$GITHUB_OUTPUT"
+              else
+                  echo "BUILD=true" >> "$GITHUB_OUTPUT"
+              fi
+          fi
+
       - name: "Build container: moby-engine"
         uses: redhat-actions/buildah-build@v2
+        if: (steps.check-moby-engine.outputs.BUILD == 'true')
         with:
           context: 'moby-engine'
           image: ${{ env.DESTINATION }}
@@ -323,8 +703,25 @@ jobs:
             --from
             ${{ env.IMAGE }}:${{ env.RELEASE }}
 
+      - name: "Checking if we need to build container: monitoring"
+        id: check-monitoring
+        env:
+          SYSEXT: monitoring
+        run: |
+          cd "${SYSEXT}"
+          if [[ "${PR}" == "true" ]]; then
+              diff="$(git diff origin/main HEAD --stat -- .)"
+              if [[ -z "${diff}" ]]; then
+                  echo "Skipping: No changes for this sysext in this PR"
+                  echo "BUILD=false" >> "$GITHUB_OUTPUT"
+              else
+                  echo "BUILD=true" >> "$GITHUB_OUTPUT"
+              fi
+          fi
+
       - name: "Build container: monitoring"
         uses: redhat-actions/buildah-build@v2
+        if: (steps.check-monitoring.outputs.BUILD == 'true')
         with:
           context: 'monitoring'
           image: ${{ env.DESTINATION }}
@@ -336,8 +733,25 @@ jobs:
             --from
             ${{ env.IMAGE }}:${{ env.RELEASE }}
 
+      - name: "Checking if we need to build container: mullvad-vpn"
+        id: check-mullvad-vpn
+        env:
+          SYSEXT: mullvad-vpn
+        run: |
+          cd "${SYSEXT}"
+          if [[ "${PR}" == "true" ]]; then
+              diff="$(git diff origin/main HEAD --stat -- .)"
+              if [[ -z "${diff}" ]]; then
+                  echo "Skipping: No changes for this sysext in this PR"
+                  echo "BUILD=false" >> "$GITHUB_OUTPUT"
+              else
+                  echo "BUILD=true" >> "$GITHUB_OUTPUT"
+              fi
+          fi
+
       - name: "Build container: mullvad-vpn"
         uses: redhat-actions/buildah-build@v2
+        if: (steps.check-mullvad-vpn.outputs.BUILD == 'true')
         with:
           context: 'mullvad-vpn'
           image: ${{ env.DESTINATION }}
@@ -349,8 +763,25 @@ jobs:
             --from
             ${{ env.IMAGE }}:${{ env.RELEASE }}
 
+      - name: "Checking if we need to build container: neovim"
+        id: check-neovim
+        env:
+          SYSEXT: neovim
+        run: |
+          cd "${SYSEXT}"
+          if [[ "${PR}" == "true" ]]; then
+              diff="$(git diff origin/main HEAD --stat -- .)"
+              if [[ -z "${diff}" ]]; then
+                  echo "Skipping: No changes for this sysext in this PR"
+                  echo "BUILD=false" >> "$GITHUB_OUTPUT"
+              else
+                  echo "BUILD=true" >> "$GITHUB_OUTPUT"
+              fi
+          fi
+
       - name: "Build container: neovim"
         uses: redhat-actions/buildah-build@v2
+        if: (steps.check-neovim.outputs.BUILD == 'true')
         with:
           context: 'neovim'
           image: ${{ env.DESTINATION }}
@@ -362,8 +793,25 @@ jobs:
             --from
             ${{ env.IMAGE }}:${{ env.RELEASE }}
 
+      - name: "Checking if we need to build container: openh264"
+        id: check-openh264
+        env:
+          SYSEXT: openh264
+        run: |
+          cd "${SYSEXT}"
+          if [[ "${PR}" == "true" ]]; then
+              diff="$(git diff origin/main HEAD --stat -- .)"
+              if [[ -z "${diff}" ]]; then
+                  echo "Skipping: No changes for this sysext in this PR"
+                  echo "BUILD=false" >> "$GITHUB_OUTPUT"
+              else
+                  echo "BUILD=true" >> "$GITHUB_OUTPUT"
+              fi
+          fi
+
       - name: "Build container: openh264"
         uses: redhat-actions/buildah-build@v2
+        if: (steps.check-openh264.outputs.BUILD == 'true')
         with:
           context: 'openh264'
           image: ${{ env.DESTINATION }}
@@ -375,8 +823,25 @@ jobs:
             --from
             ${{ env.IMAGE }}:${{ env.RELEASE }}
 
+      - name: "Checking if we need to build container: ripgrep"
+        id: check-ripgrep
+        env:
+          SYSEXT: ripgrep
+        run: |
+          cd "${SYSEXT}"
+          if [[ "${PR}" == "true" ]]; then
+              diff="$(git diff origin/main HEAD --stat -- .)"
+              if [[ -z "${diff}" ]]; then
+                  echo "Skipping: No changes for this sysext in this PR"
+                  echo "BUILD=false" >> "$GITHUB_OUTPUT"
+              else
+                  echo "BUILD=true" >> "$GITHUB_OUTPUT"
+              fi
+          fi
+
       - name: "Build container: ripgrep"
         uses: redhat-actions/buildah-build@v2
+        if: (steps.check-ripgrep.outputs.BUILD == 'true')
         with:
           context: 'ripgrep'
           image: ${{ env.DESTINATION }}
@@ -388,8 +853,25 @@ jobs:
             --from
             ${{ env.IMAGE }}:${{ env.RELEASE }}
 
+      - name: "Checking if we need to build container: steam-devices"
+        id: check-steam-devices
+        env:
+          SYSEXT: steam-devices
+        run: |
+          cd "${SYSEXT}"
+          if [[ "${PR}" == "true" ]]; then
+              diff="$(git diff origin/main HEAD --stat -- .)"
+              if [[ -z "${diff}" ]]; then
+                  echo "Skipping: No changes for this sysext in this PR"
+                  echo "BUILD=false" >> "$GITHUB_OUTPUT"
+              else
+                  echo "BUILD=true" >> "$GITHUB_OUTPUT"
+              fi
+          fi
+
       - name: "Build container: steam-devices"
         uses: redhat-actions/buildah-build@v2
+        if: (steps.check-steam-devices.outputs.BUILD == 'true')
         with:
           context: 'steam-devices'
           image: ${{ env.DESTINATION }}
@@ -401,8 +883,25 @@ jobs:
             --from
             ${{ env.IMAGE }}:${{ env.RELEASE }}
 
+      - name: "Checking if we need to build container: steam"
+        id: check-steam
+        env:
+          SYSEXT: steam
+        run: |
+          cd "${SYSEXT}"
+          if [[ "${PR}" == "true" ]]; then
+              diff="$(git diff origin/main HEAD --stat -- .)"
+              if [[ -z "${diff}" ]]; then
+                  echo "Skipping: No changes for this sysext in this PR"
+                  echo "BUILD=false" >> "$GITHUB_OUTPUT"
+              else
+                  echo "BUILD=true" >> "$GITHUB_OUTPUT"
+              fi
+          fi
+
       - name: "Build container: steam"
         uses: redhat-actions/buildah-build@v2
+        if: (steps.check-steam.outputs.BUILD == 'true')
         with:
           context: 'steam'
           image: ${{ env.DESTINATION }}
@@ -414,8 +913,25 @@ jobs:
             --from
             ${{ env.IMAGE }}:${{ env.RELEASE }}
 
+      - name: "Checking if we need to build container: strace"
+        id: check-strace
+        env:
+          SYSEXT: strace
+        run: |
+          cd "${SYSEXT}"
+          if [[ "${PR}" == "true" ]]; then
+              diff="$(git diff origin/main HEAD --stat -- .)"
+              if [[ -z "${diff}" ]]; then
+                  echo "Skipping: No changes for this sysext in this PR"
+                  echo "BUILD=false" >> "$GITHUB_OUTPUT"
+              else
+                  echo "BUILD=true" >> "$GITHUB_OUTPUT"
+              fi
+          fi
+
       - name: "Build container: strace"
         uses: redhat-actions/buildah-build@v2
+        if: (steps.check-strace.outputs.BUILD == 'true')
         with:
           context: 'strace'
           image: ${{ env.DESTINATION }}
@@ -427,8 +943,25 @@ jobs:
             --from
             ${{ env.IMAGE }}:${{ env.RELEASE }}
 
+      - name: "Checking if we need to build container: tree"
+        id: check-tree
+        env:
+          SYSEXT: tree
+        run: |
+          cd "${SYSEXT}"
+          if [[ "${PR}" == "true" ]]; then
+              diff="$(git diff origin/main HEAD --stat -- .)"
+              if [[ -z "${diff}" ]]; then
+                  echo "Skipping: No changes for this sysext in this PR"
+                  echo "BUILD=false" >> "$GITHUB_OUTPUT"
+              else
+                  echo "BUILD=true" >> "$GITHUB_OUTPUT"
+              fi
+          fi
+
       - name: "Build container: tree"
         uses: redhat-actions/buildah-build@v2
+        if: (steps.check-tree.outputs.BUILD == 'true')
         with:
           context: 'tree'
           image: ${{ env.DESTINATION }}
@@ -440,8 +973,25 @@ jobs:
             --from
             ${{ env.IMAGE }}:${{ env.RELEASE }}
 
+      - name: "Checking if we need to build container: vim"
+        id: check-vim
+        env:
+          SYSEXT: vim
+        run: |
+          cd "${SYSEXT}"
+          if [[ "${PR}" == "true" ]]; then
+              diff="$(git diff origin/main HEAD --stat -- .)"
+              if [[ -z "${diff}" ]]; then
+                  echo "Skipping: No changes for this sysext in this PR"
+                  echo "BUILD=false" >> "$GITHUB_OUTPUT"
+              else
+                  echo "BUILD=true" >> "$GITHUB_OUTPUT"
+              fi
+          fi
+
       - name: "Build container: vim"
         uses: redhat-actions/buildah-build@v2
+        if: (steps.check-vim.outputs.BUILD == 'true')
         with:
           context: 'vim'
           image: ${{ env.DESTINATION }}
@@ -453,8 +1003,25 @@ jobs:
             --from
             ${{ env.IMAGE }}:${{ env.RELEASE }}
 
+      - name: "Checking if we need to build container: vscode"
+        id: check-vscode
+        env:
+          SYSEXT: vscode
+        run: |
+          cd "${SYSEXT}"
+          if [[ "${PR}" == "true" ]]; then
+              diff="$(git diff origin/main HEAD --stat -- .)"
+              if [[ -z "${diff}" ]]; then
+                  echo "Skipping: No changes for this sysext in this PR"
+                  echo "BUILD=false" >> "$GITHUB_OUTPUT"
+              else
+                  echo "BUILD=true" >> "$GITHUB_OUTPUT"
+              fi
+          fi
+
       - name: "Build container: vscode"
         uses: redhat-actions/buildah-build@v2
+        if: (steps.check-vscode.outputs.BUILD == 'true')
         with:
           context: 'vscode'
           image: ${{ env.DESTINATION }}
@@ -466,8 +1033,25 @@ jobs:
             --from
             ${{ env.IMAGE }}:${{ env.RELEASE }}
 
+      - name: "Checking if we need to build container: vscodium"
+        id: check-vscodium
+        env:
+          SYSEXT: vscodium
+        run: |
+          cd "${SYSEXT}"
+          if [[ "${PR}" == "true" ]]; then
+              diff="$(git diff origin/main HEAD --stat -- .)"
+              if [[ -z "${diff}" ]]; then
+                  echo "Skipping: No changes for this sysext in this PR"
+                  echo "BUILD=false" >> "$GITHUB_OUTPUT"
+              else
+                  echo "BUILD=true" >> "$GITHUB_OUTPUT"
+              fi
+          fi
+
       - name: "Build container: vscodium"
         uses: redhat-actions/buildah-build@v2
+        if: (steps.check-vscodium.outputs.BUILD == 'true')
         with:
           context: 'vscodium'
           image: ${{ env.DESTINATION }}
@@ -479,8 +1063,25 @@ jobs:
             --from
             ${{ env.IMAGE }}:${{ env.RELEASE }}
 
+      - name: "Checking if we need to build container: wireguard-tools"
+        id: check-wireguard-tools
+        env:
+          SYSEXT: wireguard-tools
+        run: |
+          cd "${SYSEXT}"
+          if [[ "${PR}" == "true" ]]; then
+              diff="$(git diff origin/main HEAD --stat -- .)"
+              if [[ -z "${diff}" ]]; then
+                  echo "Skipping: No changes for this sysext in this PR"
+                  echo "BUILD=false" >> "$GITHUB_OUTPUT"
+              else
+                  echo "BUILD=true" >> "$GITHUB_OUTPUT"
+              fi
+          fi
+
       - name: "Build container: wireguard-tools"
         uses: redhat-actions/buildah-build@v2
+        if: (steps.check-wireguard-tools.outputs.BUILD == 'true')
         with:
           context: 'wireguard-tools'
           image: ${{ env.DESTINATION }}
@@ -492,8 +1093,25 @@ jobs:
             --from
             ${{ env.IMAGE }}:${{ env.RELEASE }}
 
+      - name: "Checking if we need to build container: zoxide"
+        id: check-zoxide
+        env:
+          SYSEXT: zoxide
+        run: |
+          cd "${SYSEXT}"
+          if [[ "${PR}" == "true" ]]; then
+              diff="$(git diff origin/main HEAD --stat -- .)"
+              if [[ -z "${diff}" ]]; then
+                  echo "Skipping: No changes for this sysext in this PR"
+                  echo "BUILD=false" >> "$GITHUB_OUTPUT"
+              else
+                  echo "BUILD=true" >> "$GITHUB_OUTPUT"
+              fi
+          fi
+
       - name: "Build container: zoxide"
         uses: redhat-actions/buildah-build@v2
+        if: (steps.check-zoxide.outputs.BUILD == 'true')
         with:
           context: 'zoxide'
           image: ${{ env.DESTINATION }}
@@ -505,8 +1123,25 @@ jobs:
             --from
             ${{ env.IMAGE }}:${{ env.RELEASE }}
 
+      - name: "Checking if we need to build container: zsh"
+        id: check-zsh
+        env:
+          SYSEXT: zsh
+        run: |
+          cd "${SYSEXT}"
+          if [[ "${PR}" == "true" ]]; then
+              diff="$(git diff origin/main HEAD --stat -- .)"
+              if [[ -z "${diff}" ]]; then
+                  echo "Skipping: No changes for this sysext in this PR"
+                  echo "BUILD=false" >> "$GITHUB_OUTPUT"
+              else
+                  echo "BUILD=true" >> "$GITHUB_OUTPUT"
+              fi
+          fi
+
       - name: "Build container: zsh"
         uses: redhat-actions/buildah-build@v2
+        if: (steps.check-zsh.outputs.BUILD == 'true')
         with:
           context: 'zsh'
           image: ${{ env.DESTINATION }}
