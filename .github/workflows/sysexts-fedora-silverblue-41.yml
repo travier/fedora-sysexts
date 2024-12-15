@@ -263,6 +263,14 @@ jobs:
           just build ${IMAGE}
           mv "${SYSEXT}"*".raw" "../artifacts/"
 
+      - name: "Build sysext: mullvad-vpn"
+        env:
+          SYSEXT: mullvad-vpn
+        run: |
+          cd "${SYSEXT}"
+          just build ${IMAGE}
+          mv "${SYSEXT}"*".raw" "../artifacts/"
+
       - name: "Build sysext: neovim"
         env:
           SYSEXT: neovim
