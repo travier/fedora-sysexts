@@ -333,7 +333,7 @@ reset-selinux-labels target:
             disablerepos+=" --disablerepo=${r}"
         done
     fi
-    
+
     if [[ -n "{{packages}}" ]]; then
         pre_commands+="dnf install -y ${dnf_opts} ${disablerepos} ./rpms/* && "
     fi
