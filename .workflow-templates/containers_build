@@ -1,5 +1,22 @@
+      - name: "Checking if we need to build container: %%SYSEXT%%"
+        id: check-%%SYSEXT_NODOT%%
+        env:
+          SYSEXT: %%SYSEXT%%
+        run: |
+          cd "${SYSEXT}"
+          if [[ "${PR}" == "true" ]]; then
+              diff="$(git diff origin/main HEAD --stat -- .)"
+              if [[ -z "${diff}" ]]; then
+                  echo "Skipping: No changes for this sysext in this PR"
+                  echo "BUILD=false" >> "$GITHUB_OUTPUT"
+              else
+                  echo "BUILD=true" >> "$GITHUB_OUTPUT"
+              fi
+          fi
+
       - name: "Build container: %%SYSEXT%%"
         uses: redhat-actions/buildah-build@v2
+        if: (steps.check-%%SYSEXT_NODOT%%.outputs.BUILD == 'true')
         with:
           context: '%%SYSEXT%%'
           image: ${{ env.DESTINATION }}

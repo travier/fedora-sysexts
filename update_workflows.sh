@@ -94,7 +94,10 @@ main() {
     echo ""
     for s in "${sysexts[@]}"; do
         if [[ -f "${s}/Containerfile" ]]; then
-            sed "s|%%SYSEXT%%|${s}|g" "${tmpl}/containers_build"
+            sed \
+                -e "s|%%SYSEXT%%|${s}|g" \
+                -e "s|%%SYSEXT_NODOT%%|${s//\./_}|g" \
+                "${tmpl}/containers_build"
             echo ""
         fi
     done

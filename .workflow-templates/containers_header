@@ -6,6 +6,7 @@ env:
   NAME: '%%NAME%%'
   REGISTRY: '%%REGISTRY%%'
   DESTINATION: '%%DESTINATION%%'
+  PR: ${{ github.event_name == 'pull_request' }}
 
 on:
   pull_request:
@@ -36,3 +37,8 @@ jobs:
 
       - name: Checkout repo
         uses: actions/checkout@v4
+
+      - name: "Mark directory as safe"
+        run: |
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          git fetch --no-tags --prune --depth=1 origin +refs/heads/main:refs/remotes/origin/main

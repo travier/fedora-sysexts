@@ -6,6 +6,7 @@ env:
   NAME: '%%NAME%%'
   SHORTNAME: '%%SHORTNAME%%'
   GH_TOKEN: ${{ github.token }}
+  PR: ${{ github.event_name == 'pull_request' }}
 
 on:
   pull_request:
@@ -54,3 +55,8 @@ jobs:
       - name: "Setup artifacts directory"
         run: |
           mkdir -p artifacts
+
+      - name: "Mark directory as safe"
+        run: |
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          git fetch --no-tags --prune --depth=1 origin +refs/heads/main:refs/remotes/origin/main

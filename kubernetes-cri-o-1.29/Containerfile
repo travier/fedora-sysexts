@@ -1,0 +1,12 @@
+FROM baseimage
+
+RUN dnf install -y \
+    --exclude cri-tools \
+    cri-o1.29 \
+    cri-tools1.29 \
+    kubernetes1.29 \
+    kubernetes1.29-client \
+    kubernetes1.29-kubeadm \
+    kubernetes1.29-systemd \
+    && \
+    dnf clean all
