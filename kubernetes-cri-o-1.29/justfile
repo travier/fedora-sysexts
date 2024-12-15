@@ -1,0 +1,16 @@
+name := "kubernetes-cri-o-1.29"
+packages := "
+cri-o1.29
+cri-tools1.29
+kubernetes1.29
+kubernetes1.29-client
+kubernetes1.29-kubeadm
+kubernetes1.29-systemd
+"
+base_images := "
+quay.io/fedora/fedora-coreos:stable
+"
+
+import '../sysext.just'
+
+all: default

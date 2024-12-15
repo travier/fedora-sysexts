@@ -583,6 +583,96 @@ jobs:
             --from
             ${{ env.IMAGE }}:${{ env.RELEASE }}
 
+      - name: "Checking if we need to build container: kubernetes-cri-o-1.29"
+        id: check-kubernetes-cri-o-1_29
+        env:
+          SYSEXT: kubernetes-cri-o-1.29
+        run: |
+          cd "${SYSEXT}"
+          if [[ "${PR}" == "true" ]]; then
+              diff="$(git diff origin/main HEAD --stat -- .)"
+              if [[ -z "${diff}" ]]; then
+                  echo "Skipping: No changes for this sysext in this PR"
+                  echo "BUILD=false" >> "$GITHUB_OUTPUT"
+              else
+                  echo "BUILD=true" >> "$GITHUB_OUTPUT"
+              fi
+          fi
+
+      - name: "Build container: kubernetes-cri-o-1.29"
+        uses: redhat-actions/buildah-build@v2
+        if: (steps.check-kubernetes-cri-o-1_29.outputs.BUILD == 'true')
+        with:
+          context: 'kubernetes-cri-o-1.29'
+          image: ${{ env.DESTINATION }}
+          tags: ${{ env.RELEASE }}.kubernetes-cri-o-1.29
+          containerfiles: 'kubernetes-cri-o-1.29/Containerfile'
+          layers: false
+          oci: true
+          extra-args:
+            --from
+            ${{ env.IMAGE }}:${{ env.RELEASE }}
+
+      - name: "Checking if we need to build container: kubernetes-cri-o-1.30"
+        id: check-kubernetes-cri-o-1_30
+        env:
+          SYSEXT: kubernetes-cri-o-1.30
+        run: |
+          cd "${SYSEXT}"
+          if [[ "${PR}" == "true" ]]; then
+              diff="$(git diff origin/main HEAD --stat -- .)"
+              if [[ -z "${diff}" ]]; then
+                  echo "Skipping: No changes for this sysext in this PR"
+                  echo "BUILD=false" >> "$GITHUB_OUTPUT"
+              else
+                  echo "BUILD=true" >> "$GITHUB_OUTPUT"
+              fi
+          fi
+
+      - name: "Build container: kubernetes-cri-o-1.30"
+        uses: redhat-actions/buildah-build@v2
+        if: (steps.check-kubernetes-cri-o-1_30.outputs.BUILD == 'true')
+        with:
+          context: 'kubernetes-cri-o-1.30'
+          image: ${{ env.DESTINATION }}
+          tags: ${{ env.RELEASE }}.kubernetes-cri-o-1.30
+          containerfiles: 'kubernetes-cri-o-1.30/Containerfile'
+          layers: false
+          oci: true
+          extra-args:
+            --from
+            ${{ env.IMAGE }}:${{ env.RELEASE }}
+
+      - name: "Checking if we need to build container: kubernetes-cri-o-1.31"
+        id: check-kubernetes-cri-o-1_31
+        env:
+          SYSEXT: kubernetes-cri-o-1.31
+        run: |
+          cd "${SYSEXT}"
+          if [[ "${PR}" == "true" ]]; then
+              diff="$(git diff origin/main HEAD --stat -- .)"
+              if [[ -z "${diff}" ]]; then
+                  echo "Skipping: No changes for this sysext in this PR"
+                  echo "BUILD=false" >> "$GITHUB_OUTPUT"
+              else
+                  echo "BUILD=true" >> "$GITHUB_OUTPUT"
+              fi
+          fi
+
+      - name: "Build container: kubernetes-cri-o-1.31"
+        uses: redhat-actions/buildah-build@v2
+        if: (steps.check-kubernetes-cri-o-1_31.outputs.BUILD == 'true')
+        with:
+          context: 'kubernetes-cri-o-1.31'
+          image: ${{ env.DESTINATION }}
+          tags: ${{ env.RELEASE }}.kubernetes-cri-o-1.31
+          containerfiles: 'kubernetes-cri-o-1.31/Containerfile'
+          layers: false
+          oci: true
+          extra-args:
+            --from
+            ${{ env.IMAGE }}:${{ env.RELEASE }}
+
       - name: "Checking if we need to build container: libvirtd"
         id: check-libvirtd
         env:
@@ -1232,6 +1322,63 @@ jobs:
         if: (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
         run: |
           cosign sign -y --key env://COSIGN_PRIVATE_KEY ${{ env.REGISTRY }}/${{ env.DESTINATION }}@${{ steps.push-kubernetes-1_31.outputs.digest }}
+        env:
+          COSIGN_EXPERIMENTAL: false
+          COSIGN_PRIVATE_KEY: ${{ secrets.COSIGN_PRIVATE_KEY }}
+
+      - name: "Push container: kubernetes-cri-o-1.29"
+        uses: redhat-actions/push-to-registry@v2
+        id: push-kubernetes-cri-o-1_29
+        if: (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
+        with:
+          username: ${{ secrets.BOT_USERNAME }}
+          password: ${{ secrets.BOT_SECRET }}
+          image: ${{ env.DESTINATION }}
+          registry: ${{ env.REGISTRY }}
+          tags: ${{ env.RELEASE }}.kubernetes-cri-o-1.29
+
+      - name: "Sign container: kubernetes-cri-o-1.29"
+        if: (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
+        run: |
+          cosign sign -y --key env://COSIGN_PRIVATE_KEY ${{ env.REGISTRY }}/${{ env.DESTINATION }}@${{ steps.push-kubernetes-cri-o-1_29.outputs.digest }}
+        env:
+          COSIGN_EXPERIMENTAL: false
+          COSIGN_PRIVATE_KEY: ${{ secrets.COSIGN_PRIVATE_KEY }}
+
+      - name: "Push container: kubernetes-cri-o-1.30"
+        uses: redhat-actions/push-to-registry@v2
+        id: push-kubernetes-cri-o-1_30
+        if: (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
+        with:
+          username: ${{ secrets.BOT_USERNAME }}
+          password: ${{ secrets.BOT_SECRET }}
+          image: ${{ env.DESTINATION }}
+          registry: ${{ env.REGISTRY }}
+          tags: ${{ env.RELEASE }}.kubernetes-cri-o-1.30
+
+      - name: "Sign container: kubernetes-cri-o-1.30"
+        if: (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
+        run: |
+          cosign sign -y --key env://COSIGN_PRIVATE_KEY ${{ env.REGISTRY }}/${{ env.DESTINATION }}@${{ steps.push-kubernetes-cri-o-1_30.outputs.digest }}
+        env:
+          COSIGN_EXPERIMENTAL: false
+          COSIGN_PRIVATE_KEY: ${{ secrets.COSIGN_PRIVATE_KEY }}
+
+      - name: "Push container: kubernetes-cri-o-1.31"
+        uses: redhat-actions/push-to-registry@v2
+        id: push-kubernetes-cri-o-1_31
+        if: (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
+        with:
+          username: ${{ secrets.BOT_USERNAME }}
+          password: ${{ secrets.BOT_SECRET }}
+          image: ${{ env.DESTINATION }}
+          registry: ${{ env.REGISTRY }}
+          tags: ${{ env.RELEASE }}.kubernetes-cri-o-1.31
+
+      - name: "Sign container: kubernetes-cri-o-1.31"
+        if: (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
+        run: |
+          cosign sign -y --key env://COSIGN_PRIVATE_KEY ${{ env.REGISTRY }}/${{ env.DESTINATION }}@${{ steps.push-kubernetes-cri-o-1_31.outputs.digest }}
         env:
           COSIGN_EXPERIMENTAL: false
           COSIGN_PRIVATE_KEY: ${{ secrets.COSIGN_PRIVATE_KEY }}
