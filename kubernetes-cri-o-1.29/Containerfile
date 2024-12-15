@@ -1,6 +1,7 @@
 FROM baseimage
 
 RUN dnf install -y \
+    --exclude cri-tools \
     cri-o1.29 \
     cri-tools1.29 \
     kubernetes1.29 \
