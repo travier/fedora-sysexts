@@ -1,0 +1,17 @@
+name := "mpd"
+pre_commands:= "dnf install -y https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm"
+packages := "
+    mpd
+    mpc
+    mpdris2
+    ncmpcpp
+"
+base_images := "
+quay.io/fedora/fedora-coreos:stable
+quay.io/fedora-ostree-desktops/silverblue:41
+quay.io/fedora-ostree-desktops/kinoite:41
+"
+
+import '../sysext.just'
+
+all: default
