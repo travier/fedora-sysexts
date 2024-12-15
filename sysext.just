@@ -28,6 +28,9 @@ pre_commands := ""
 # Install weak dependencies by default
 dnf_weak_deps := ""
 
+# Do not exclude any dependency by default
+exclude_packages := ""
+
 # Default to noarch + current architecture
 arch := "noarch " + arch()
 
@@ -133,6 +136,13 @@ download-rpms target:
     dnf_opts=""
     if [[ "{{dnf_weak_deps}}" == false ]]; then
         dnf_opts="--setopt=install_weak_deps=False"
+    fi
+    if [[ -n "{{exclude_packages}}" ]]; then
+        excluded_packages="$(echo "{{exclude_packages}}" | xargs)"
+        for p in ${excluded_packages}; do
+            echo "➖ Excluding package: ${p}"
+            dnf_opts+=" --exclude=${p}"
+        done
     fi
 
     packages="$(echo "{{packages}}" | xargs)"
@@ -319,6 +329,13 @@ reset-selinux-labels target:
     dnf_opts=""
     if [[ "{{dnf_weak_deps}}" == false ]]; then
         dnf_opts="--setopt=install_weak_deps=False"
+    fi
+    if [[ -n "{{exclude_packages}}" ]]; then
+        excluded_packages="$(echo "{{exclude_packages}}" | xargs)"
+        for p in ${excluded_packages}; do
+            echo "➖ Excluding package: ${p}"
+            dnf_opts+=" --exclude=${p}"
+        done
     fi
 
     pre_commands=""
