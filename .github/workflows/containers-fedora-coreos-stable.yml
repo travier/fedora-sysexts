@@ -54,10 +54,10 @@ jobs:
               if [[ -z "${diff}" ]]; then
                   echo "Skipping: No changes for this sysext in this PR"
                   echo "BUILD=false" >> "$GITHUB_OUTPUT"
-              else
-                  echo "BUILD=true" >> "$GITHUB_OUTPUT"
+                  exit 0
               fi
           fi
+          echo "BUILD=true" >> "$GITHUB_OUTPUT"
 
       - name: "Build container: 1password-cli"
         uses: redhat-actions/buildah-build@v2
@@ -84,10 +84,10 @@ jobs:
               if [[ -z "${diff}" ]]; then
                   echo "Skipping: No changes for this sysext in this PR"
                   echo "BUILD=false" >> "$GITHUB_OUTPUT"
-              else
-                  echo "BUILD=true" >> "$GITHUB_OUTPUT"
+                  exit 0
               fi
           fi
+          echo "BUILD=true" >> "$GITHUB_OUTPUT"
 
       - name: "Build container: btop"
         uses: redhat-actions/buildah-build@v2
@@ -114,10 +114,10 @@ jobs:
               if [[ -z "${diff}" ]]; then
                   echo "Skipping: No changes for this sysext in this PR"
                   echo "BUILD=false" >> "$GITHUB_OUTPUT"
-              else
-                  echo "BUILD=true" >> "$GITHUB_OUTPUT"
+                  exit 0
               fi
           fi
+          echo "BUILD=true" >> "$GITHUB_OUTPUT"
 
       - name: "Build container: cockpit"
         uses: redhat-actions/buildah-build@v2
@@ -144,10 +144,10 @@ jobs:
               if [[ -z "${diff}" ]]; then
                   echo "Skipping: No changes for this sysext in this PR"
                   echo "BUILD=false" >> "$GITHUB_OUTPUT"
-              else
-                  echo "BUILD=true" >> "$GITHUB_OUTPUT"
+                  exit 0
               fi
           fi
+          echo "BUILD=true" >> "$GITHUB_OUTPUT"
 
       - name: "Build container: compsize"
         uses: redhat-actions/buildah-build@v2
@@ -174,10 +174,10 @@ jobs:
               if [[ -z "${diff}" ]]; then
                   echo "Skipping: No changes for this sysext in this PR"
                   echo "BUILD=false" >> "$GITHUB_OUTPUT"
-              else
-                  echo "BUILD=true" >> "$GITHUB_OUTPUT"
+                  exit 0
               fi
           fi
+          echo "BUILD=true" >> "$GITHUB_OUTPUT"
 
       - name: "Build container: cri-o-1.29"
         uses: redhat-actions/buildah-build@v2
@@ -204,10 +204,10 @@ jobs:
               if [[ -z "${diff}" ]]; then
                   echo "Skipping: No changes for this sysext in this PR"
                   echo "BUILD=false" >> "$GITHUB_OUTPUT"
-              else
-                  echo "BUILD=true" >> "$GITHUB_OUTPUT"
+                  exit 0
               fi
           fi
+          echo "BUILD=true" >> "$GITHUB_OUTPUT"
 
       - name: "Build container: cri-o-1.30"
         uses: redhat-actions/buildah-build@v2
@@ -234,10 +234,10 @@ jobs:
               if [[ -z "${diff}" ]]; then
                   echo "Skipping: No changes for this sysext in this PR"
                   echo "BUILD=false" >> "$GITHUB_OUTPUT"
-              else
-                  echo "BUILD=true" >> "$GITHUB_OUTPUT"
+                  exit 0
               fi
           fi
+          echo "BUILD=true" >> "$GITHUB_OUTPUT"
 
       - name: "Build container: cri-o-1.31"
         uses: redhat-actions/buildah-build@v2
@@ -264,10 +264,10 @@ jobs:
               if [[ -z "${diff}" ]]; then
                   echo "Skipping: No changes for this sysext in this PR"
                   echo "BUILD=false" >> "$GITHUB_OUTPUT"
-              else
-                  echo "BUILD=true" >> "$GITHUB_OUTPUT"
+                  exit 0
               fi
           fi
+          echo "BUILD=true" >> "$GITHUB_OUTPUT"
 
       - name: "Build container: distrobox"
         uses: redhat-actions/buildah-build@v2
@@ -294,10 +294,10 @@ jobs:
               if [[ -z "${diff}" ]]; then
                   echo "Skipping: No changes for this sysext in this PR"
                   echo "BUILD=false" >> "$GITHUB_OUTPUT"
-              else
-                  echo "BUILD=true" >> "$GITHUB_OUTPUT"
+                  exit 0
               fi
           fi
+          echo "BUILD=true" >> "$GITHUB_OUTPUT"
 
       - name: "Build container: erofs-utils"
         uses: redhat-actions/buildah-build@v2
@@ -324,10 +324,10 @@ jobs:
               if [[ -z "${diff}" ]]; then
                   echo "Skipping: No changes for this sysext in this PR"
                   echo "BUILD=false" >> "$GITHUB_OUTPUT"
-              else
-                  echo "BUILD=true" >> "$GITHUB_OUTPUT"
+                  exit 0
               fi
           fi
+          echo "BUILD=true" >> "$GITHUB_OUTPUT"
 
       - name: "Build container: gdb"
         uses: redhat-actions/buildah-build@v2
@@ -354,10 +354,10 @@ jobs:
               if [[ -z "${diff}" ]]; then
                   echo "Skipping: No changes for this sysext in this PR"
                   echo "BUILD=false" >> "$GITHUB_OUTPUT"
-              else
-                  echo "BUILD=true" >> "$GITHUB_OUTPUT"
+                  exit 0
               fi
           fi
+          echo "BUILD=true" >> "$GITHUB_OUTPUT"
 
       - name: "Build container: git-tools"
         uses: redhat-actions/buildah-build@v2
@@ -384,10 +384,10 @@ jobs:
               if [[ -z "${diff}" ]]; then
                   echo "Skipping: No changes for this sysext in this PR"
                   echo "BUILD=false" >> "$GITHUB_OUTPUT"
-              else
-                  echo "BUILD=true" >> "$GITHUB_OUTPUT"
+                  exit 0
               fi
           fi
+          echo "BUILD=true" >> "$GITHUB_OUTPUT"
 
       - name: "Build container: htop"
         uses: redhat-actions/buildah-build@v2
@@ -414,10 +414,10 @@ jobs:
               if [[ -z "${diff}" ]]; then
                   echo "Skipping: No changes for this sysext in this PR"
                   echo "BUILD=false" >> "$GITHUB_OUTPUT"
-              else
-                  echo "BUILD=true" >> "$GITHUB_OUTPUT"
+                  exit 0
               fi
           fi
+          echo "BUILD=true" >> "$GITHUB_OUTPUT"
 
       - name: "Build container: incus"
         uses: redhat-actions/buildah-build@v2
@@ -444,10 +444,10 @@ jobs:
               if [[ -z "${diff}" ]]; then
                   echo "Skipping: No changes for this sysext in this PR"
                   echo "BUILD=false" >> "$GITHUB_OUTPUT"
-              else
-                  echo "BUILD=true" >> "$GITHUB_OUTPUT"
+                  exit 0
               fi
           fi
+          echo "BUILD=true" >> "$GITHUB_OUTPUT"
 
       - name: "Build container: iwd"
         uses: redhat-actions/buildah-build@v2
@@ -474,10 +474,10 @@ jobs:
               if [[ -z "${diff}" ]]; then
                   echo "Skipping: No changes for this sysext in this PR"
                   echo "BUILD=false" >> "$GITHUB_OUTPUT"
-              else
-                  echo "BUILD=true" >> "$GITHUB_OUTPUT"
+                  exit 0
               fi
           fi
+          echo "BUILD=true" >> "$GITHUB_OUTPUT"
 
       - name: "Build container: just"
         uses: redhat-actions/buildah-build@v2
@@ -504,10 +504,10 @@ jobs:
               if [[ -z "${diff}" ]]; then
                   echo "Skipping: No changes for this sysext in this PR"
                   echo "BUILD=false" >> "$GITHUB_OUTPUT"
-              else
-                  echo "BUILD=true" >> "$GITHUB_OUTPUT"
+                  exit 0
               fi
           fi
+          echo "BUILD=true" >> "$GITHUB_OUTPUT"
 
       - name: "Build container: kubernetes-1.29"
         uses: redhat-actions/buildah-build@v2
@@ -534,10 +534,10 @@ jobs:
               if [[ -z "${diff}" ]]; then
                   echo "Skipping: No changes for this sysext in this PR"
                   echo "BUILD=false" >> "$GITHUB_OUTPUT"
-              else
-                  echo "BUILD=true" >> "$GITHUB_OUTPUT"
+                  exit 0
               fi
           fi
+          echo "BUILD=true" >> "$GITHUB_OUTPUT"
 
       - name: "Build container: kubernetes-1.30"
         uses: redhat-actions/buildah-build@v2
@@ -564,10 +564,10 @@ jobs:
               if [[ -z "${diff}" ]]; then
                   echo "Skipping: No changes for this sysext in this PR"
                   echo "BUILD=false" >> "$GITHUB_OUTPUT"
-              else
-                  echo "BUILD=true" >> "$GITHUB_OUTPUT"
+                  exit 0
               fi
           fi
+          echo "BUILD=true" >> "$GITHUB_OUTPUT"
 
       - name: "Build container: kubernetes-1.31"
         uses: redhat-actions/buildah-build@v2
@@ -594,10 +594,10 @@ jobs:
               if [[ -z "${diff}" ]]; then
                   echo "Skipping: No changes for this sysext in this PR"
                   echo "BUILD=false" >> "$GITHUB_OUTPUT"
-              else
-                  echo "BUILD=true" >> "$GITHUB_OUTPUT"
+                  exit 0
               fi
           fi
+          echo "BUILD=true" >> "$GITHUB_OUTPUT"
 
       - name: "Build container: kubernetes-cri-o-1.29"
         uses: redhat-actions/buildah-build@v2
@@ -624,10 +624,10 @@ jobs:
               if [[ -z "${diff}" ]]; then
                   echo "Skipping: No changes for this sysext in this PR"
                   echo "BUILD=false" >> "$GITHUB_OUTPUT"
-              else
-                  echo "BUILD=true" >> "$GITHUB_OUTPUT"
+                  exit 0
               fi
           fi
+          echo "BUILD=true" >> "$GITHUB_OUTPUT"
 
       - name: "Build container: kubernetes-cri-o-1.30"
         uses: redhat-actions/buildah-build@v2
@@ -654,10 +654,10 @@ jobs:
               if [[ -z "${diff}" ]]; then
                   echo "Skipping: No changes for this sysext in this PR"
                   echo "BUILD=false" >> "$GITHUB_OUTPUT"
-              else
-                  echo "BUILD=true" >> "$GITHUB_OUTPUT"
+                  exit 0
               fi
           fi
+          echo "BUILD=true" >> "$GITHUB_OUTPUT"
 
       - name: "Build container: kubernetes-cri-o-1.31"
         uses: redhat-actions/buildah-build@v2
@@ -684,10 +684,10 @@ jobs:
               if [[ -z "${diff}" ]]; then
                   echo "Skipping: No changes for this sysext in this PR"
                   echo "BUILD=false" >> "$GITHUB_OUTPUT"
-              else
-                  echo "BUILD=true" >> "$GITHUB_OUTPUT"
+                  exit 0
               fi
           fi
+          echo "BUILD=true" >> "$GITHUB_OUTPUT"
 
       - name: "Build container: libvirtd"
         uses: redhat-actions/buildah-build@v2
@@ -714,10 +714,10 @@ jobs:
               if [[ -z "${diff}" ]]; then
                   echo "Skipping: No changes for this sysext in this PR"
                   echo "BUILD=false" >> "$GITHUB_OUTPUT"
-              else
-                  echo "BUILD=true" >> "$GITHUB_OUTPUT"
+                  exit 0
               fi
           fi
+          echo "BUILD=true" >> "$GITHUB_OUTPUT"
 
       - name: "Build container: monitoring"
         uses: redhat-actions/buildah-build@v2
@@ -744,10 +744,10 @@ jobs:
               if [[ -z "${diff}" ]]; then
                   echo "Skipping: No changes for this sysext in this PR"
                   echo "BUILD=false" >> "$GITHUB_OUTPUT"
-              else
-                  echo "BUILD=true" >> "$GITHUB_OUTPUT"
+                  exit 0
               fi
           fi
+          echo "BUILD=true" >> "$GITHUB_OUTPUT"
 
       - name: "Build container: neovim"
         uses: redhat-actions/buildah-build@v2
@@ -774,10 +774,10 @@ jobs:
               if [[ -z "${diff}" ]]; then
                   echo "Skipping: No changes for this sysext in this PR"
                   echo "BUILD=false" >> "$GITHUB_OUTPUT"
-              else
-                  echo "BUILD=true" >> "$GITHUB_OUTPUT"
+                  exit 0
               fi
           fi
+          echo "BUILD=true" >> "$GITHUB_OUTPUT"
 
       - name: "Build container: python"
         uses: redhat-actions/buildah-build@v2
@@ -804,10 +804,10 @@ jobs:
               if [[ -z "${diff}" ]]; then
                   echo "Skipping: No changes for this sysext in this PR"
                   echo "BUILD=false" >> "$GITHUB_OUTPUT"
-              else
-                  echo "BUILD=true" >> "$GITHUB_OUTPUT"
+                  exit 0
               fi
           fi
+          echo "BUILD=true" >> "$GITHUB_OUTPUT"
 
       - name: "Build container: ripgrep"
         uses: redhat-actions/buildah-build@v2
@@ -834,10 +834,10 @@ jobs:
               if [[ -z "${diff}" ]]; then
                   echo "Skipping: No changes for this sysext in this PR"
                   echo "BUILD=false" >> "$GITHUB_OUTPUT"
-              else
-                  echo "BUILD=true" >> "$GITHUB_OUTPUT"
+                  exit 0
               fi
           fi
+          echo "BUILD=true" >> "$GITHUB_OUTPUT"
 
       - name: "Build container: semanage"
         uses: redhat-actions/buildah-build@v2
@@ -864,10 +864,10 @@ jobs:
               if [[ -z "${diff}" ]]; then
                   echo "Skipping: No changes for this sysext in this PR"
                   echo "BUILD=false" >> "$GITHUB_OUTPUT"
-              else
-                  echo "BUILD=true" >> "$GITHUB_OUTPUT"
+                  exit 0
               fi
           fi
+          echo "BUILD=true" >> "$GITHUB_OUTPUT"
 
       - name: "Build container: strace"
         uses: redhat-actions/buildah-build@v2
@@ -894,10 +894,10 @@ jobs:
               if [[ -z "${diff}" ]]; then
                   echo "Skipping: No changes for this sysext in this PR"
                   echo "BUILD=false" >> "$GITHUB_OUTPUT"
-              else
-                  echo "BUILD=true" >> "$GITHUB_OUTPUT"
+                  exit 0
               fi
           fi
+          echo "BUILD=true" >> "$GITHUB_OUTPUT"
 
       - name: "Build container: tree"
         uses: redhat-actions/buildah-build@v2
@@ -924,10 +924,10 @@ jobs:
               if [[ -z "${diff}" ]]; then
                   echo "Skipping: No changes for this sysext in this PR"
                   echo "BUILD=false" >> "$GITHUB_OUTPUT"
-              else
-                  echo "BUILD=true" >> "$GITHUB_OUTPUT"
+                  exit 0
               fi
           fi
+          echo "BUILD=true" >> "$GITHUB_OUTPUT"
 
       - name: "Build container: vim"
         uses: redhat-actions/buildah-build@v2
@@ -954,10 +954,10 @@ jobs:
               if [[ -z "${diff}" ]]; then
                   echo "Skipping: No changes for this sysext in this PR"
                   echo "BUILD=false" >> "$GITHUB_OUTPUT"
-              else
-                  echo "BUILD=true" >> "$GITHUB_OUTPUT"
+                  exit 0
               fi
           fi
+          echo "BUILD=true" >> "$GITHUB_OUTPUT"
 
       - name: "Build container: zsh"
         uses: redhat-actions/buildah-build@v2

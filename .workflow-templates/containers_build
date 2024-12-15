@@ -9,10 +9,10 @@
               if [[ -z "${diff}" ]]; then
                   echo "Skipping: No changes for this sysext in this PR"
                   echo "BUILD=false" >> "$GITHUB_OUTPUT"
-              else
-                  echo "BUILD=true" >> "$GITHUB_OUTPUT"
+                  exit 0
               fi
           fi
+          echo "BUILD=true" >> "$GITHUB_OUTPUT"
 
       - name: "Build container: %%SYSEXT%%"
         uses: redhat-actions/buildah-build@v2
