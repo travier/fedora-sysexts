@@ -4,7 +4,7 @@ cri-o1.29
 cri-tools1.29
 "
 base_images := "
-quay.io/fedora/fedora-coreos:stable x86_64,aarch64
+quay.io/fedora/fedora-coreos:stable
 "
 
 import '../sysext.just'
