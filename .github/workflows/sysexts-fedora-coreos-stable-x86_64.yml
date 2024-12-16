@@ -564,7 +564,7 @@ jobs:
           done
 
           arch=""
-          if [[ "${ARCH}" != "x86_64"]]; then
+          if [[ "${ARCH}" != "x86_64" ]]; then
               arch="-${ARCH}"
           fi
 
