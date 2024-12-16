@@ -27,6 +27,7 @@ qemu-kvm
 swtpm
 virt-install
 "
+reload_manager := "true"
 base_images := "
 quay.io/fedora/fedora-coreos:stable
 "
