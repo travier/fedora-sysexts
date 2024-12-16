@@ -1,4 +1,4 @@
-name: "Build sysexts: Fedora Kinoite (41)"
+name: "Build sysexts: Fedora Kinoite (41) (x86_64)"
 
 env:
   IMAGE: 'quay.io/fedora-ostree-desktops/kinoite:41'
@@ -7,6 +7,7 @@ env:
   SHORTNAME: 'fedora-kinoite'
   GH_TOKEN: ${{ github.token }}
   PR: ${{ github.event_name == 'pull_request' }}
+  ARCH: 'x86_64'
 
 on:
   pull_request:
@@ -33,7 +34,7 @@ jobs:
     runs-on: "ubuntu-24.04"
     container:
       image: "quay.io/fedora/fedora:41"
-      options: "--privileged --security-opt label=disable --user 0:0"
+      options: "--privileged --security-opt label=disable --user 0:0 -v /proc/:/host/proc/:rw"
     steps:
       - name: "Install tools"
         run: |
@@ -48,6 +49,11 @@ jobs:
             wget
           dnf config-manager addrepo --from-repofile="https://cli.github.com/packages/rpm/gh-cli.repo"
           dnf install -y gh --repo gh-cli
+
+      - name: Setup QEMU for multi-arch builds
+        shell: bash
+        run: |
+          for f in /usr/lib/binfmt.d/*; do cat $f | tee /host/proc/sys/fs/binfmt_misc/register; done
 
       - name: "Checkout repo"
         uses: actions/checkout@v4
@@ -73,7 +79,7 @@ jobs:
                   exit 0
               fi
           fi
-          just build ${IMAGE}
+          just build ${IMAGE} ${ARCH}
           mv "${SYSEXT}"*".raw" "../artifacts/"
 
       - name: "Build sysext: 1password-gui"
@@ -88,7 +94,7 @@ jobs:
                   exit 0
               fi
           fi
-          just build ${IMAGE}
+          just build ${IMAGE} ${ARCH}
           mv "${SYSEXT}"*".raw" "../artifacts/"
 
       - name: "Build sysext: btop"
@@ -103,7 +109,7 @@ jobs:
                   exit 0
               fi
           fi
-          just build ${IMAGE}
+          just build ${IMAGE} ${ARCH}
           mv "${SYSEXT}"*".raw" "../artifacts/"
 
       - name: "Build sysext: chromium"
@@ -118,7 +124,7 @@ jobs:
                   exit 0
               fi
           fi
-          just build ${IMAGE}
+          just build ${IMAGE} ${ARCH}
           mv "${SYSEXT}"*".raw" "../artifacts/"
 
       - name: "Build sysext: compsize"
@@ -133,7 +139,7 @@ jobs:
                   exit 0
               fi
           fi
-          just build ${IMAGE}
+          just build ${IMAGE} ${ARCH}
           mv "${SYSEXT}"*".raw" "../artifacts/"
 
       - name: "Build sysext: distrobox"
@@ -148,7 +154,7 @@ jobs:
                   exit 0
               fi
           fi
-          just build ${IMAGE}
+          just build ${IMAGE} ${ARCH}
           mv "${SYSEXT}"*".raw" "../artifacts/"
 
       - name: "Build sysext: docker-ce"
@@ -163,7 +169,7 @@ jobs:
                   exit 0
               fi
           fi
-          just build ${IMAGE}
+          just build ${IMAGE} ${ARCH}
           mv "${SYSEXT}"*".raw" "../artifacts/"
 
       - name: "Build sysext: emacs"
@@ -178,7 +184,7 @@ jobs:
                   exit 0
               fi
           fi
-          just build ${IMAGE}
+          just build ${IMAGE} ${ARCH}
           mv "${SYSEXT}"*".raw" "../artifacts/"
 
       - name: "Build sysext: erofs-utils"
@@ -193,7 +199,7 @@ jobs:
                   exit 0
               fi
           fi
-          just build ${IMAGE}
+          just build ${IMAGE} ${ARCH}
           mv "${SYSEXT}"*".raw" "../artifacts/"
 
       - name: "Build sysext: firefox"
@@ -208,7 +214,7 @@ jobs:
                   exit 0
               fi
           fi
-          just build ${IMAGE}
+          just build ${IMAGE} ${ARCH}
           mv "${SYSEXT}"*".raw" "../artifacts/"
 
       - name: "Build sysext: fuse2"
@@ -223,7 +229,7 @@ jobs:
                   exit 0
               fi
           fi
-          just build ${IMAGE}
+          just build ${IMAGE} ${ARCH}
           mv "${SYSEXT}"*".raw" "../artifacts/"
 
       - name: "Build sysext: gdb"
@@ -238,7 +244,7 @@ jobs:
                   exit 0
               fi
           fi
-          just build ${IMAGE}
+          just build ${IMAGE} ${ARCH}
           mv "${SYSEXT}"*".raw" "../artifacts/"
 
       - name: "Build sysext: git-tools"
@@ -253,7 +259,7 @@ jobs:
                   exit 0
               fi
           fi
-          just build ${IMAGE}
+          just build ${IMAGE} ${ARCH}
           mv "${SYSEXT}"*".raw" "../artifacts/"
 
       - name: "Build sysext: google-chrome"
@@ -268,7 +274,7 @@ jobs:
                   exit 0
               fi
           fi
-          just build ${IMAGE}
+          just build ${IMAGE} ${ARCH}
           mv "${SYSEXT}"*".raw" "../artifacts/"
 
       - name: "Build sysext: htop"
@@ -283,7 +289,7 @@ jobs:
                   exit 0
               fi
           fi
-          just build ${IMAGE}
+          just build ${IMAGE} ${ARCH}
           mv "${SYSEXT}"*".raw" "../artifacts/"
 
       - name: "Build sysext: incus"
@@ -298,7 +304,7 @@ jobs:
                   exit 0
               fi
           fi
-          just build ${IMAGE}
+          just build ${IMAGE} ${ARCH}
           mv "${SYSEXT}"*".raw" "../artifacts/"
 
       - name: "Build sysext: iwd"
@@ -313,7 +319,7 @@ jobs:
                   exit 0
               fi
           fi
-          just build ${IMAGE}
+          just build ${IMAGE} ${ARCH}
           mv "${SYSEXT}"*".raw" "../artifacts/"
 
       - name: "Build sysext: just"
@@ -328,7 +334,7 @@ jobs:
                   exit 0
               fi
           fi
-          just build ${IMAGE}
+          just build ${IMAGE} ${ARCH}
           mv "${SYSEXT}"*".raw" "../artifacts/"
 
       - name: "Build sysext: keepassxc"
@@ -343,7 +349,7 @@ jobs:
                   exit 0
               fi
           fi
-          just build ${IMAGE}
+          just build ${IMAGE} ${ARCH}
           mv "${SYSEXT}"*".raw" "../artifacts/"
 
       - name: "Build sysext: krb5-workstation"
@@ -358,7 +364,7 @@ jobs:
                   exit 0
               fi
           fi
-          just build ${IMAGE}
+          just build ${IMAGE} ${ARCH}
           mv "${SYSEXT}"*".raw" "../artifacts/"
 
       - name: "Build sysext: libvirtd-desktop"
@@ -373,7 +379,7 @@ jobs:
                   exit 0
               fi
           fi
-          just build ${IMAGE}
+          just build ${IMAGE} ${ARCH}
           mv "${SYSEXT}"*".raw" "../artifacts/"
 
       - name: "Build sysext: mesa-git"
@@ -388,7 +394,7 @@ jobs:
                   exit 0
               fi
           fi
-          just build ${IMAGE}
+          just build ${IMAGE} ${ARCH}
           mv "${SYSEXT}"*".raw" "../artifacts/"
 
       - name: "Build sysext: microsoft-edge"
@@ -403,7 +409,7 @@ jobs:
                   exit 0
               fi
           fi
-          just build ${IMAGE}
+          just build ${IMAGE} ${ARCH}
           mv "${SYSEXT}"*".raw" "../artifacts/"
 
       - name: "Build sysext: moby-engine"
@@ -418,7 +424,7 @@ jobs:
                   exit 0
               fi
           fi
-          just build ${IMAGE}
+          just build ${IMAGE} ${ARCH}
           mv "${SYSEXT}"*".raw" "../artifacts/"
 
       - name: "Build sysext: monitoring"
@@ -433,7 +439,7 @@ jobs:
                   exit 0
               fi
           fi
-          just build ${IMAGE}
+          just build ${IMAGE} ${ARCH}
           mv "${SYSEXT}"*".raw" "../artifacts/"
 
       - name: "Build sysext: mpd"
@@ -448,7 +454,7 @@ jobs:
                   exit 0
               fi
           fi
-          just build ${IMAGE}
+          just build ${IMAGE} ${ARCH}
           mv "${SYSEXT}"*".raw" "../artifacts/"
 
       - name: "Build sysext: mullvad-vpn"
@@ -463,7 +469,7 @@ jobs:
                   exit 0
               fi
           fi
-          just build ${IMAGE}
+          just build ${IMAGE} ${ARCH}
           mv "${SYSEXT}"*".raw" "../artifacts/"
 
       - name: "Build sysext: neovim"
@@ -478,7 +484,7 @@ jobs:
                   exit 0
               fi
           fi
-          just build ${IMAGE}
+          just build ${IMAGE} ${ARCH}
           mv "${SYSEXT}"*".raw" "../artifacts/"
 
       - name: "Build sysext: openh264"
@@ -493,7 +499,7 @@ jobs:
                   exit 0
               fi
           fi
-          just build ${IMAGE}
+          just build ${IMAGE} ${ARCH}
           mv "${SYSEXT}"*".raw" "../artifacts/"
 
       - name: "Build sysext: ripgrep"
@@ -508,7 +514,7 @@ jobs:
                   exit 0
               fi
           fi
-          just build ${IMAGE}
+          just build ${IMAGE} ${ARCH}
           mv "${SYSEXT}"*".raw" "../artifacts/"
 
       - name: "Build sysext: steam-devices"
@@ -523,7 +529,7 @@ jobs:
                   exit 0
               fi
           fi
-          just build ${IMAGE}
+          just build ${IMAGE} ${ARCH}
           mv "${SYSEXT}"*".raw" "../artifacts/"
 
       - name: "Build sysext: steam"
@@ -538,7 +544,7 @@ jobs:
                   exit 0
               fi
           fi
-          just build ${IMAGE}
+          just build ${IMAGE} ${ARCH}
           mv "${SYSEXT}"*".raw" "../artifacts/"
 
       - name: "Build sysext: strace"
@@ -553,7 +559,7 @@ jobs:
                   exit 0
               fi
           fi
-          just build ${IMAGE}
+          just build ${IMAGE} ${ARCH}
           mv "${SYSEXT}"*".raw" "../artifacts/"
 
       - name: "Build sysext: tree"
@@ -568,7 +574,7 @@ jobs:
                   exit 0
               fi
           fi
-          just build ${IMAGE}
+          just build ${IMAGE} ${ARCH}
           mv "${SYSEXT}"*".raw" "../artifacts/"
 
       - name: "Build sysext: vim"
@@ -583,7 +589,7 @@ jobs:
                   exit 0
               fi
           fi
-          just build ${IMAGE}
+          just build ${IMAGE} ${ARCH}
           mv "${SYSEXT}"*".raw" "../artifacts/"
 
       - name: "Build sysext: vscode"
@@ -598,7 +604,7 @@ jobs:
                   exit 0
               fi
           fi
-          just build ${IMAGE}
+          just build ${IMAGE} ${ARCH}
           mv "${SYSEXT}"*".raw" "../artifacts/"
 
       - name: "Build sysext: vscodium"
@@ -613,7 +619,7 @@ jobs:
                   exit 0
               fi
           fi
-          just build ${IMAGE}
+          just build ${IMAGE} ${ARCH}
           mv "${SYSEXT}"*".raw" "../artifacts/"
 
       - name: "Build sysext: wireguard-tools"
@@ -628,7 +634,7 @@ jobs:
                   exit 0
               fi
           fi
-          just build ${IMAGE}
+          just build ${IMAGE} ${ARCH}
           mv "${SYSEXT}"*".raw" "../artifacts/"
 
       - name: "Build sysext: zoxide"
@@ -643,7 +649,7 @@ jobs:
                   exit 0
               fi
           fi
-          just build ${IMAGE}
+          just build ${IMAGE} ${ARCH}
           mv "${SYSEXT}"*".raw" "../artifacts/"
 
       - name: "Build sysext: zsh"
@@ -658,7 +664,7 @@ jobs:
                   exit 0
               fi
           fi
-          just build ${IMAGE}
+          just build ${IMAGE} ${ARCH}
           mv "${SYSEXT}"*".raw" "../artifacts/"
 
       - name: Create a release with a SHA256SUMS manifest and systemd-sysupdate configs
@@ -673,18 +679,24 @@ jobs:
           sysexts=()
           for s in $(ls *.raw); do
               s="${s%-*-x86-64.raw}"
+              s="${s%-*-aarch64.raw}"
               sed "s/%%SYSEXT%%/${s}/g" ../.workflow-templates/systemd-sysupdate.conf > ${s}.conf
           done
+
+          arch=""
+          if [[ "${ARCH}" != "x86_64"]]; then
+              arch="-${ARCH}"
+          fi
 
           gh release delete \
             --cleanup-tag \
             --yes \
-            "${SHORTNAME}-${RELEASE}" \
+            "${SHORTNAME}-${RELEASE}${arch}" \
             || true
 
           # TODO: Handle --latest
           gh release create \
-            --title "${NAME} sysexts" \
-            --notes "System extensions for ${NAME}" \
-            "${SHORTNAME}-${RELEASE}" \
+            --title "${NAME} sysexts (${ARCH})" \
+            --notes "System extensions for ${NAME} (${ARCH})" \
+            "${SHORTNAME}-${RELEASE}${arch}" \
             ./*

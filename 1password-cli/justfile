@@ -10,7 +10,7 @@ import '../sysext.just'
 
 all: default
 
-download-manual:
+download-manual arch=arch:
     #!/bin/bash
     set -euo pipefail
     # set -x

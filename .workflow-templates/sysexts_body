@@ -10,5 +10,5 @@
                   exit 0
               fi
           fi
-          just build ${IMAGE}
+          just build ${IMAGE} ${ARCH}
           mv "${SYSEXT}"*".raw" "../artifacts/"

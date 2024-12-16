@@ -10,7 +10,7 @@ import '../sysext.just'
 all: default
 
 # Custom download step to get VSCodium RPM
-download-rpms target:
+download-rpms target arch=arch:
     #!/bin/bash
     set -euo pipefail
     # set -x

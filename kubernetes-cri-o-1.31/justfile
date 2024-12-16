@@ -11,7 +11,7 @@ exclude_packages := "
 cri-tools
 "
 base_images := "
-quay.io/fedora/fedora-coreos:stable
+quay.io/fedora/fedora-coreos:stable x86_64,aarch64
 "
 
 import '../sysext.just'

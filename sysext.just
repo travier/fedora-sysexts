@@ -7,6 +7,9 @@ set allow-duplicate-recipes := true
 # sysexts must explicitely say which base operating system images they target
 base_images := ""
 
+# Default to building for the current architecture
+arch := arch()
+
 # Do not download any packages by default
 packages := ""
 
@@ -32,7 +35,7 @@ dnf_weak_deps := ""
 exclude_packages := ""
 
 # Default to noarch + current architecture
-arch := "noarch " + arch()
+dnf_arch := ""
 
 # Do not install any additional files by default
 files := ""
@@ -53,7 +56,19 @@ default:
     echo "{{base_images}}"
 
 # Main recipe with all the steps to use to build a sysext
-build target: (check target) clean (download-rpms target) download-manual setup-rootfs install-rpms install-files install-manual move-etc rm-ignored (reset-selinux-labels target) (build-erofs target)
+build target arch=arch: \
+    (check target arch) \
+    clean \
+    (download-rpms target arch) \
+    (download-manual arch) \
+    (setup-rootfs arch) \
+    install-rpms \
+    install-files \
+    install-manual \
+    move-etc \
+    rm-ignored \
+    (reset-selinux-labels target arch) \
+    (build-erofs target arch)
 
 # List the supported targets for this sysext. To use in CI and scripting
 targets:
@@ -69,7 +84,7 @@ targets:
     echo "{{base_images}}" | xargs
 
 # Sanity check that some variables are set
-check target:
+check target arch=arch:
     #!/bin/bash
     set -euo pipefail
     # set -x
@@ -82,14 +97,51 @@ check target:
 
     # Make sure that the current target is in the supported list
     found=false
-    for base in $(echo "{{base_images}}" | xargs); do
-        if [[ "${base}" == {{target}} ]]; then
-            found=true
-            break
+    mapfile -t baseimages <<< "{{base_images}}"
+    for base in "${baseimages[@]}"; do
+        if [[ -z "${base}" ]]; then
+            continue
+        fi
+        # echo "Checking against: $base"
+        # Split on whitespace
+        baseimage=($base)
+        if [[ "${baseimage[0]}" == {{target}} ]]; then
+            # echo "Base image name matched: ${baseimage[0]}"
+            # Ignore architecture check if nothing is specified and architecture is x86_64
+            # echo "${baseimage[@]} ${#baseimage[@]}"
+            if [[ "${#baseimage[@]}" -eq 1 ]]; then
+                # echo "No architecture set for base image"
+                if [[ "{{arch}}" == "x86_64" ]]; then
+                    found=true
+                    break
+                fi
+                # Otherwise skip this entry as we can not be sure it's supported
+                # echo "Potentially unsupported arch for this image: {{arch}}"
+                break
+            fi
+            IFS=','
+            # Check if the architecture is in the list
+            read -ra arches <<< "${baseimage[1]}"
+            unset IFS
+            # echo "Architectures available: ${arches[@]}"
+            for a in "${arches[@]}"; do
+                # echo "Looking at: ${a}"
+                if [[ "${a}" == "{{arch}}" ]]; then
+                    found=true
+                    break
+                fi
+            done
+            # Break again out of the loop if found
+            if [[ "${found}" == true ]]; then
+                break
+            fi
         fi
     done
     if [[ ${found} == "false" ]]; then
-        echo "{{target}} is not listed as a supported base image for this sysext"
+        echo "{{target}} {{arch}} is not listed as a supported base image for this sysext"
+        echo ""
+        echo "Valid targets for this sysext:"
+        echo "{{base_images}}"
         exit 1
     fi
 
@@ -102,7 +154,7 @@ check target:
 # Download RPMs to install. Use the following variables:
 # - packages: List of packages to download (and later install)
 # - enable_repos: List of additional repos to enable
-download-rpms target:
+download-rpms target arch=arch:
     #!/bin/bash
     set -euo pipefail
     # set -x
@@ -128,9 +180,14 @@ download-rpms target:
         done
     fi
 
-    arch=""
-    for a in {{arch}}; do
-        arch+="--arch=${a} "
+    dnf_arch=""
+    if [[ -z "{{dnf_arch}}" ]]; then
+        dnf_arches="noarch {{arch}}"
+    else
+        dnf_arches="{{dnf_arch}}"
+    fi
+    for a in ${dnf_arches}; do
+        dnf_arch+="--arch=${a} "
     done
 
     dnf_opts=""
@@ -171,25 +228,26 @@ download-rpms target:
     mkdir rpms
     cd rpms
 
-    echo "⬇️ Downloading packages ({{arch}}): ${packages}"
-    # dnf install --downloadonly --downloaddir . ${arch} ${enablerepos} ${packages}
+    echo "⬇️ Downloading packages (${dnf_arches}): ${packages}"
+    # dnf install --downloadonly --downloaddir . ${dnf_arch} ${enablerepos} ${packages}
     podman run --rm -ti \
+        --arch={{arch}} \
         --volume "${PWD}:/var/srv" \
         --volume "${PWD}/../../.dnf-cache:/var/cache/libdnf5" \
         --workdir "/var/srv" \
         --security-opt label=disable \
         "{{target}}" \
-        bash -c "${pre_commands}dnf download --resolve ${arch} ${dnf_opts} ${disablerepos} ${enablerepos} ${packages}"
+        bash -c "${pre_commands}dnf download --resolve ${dnf_arch} ${dnf_opts} ${disablerepos} ${enablerepos} ${packages}"
 
 # Manual download step, that can be overridden to dowload non RPM content
-download-manual:
+download-manual arch=arch:
     #!/bin/bash
     set -euo pipefail
     # set -x
     exit 0
 
 # Sets up the rootfs directory and creates the extension release config
-setup-rootfs:
+setup-rootfs arch=arch:
     #!/bin/bash
     set -euo pipefail
     # set -x
@@ -205,7 +263,10 @@ setup-rootfs:
 
     echo "➡️ Setting up extension config file"
     ${SUDO} install -d -m0755 usr/lib/extension-release.d
-    echo "ID=\"_any\"" | ${SUDO} tee usr/lib/extension-release.d/extension-release.{{name}} > /dev/null
+    {
+    echo "ID=\"_any\""
+    echo "ARCHITECTURE=\"{{arch}}\""
+    } | ${SUDO} tee "usr/lib/extension-release.d/extension-release.{{name}}" > /dev/null
 
 # Install (extract) RPM packages download in download-rpms recipe. Uses:
 # - packages: List of packages to install
@@ -315,7 +376,7 @@ rm-ignored:
     done
 
 # Reset SELinux labels to expected values from the policy
-reset-selinux-labels target:
+reset-selinux-labels target arch=arch:
     #!/bin/bash
     set -euo pipefail
     # set -x
@@ -358,6 +419,7 @@ reset-selinux-labels target:
     filecontexts="/etc/selinux/targeted/contexts/files/file_contexts"
     echo "🏷️ Resetting SELinux labels"
     podman run --rm -ti \
+        --arch={{arch}} \
         --volume "${PWD}:/var/srv" \
         --volume "${PWD}/../.dnf-cache:/var/cache/libdnf5" \
         --workdir "/var/srv" \
@@ -367,7 +429,7 @@ reset-selinux-labels target:
         bash -c "${pre_commands}cd rootfs && setfiles -r . ${filecontexts} . && chcon --user=system_u --recursive ."
 
 # Creates the EROFS sysext file
-build-erofs target:
+build-erofs target arch=arch:
     #!/bin/bash
     set -euo pipefail
     # set -x
@@ -380,10 +442,12 @@ build-erofs target:
 
     echo "🔒 Creating EROFS sysext ({{compression}})"
     version=$(podman run --rm -ti \
+        --arch={{arch}} \
         --security-opt label=disable \
         "{{target}}" \
         bash -c 'source /etc/os-release ; echo -n ${OSTREE_VERSION}')
-    arch=$(uname -m | sed 's/_/-/g')
+    # Post process architecture to match systemd architecture list
+    arch="$(echo {{arch}} | sed 's/_/-/g')"
     ${SUDO} mkfs.erofs -z{{compression}} {{name}}-${version}-${arch}.raw rootfs > /dev/null
 
     if [[ "${UID}" != "0" ]]; then
