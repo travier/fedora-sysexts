@@ -15,7 +15,7 @@ import '../sysext.just'
 all: default
 
 # Custom download step to get bandwhich
-download-manual:
+download-manual arch=arch:
     #!/bin/bash
     set -euo pipefail
     # set -x
