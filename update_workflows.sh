@@ -14,6 +14,7 @@ main() {
         ${0} \
             'quay.io/fedora/fedora-coreos' \
             'stable' \
+            'x86_64' \
             'Fedora CoreOS (stable)' \
             'fedora-coreos' \
             'quay.io/travier' \
@@ -22,6 +23,7 @@ main() {
         ${0} \
             'quay.io/fedora-ostree-desktops/kinoite' \
             '41' \
+            'x86_64' \
             'Fedora Kinoite (41)' \
             'fedora-kinoite' \
             'quay.io/travier' \
@@ -30,6 +32,7 @@ main() {
         ${0} \
             'quay.io/fedora-ostree-desktops/silverblue' \
             '41' \
+            'x86_64' \
             'Fedora Silverblue (41)' \
             'fedora-silverblue' \
             'quay.io/travier' \
@@ -40,10 +43,11 @@ main() {
 
     local -r image="${1}"
     local -r release="${2}"
-    local -r name="${3}"
-    local -r shortname="${4}"
-    local -r registry="${5}"
-    local -r destination="${6}"
+    local -r arch="${3}"
+    local -r name="${4}"
+    local -r shortname="${5}"
+    local -r registry="${6}"
+    local -r destination="${7}"
 
     if [[ ! -d .github ]] || [[ ! -d .git ]]; then
         echo "This script must be run at the root of the repo"
@@ -54,8 +58,15 @@ main() {
     sysexts=()
     for s in $(git ls-tree -d --name-only HEAD | grep -Ev ".github|templates"); do
         pushd "${s}" > /dev/null
-        if [[ $(just targets | grep -c "${image}:${release}") == "1" ]]; then
-            sysexts+=("${s}")
+        # Only require the architecture to be explicitly listed for non x86_64 for now
+        if [[ "${arch}" == "x86_64" ]]; then
+            if [[ $(just targets | grep -c "${image}:${release}") == "1" ]]; then
+                sysexts+=("${s}")
+            fi
+        else
+            if [[ $(just targets | grep -cE "${image}:${release} .*${arch}.*") == "1" ]]; then
+                sysexts+=("${s}")
+            fi
         fi
         popd > /dev/null
     done
@@ -73,6 +84,7 @@ main() {
         -e "s|%%RELEASE%%|${release}|g" \
         -e "s|%%NAME%%|${name}|g" \
         -e "s|%%SHORTNAME%%|${shortname}|g" \
+        -e "s|%%ARCH%%|${arch}|g" \
         "${tmpl}/sysexts_header"
     echo ""
     for s in "${sysexts[@]}"; do
@@ -80,9 +92,13 @@ main() {
         echo ""
     done
     cat "${tmpl}/sysexts_footer"
-    } > ".github/workflows/sysexts-${shortname}-${release}.yml"
+    } > ".github/workflows/sysexts-${shortname}-${release}-${arch}.yml"
 
     # Generate container sysexts workflows
+    # Skip non x86-64 builds for now
+    if [[ "${arch}" != "x86_64" ]]; then
+        return 0
+    fi
     {
     sed \
         -e "s|%%IMAGE%%|${image}|g" \

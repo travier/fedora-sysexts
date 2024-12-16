@@ -1,4 +1,4 @@
-name: "Build sysexts: %%NAME%%"
+name: "Build sysexts: %%NAME%% (%%ARCH%%)"
 
 env:
   IMAGE: '%%IMAGE%%'
@@ -7,6 +7,7 @@ env:
   SHORTNAME: '%%SHORTNAME%%'
   GH_TOKEN: ${{ github.token }}
   PR: ${{ github.event_name == 'pull_request' }}
+  ARCH: '%%ARCH%%'
 
 on:
   pull_request:
@@ -33,7 +34,7 @@ jobs:
     runs-on: "ubuntu-24.04"
     container:
       image: "quay.io/fedora/fedora:41"
-      options: "--privileged --security-opt label=disable --user 0:0"
+      options: "--privileged --security-opt label=disable --user 0:0 -v /proc/:/host/proc/:rw"
     steps:
       - name: "Install tools"
         run: |
@@ -48,6 +49,11 @@ jobs:
             wget
           dnf config-manager addrepo --from-repofile="https://cli.github.com/packages/rpm/gh-cli.repo"
           dnf install -y gh --repo gh-cli
+
+      - name: Setup QEMU for multi-arch builds
+        shell: bash
+        run: |
+          for f in /usr/lib/binfmt.d/*; do cat $f | tee /host/proc/sys/fs/binfmt_misc/register; done
 
       - name: "Checkout repo"
         uses: actions/checkout@v4
