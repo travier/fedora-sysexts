@@ -53,7 +53,19 @@ default:
     echo "{{base_images}}"
 
 # Main recipe with all the steps to use to build a sysext
-build target: (check target) clean (download-rpms target) download-manual setup-rootfs install-rpms install-files install-manual move-etc rm-ignored (reset-selinux-labels target) (build-erofs target)
+build target: \
+    (check target) \
+    clean \
+    (download-rpms target) \
+    download-manual \
+    setup-rootfs \
+    install-rpms \
+    install-files \
+    install-manual \
+    move-etc \
+    rm-ignored \
+    (reset-selinux-labels target) \
+    (build-erofs target)
 
 # List the supported targets for this sysext. To use in CI and scripting
 targets:
