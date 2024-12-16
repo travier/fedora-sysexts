@@ -32,7 +32,7 @@ dnf_weak_deps := ""
 exclude_packages := ""
 
 # Default to noarch + current architecture
-arch := "noarch " + arch()
+dnf_arch := ""
 
 # Do not install any additional files by default
 files := ""
@@ -128,9 +128,14 @@ download-rpms target:
         done
     fi
 
-    arch=""
-    for a in {{arch}}; do
-        arch+="--arch=${a} "
+    dnf_arch=""
+    if [[ -z "{{dnf_arch}}" ]]; then
+        dnf_arches="noarch {{arch}}"
+    else
+        dnf_arches="{{dnf_arch}}"
+    fi
+    for a in ${dnf_arches}; do
+        dnf_arch+="--arch=${a} "
     done
 
     dnf_opts=""
@@ -171,15 +176,15 @@ download-rpms target:
     mkdir rpms
     cd rpms
 
-    echo "⬇️ Downloading packages ({{arch}}): ${packages}"
-    # dnf install --downloadonly --downloaddir . ${arch} ${enablerepos} ${packages}
+    echo "⬇️ Downloading packages (${dnf_arches}): ${packages}"
+    # dnf install --downloadonly --downloaddir . ${dnf_arch} ${enablerepos} ${packages}
     podman run --rm -ti \
         --volume "${PWD}:/var/srv" \
         --volume "${PWD}/../../.dnf-cache:/var/cache/libdnf5" \
         --workdir "/var/srv" \
         --security-opt label=disable \
         "{{target}}" \
-        bash -c "${pre_commands}dnf download --resolve ${arch} ${dnf_opts} ${disablerepos} ${enablerepos} ${packages}"
+        bash -c "${pre_commands}dnf download --resolve ${dnf_arch} ${dnf_opts} ${disablerepos} ${enablerepos} ${packages}"
 
 # Manual download step, that can be overridden to dowload non RPM content
 download-manual:
