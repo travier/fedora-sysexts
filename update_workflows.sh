@@ -21,6 +21,15 @@ main() {
             'fedora-coreos-sysexts'
 
         ${0} \
+            'quay.io/fedora/fedora-coreos' \
+            'stable' \
+            'aarch64' \
+            'Fedora CoreOS (stable)' \
+            'fedora-coreos' \
+            'quay.io/travier' \
+            'fedora-coreos-sysexts'
+
+        ${0} \
             'quay.io/fedora-ostree-desktops/kinoite' \
             '41' \
             'x86_64' \
