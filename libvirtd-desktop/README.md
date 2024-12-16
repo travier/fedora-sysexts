@@ -32,6 +32,6 @@ See the [Virtual Machine Manager Flatpak](https://flathub.org/apps/org.virt_mana
   ```
 - Enable libvirtd (via virtqemud & virtnetworkd):
   ```
-  $ sudo systemctl enable --now virtqemud.socket virtnetworkd.socket
+  $ sudo systemctl enable --now virtqemud.socket virtnetworkd.socket virtstoraged.socket
   ```
 - For an unknown reason yet, you will have to start them manually on each boot.
