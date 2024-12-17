@@ -265,7 +265,9 @@ setup-rootfs arch=arch:
     ${SUDO} install -d -m0755 usr/lib/extension-release.d
     {
     echo "ID=\"_any\""
-    echo "ARCHITECTURE=\"{{arch}}\""
+    # Post process architecture to match systemd architecture list
+    arch="$(echo {{arch}} | sed 's/_/-/g')"
+    echo "ARCHITECTURE=\"${arch}\""
     } | ${SUDO} tee "usr/lib/extension-release.d/extension-release.{{name}}" > /dev/null
 
 # Install (extract) RPM packages download in download-rpms recipe. Uses:
