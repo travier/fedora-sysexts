@@ -1094,6 +1094,36 @@ jobs:
             --from
             ${{ env.IMAGE }}:${{ env.RELEASE }}
 
+      - name: "Checking if we need to build container: wireshark"
+        id: check-wireshark
+        env:
+          SYSEXT: wireshark
+        run: |
+          cd "${SYSEXT}"
+          if [[ "${PR}" == "true" ]]; then
+              diff="$(git diff origin/main HEAD --stat -- .)"
+              if [[ -z "${diff}" ]]; then
+                  echo "Skipping: No changes for this sysext in this PR"
+                  echo "BUILD=false" >> "$GITHUB_OUTPUT"
+                  exit 0
+              fi
+          fi
+          echo "BUILD=true" >> "$GITHUB_OUTPUT"
+
+      - name: "Build container: wireshark"
+        uses: redhat-actions/buildah-build@v2
+        if: (steps.check-wireshark.outputs.BUILD == 'true')
+        with:
+          context: 'wireshark'
+          image: ${{ env.DESTINATION }}
+          tags: ${{ env.RELEASE }}.wireshark
+          containerfiles: 'wireshark/Containerfile'
+          layers: false
+          oci: true
+          extra-args:
+            --from
+            ${{ env.IMAGE }}:${{ env.RELEASE }}
+
       - name: "Checking if we need to build container: zoxide"
         id: check-zoxide
         env:
@@ -1826,6 +1856,25 @@ jobs:
         if: (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
         run: |
           cosign sign -y --key env://COSIGN_PRIVATE_KEY ${{ env.REGISTRY }}/${{ env.DESTINATION }}@${{ steps.push-wireguard-tools.outputs.digest }}
+        env:
+          COSIGN_EXPERIMENTAL: false
+          COSIGN_PRIVATE_KEY: ${{ secrets.COSIGN_PRIVATE_KEY }}
+
+      - name: "Push container: wireshark"
+        uses: redhat-actions/push-to-registry@v2
+        id: push-wireshark
+        if: (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
+        with:
+          username: ${{ secrets.BOT_USERNAME }}
+          password: ${{ secrets.BOT_SECRET }}
+          image: ${{ env.DESTINATION }}
+          registry: ${{ env.REGISTRY }}
+          tags: ${{ env.RELEASE }}.wireshark
+
+      - name: "Sign container: wireshark"
+        if: (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
+        run: |
+          cosign sign -y --key env://COSIGN_PRIVATE_KEY ${{ env.REGISTRY }}/${{ env.DESTINATION }}@${{ steps.push-wireshark.outputs.digest }}
         env:
           COSIGN_EXPERIMENTAL: false
           COSIGN_PRIVATE_KEY: ${{ secrets.COSIGN_PRIVATE_KEY }}
