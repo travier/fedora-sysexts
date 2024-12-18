@@ -1,9 +1,13 @@
 name := "kubernetes-1.31"
 packages := "
+cri-tools1.31
 kubernetes1.31
 kubernetes1.31-client
 kubernetes1.31-kubeadm
 kubernetes1.31-systemd
+"
+exclude_packages := "
+cri-tools
 "
 base_images := "
 quay.io/fedora/fedora-coreos:stable
