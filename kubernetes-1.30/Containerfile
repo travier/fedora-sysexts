@@ -1,6 +1,8 @@
 FROM baseimage
 
 RUN dnf install -y \
+    --exclude cri-tools \
+    cri-tools1.30 \
     kubernetes1.30 \
     kubernetes1.30-client \
     kubernetes1.30-kubeadm \

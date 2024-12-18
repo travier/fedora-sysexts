@@ -3,6 +3,9 @@ packages := "
 cri-o1.31
 cri-tools1.31
 "
+exclude_packages := "
+cri-tools
+"
 base_images := "
 quay.io/fedora/fedora-coreos:stable
 "
