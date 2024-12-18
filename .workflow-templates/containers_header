@@ -25,6 +25,7 @@ permissions: read-all
 # sequentialy for the main branch. Also cancel in progress workflow runs.
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref || github.run_id }}-${{ inputs.sysext }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   build:
