@@ -584,6 +584,36 @@ jobs:
             --from
             ${{ env.IMAGE }}:${{ env.RELEASE }}
 
+      - name: "Checking if we need to build container: kubernetes-1.32"
+        id: check-kubernetes-1_32
+        env:
+          SYSEXT: kubernetes-1.32
+        run: |
+          cd "${SYSEXT}"
+          if [[ "${PR}" == "true" ]]; then
+              diff="$(git diff origin/main HEAD --stat -- .)"
+              if [[ -z "${diff}" ]]; then
+                  echo "Skipping: No changes for this sysext in this PR"
+                  echo "BUILD=false" >> "$GITHUB_OUTPUT"
+                  exit 0
+              fi
+          fi
+          echo "BUILD=true" >> "$GITHUB_OUTPUT"
+
+      - name: "Build container: kubernetes-1.32"
+        uses: redhat-actions/buildah-build@v2
+        if: (steps.check-kubernetes-1_32.outputs.BUILD == 'true')
+        with:
+          context: 'kubernetes-1.32'
+          image: ${{ env.DESTINATION }}
+          tags: ${{ env.RELEASE }}.kubernetes-1.32
+          containerfiles: 'kubernetes-1.32/Containerfile'
+          layers: false
+          oci: true
+          extra-args:
+            --from
+            ${{ env.IMAGE }}:${{ env.RELEASE }}
+
       - name: "Checking if we need to build container: kubernetes-cri-o-1.29"
         id: check-kubernetes-cri-o-1_29
         env:
@@ -1323,6 +1353,25 @@ jobs:
         if: (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
         run: |
           cosign sign -y --key env://COSIGN_PRIVATE_KEY ${{ env.REGISTRY }}/${{ env.DESTINATION }}@${{ steps.push-kubernetes-1_31.outputs.digest }}
+        env:
+          COSIGN_EXPERIMENTAL: false
+          COSIGN_PRIVATE_KEY: ${{ secrets.COSIGN_PRIVATE_KEY }}
+
+      - name: "Push container: kubernetes-1.32"
+        uses: redhat-actions/push-to-registry@v2
+        id: push-kubernetes-1_32
+        if: (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
+        with:
+          username: ${{ secrets.BOT_USERNAME }}
+          password: ${{ secrets.BOT_SECRET }}
+          image: ${{ env.DESTINATION }}
+          registry: ${{ env.REGISTRY }}
+          tags: ${{ env.RELEASE }}.kubernetes-1.32
+
+      - name: "Sign container: kubernetes-1.32"
+        if: (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
+        run: |
+          cosign sign -y --key env://COSIGN_PRIVATE_KEY ${{ env.REGISTRY }}/${{ env.DESTINATION }}@${{ steps.push-kubernetes-1_32.outputs.digest }}
         env:
           COSIGN_EXPERIMENTAL: false
           COSIGN_PRIVATE_KEY: ${{ secrets.COSIGN_PRIVATE_KEY }}
