@@ -103,6 +103,11 @@ main() {
     cat "${tmpl}/sysexts_footer"
     } > ".github/workflows/sysexts-${shortname}-${release}-${arch}.yml"
 
+    # Fix GitHub runner for aarch64
+    if [[ "${arch}" == "aarch64" ]]; then
+        sed -i "s/ubuntu-24.04/ubuntu-24.04-arm/" ".github/workflows/sysexts-${shortname}-${release}-${arch}.yml"
+    fi
+
     # Generate container sysexts workflows
     # Skip non x86-64 builds for now
     if [[ "${arch}" != "x86_64" ]]; then
