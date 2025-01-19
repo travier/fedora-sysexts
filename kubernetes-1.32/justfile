@@ -13,7 +13,7 @@ cri-tools
 # https://bodhi.fedoraproject.org/updates/FEDORA-2024-bc020f9b2d
 enable_repos := "updates-testing"
 base_images := "
-quay.io/fedora/fedora-coreos:stable
+quay.io/fedora/fedora-coreos:stable x86_64,aarch64
 "
 
 import '../sysext.just'
