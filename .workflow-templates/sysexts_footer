@@ -25,9 +25,13 @@
             "${SHORTNAME}-${RELEASE}${arch}" \
             || true
 
-          # TODO: Handle --latest
+          latest=false
+          if [[ "${SHORTNAME}" == "fedora-coreos" ]]; then
+            latest="true"
+          fi
           gh release create \
             --title "${NAME} sysexts (${ARCH})" \
             --notes "System extensions for ${NAME} (${ARCH})" \
             "${SHORTNAME}-${RELEASE}${arch}" \
+            --latest=${latest} \
             ./*
