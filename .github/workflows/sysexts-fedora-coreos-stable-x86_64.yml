@@ -572,17 +572,20 @@ jobs:
 
           sha256sum *.raw > SHA256SUMS
 
+          arch=""
+          if [[ "${ARCH}" != "x86_64" ]]; then
+              arch="-${ARCH}"
+          fi
+
           sysexts=()
           for s in $(ls *.raw); do
               s="${s%-*-x86-64.raw}"
               s="${s%-*-aarch64.raw}"
               sed "s/%%SYSEXT%%/${s}/g" ../.workflow-templates/systemd-sysupdate.conf > ${s}.conf
+              if [[ "${SHORTNAME}" == "fedora-coreos" ]]; then
+                  sed -i "s/%w/stable${arch}/" ${s}.conf
+              fi
           done
-
-          arch=""
-          if [[ "${ARCH}" != "x86_64" ]]; then
-              arch="-${ARCH}"
-          fi
 
           gh release delete \
             --cleanup-tag \
