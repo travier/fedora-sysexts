@@ -2,10 +2,7 @@ FROM baseimage
 
 RUN dnf install -y \
     --exclude cri-tools \
+    cri-o1.32 \
     cri-tools1.32 \
-    kubernetes1.32 \
-    kubernetes1.32-client \
-    kubernetes1.32-kubeadm \
-    kubernetes1.32-systemd \
     && \
     dnf clean all

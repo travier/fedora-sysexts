@@ -51,11 +51,6 @@ jobs:
           dnf config-manager addrepo --from-repofile="https://cli.github.com/packages/rpm/gh-cli.repo"
           dnf install -y gh --repo gh-cli
 
-      - name: Setup QEMU for multi-arch builds
-        shell: bash
-        run: |
-          for f in /usr/lib/binfmt.d/*; do cat $f | tee /host/proc/sys/fs/binfmt_misc/register; done
-
       - name: "Checkout repo"
         uses: actions/checkout@v4
 

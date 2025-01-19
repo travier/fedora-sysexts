@@ -1,10 +1,7 @@
-name := "kubernetes-1.31"
+name := "cri-o-1.32"
 packages := "
-cri-tools1.31
-kubernetes1.31
-kubernetes1.31-client
-kubernetes1.31-kubeadm
-kubernetes1.31-systemd
+cri-o1.32
+cri-tools1.32
 "
 exclude_packages := "
 cri-tools
