@@ -1,0 +1,8 @@
+FROM baseimage
+
+RUN dnf install -y \
+    --exclude cri-tools \
+    cri-o1.32 \
+    cri-tools1.32 \
+    && \
+    dnf clean all
