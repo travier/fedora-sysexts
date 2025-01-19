@@ -1,7 +1,6 @@
 FROM baseimage
 
 RUN dnf install -y \
-    --enablerepo="updates-testing" \
     --exclude cri-tools \
     cri-tools1.32 \
     kubernetes1.32 \
