@@ -1,0 +1,18 @@
+name := "cups-drivers"
+packages := "
+c2esp
+dymo-cups-drivers
+foomatic
+foomatic-db-ppds
+pnm2ppa
+ptouch-driver
+splix
+"
+base_images := "
+quay.io/fedora-ostree-desktops/silverblue:41
+quay.io/fedora-ostree-desktops/kinoite:41
+"
+
+import '../sysext.just'
+
+all: default

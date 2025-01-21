@@ -1,0 +1,12 @@
+FROM baseimage
+
+RUN dnf install -y \
+    c2esp \
+    dymo-cups-drivers \
+    foomatic \
+    foomatic-db-ppds \
+    pnm2ppa \
+    ptouch-driver \
+    splix \
+    && \
+    dnf clean all
