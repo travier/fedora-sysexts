@@ -9,3 +9,23 @@ quay.io/fedora-ostree-desktops/kinoite:41
 import '../sysext.just'
 
 all: default
+
+install-manual:
+    #!/bin/bash
+    set -euo pipefail
+    #set -x
+
+    if [[ "${UID}" == "0" ]]; then
+        SUDO=""
+    else
+        SUDO="sudo"
+    fi
+
+    cd rootfs
+
+    EMACS_PATH="/usr/bin/emacs-pgtk"
+    ETAGS_PATH="/usr/bin/emacs.etags"
+    ETAGS_MAN_PATH="/usr/share/man/man1/etags.emacs.1.gz"
+    ${SUDO} ln -sf "$EMACS_PATH" "usr/bin/emacs"
+    ${SUDO} ln -sf "$ETAGS_PATH" "usr/bin/etags"
+    ${SUDO} ln -sf "$ETAGS_MAN_PATH" "usr/share/man/man1/etags.1.gz"
