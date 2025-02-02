@@ -1,0 +1,9 @@
+name := "openssl"
+packages := "openssl"
+base_images := "
+quay.io/fedora-ostree-desktops/silverblue:41
+"
+
+import '../sysext.just'
+
+all: default
