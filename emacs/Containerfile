@@ -3,4 +3,16 @@ FROM baseimage
 RUN dnf install -y --setopt=install_weak_deps=False \
     emacs \
     && \
+    EMACS_PATH="/usr/bin/emacs-pgtk" \
+    && \
+    ETAGS_PATH="/usr/bin/emacs.etags" \
+    && \
+    ETAGS_MAN_PATH="/usr/share/man/man1/etags.emacs.1.gz" \
+    && \
+    ln -sf "$EMACS_PATH" "/usr/bin/emacs" \
+    && \
+    ln -sf "$ETAGS_PATH" "/usr/bin/etags" \
+    && \
+    ln -sf "$ETAGS_MAN_PATH" "/usr/share/man/man1/etags.1.gz" \
+    && \
     dnf clean all
