@@ -40,6 +40,9 @@ dnf_arch := ""
 # Do not install any additional files by default
 files := ""
 
+# Do not ask systemd to reload its configuration by default
+reload_manager := "false"
+
 # zstd compression is still experimental in EROFS
 # compression := "zstd"
 compression := "lz4"
@@ -268,6 +271,9 @@ setup-rootfs arch=arch:
     # Post process architecture to match systemd architecture list
     arch="$(echo {{arch}} | sed 's/_/-/g')"
     echo "ARCHITECTURE=\"${arch}\""
+    if [[ "{{reload_manager}}"  == "true" ]]; then
+        echo "EXTENSION_RELOAD_MANAGER=1"
+    fi
     } | ${SUDO} tee "usr/lib/extension-release.d/extension-release.{{name}}" > /dev/null
 
 # Install (extract) RPM packages download in download-rpms recipe. Uses:

@@ -20,6 +20,7 @@ qemu-img
 swtpm
 virt-install
 "
+reload_manager := "true"
 base_images := "
 quay.io/fedora-ostree-desktops/silverblue:41
 quay.io/fedora-ostree-desktops/kinoite:41

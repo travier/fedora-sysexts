@@ -6,6 +6,7 @@ cri-tools1.30
 exclude_packages := "
 cri-tools
 "
+reload_manager := "true"
 base_images := "
 quay.io/fedora/fedora-coreos:stable x86_64,aarch64
 "
