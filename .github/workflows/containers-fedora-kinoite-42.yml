@@ -45,36 +45,6 @@ jobs:
           git config --global --add safe.directory "$GITHUB_WORKSPACE"
           git fetch --no-tags --prune --depth=1 origin +refs/heads/main:refs/remotes/origin/main
 
-      - name: "Checking if we need to build container: btop"
-        id: check-btop
-        env:
-          SYSEXT: btop
-        run: |
-          cd "${SYSEXT}"
-          if [[ "${PR}" == "true" ]]; then
-              diff="$(git diff origin/main HEAD --stat -- .)"
-              if [[ -z "${diff}" ]]; then
-                  echo "Skipping: No changes for this sysext in this PR"
-                  echo "BUILD=false" >> "$GITHUB_OUTPUT"
-                  exit 0
-              fi
-          fi
-          echo "BUILD=true" >> "$GITHUB_OUTPUT"
-
-      - name: "Build container: btop"
-        uses: redhat-actions/buildah-build@v2
-        if: (steps.check-btop.outputs.BUILD == 'true')
-        with:
-          context: 'btop'
-          image: ${{ env.DESTINATION }}
-          tags: ${{ env.RELEASE }}.btop
-          containerfiles: 'btop/Containerfile'
-          layers: false
-          oci: true
-          extra-args:
-            --from
-            ${{ env.IMAGE }}:${{ env.RELEASE }}
-
       - name: "Checking if we need to build container: chromium"
         id: check-chromium
         env:
