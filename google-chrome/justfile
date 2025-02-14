@@ -4,7 +4,9 @@ enable_repos := "google-chrome"
 pre_commands := "rm -rf /opt && mkdir /opt"
 base_images := "
 quay.io/fedora-ostree-desktops/silverblue:41
+quay.io/fedora-ostree-desktops/silverblue:42
 quay.io/fedora-ostree-desktops/kinoite:41
+quay.io/fedora-ostree-desktops/kinoite:42
 "
 
 import '../sysext.just'
