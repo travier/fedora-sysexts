@@ -135,17 +135,17 @@ main() {
             echo ""
         fi
     done
-    cat "${tmpl}/containers_logincosign"
-    echo ""
-    for s in "${sysexts[@]}"; do
-        if [[ -f "${s}/Containerfile" ]]; then
-            sed \
-                -e "s|%%SYSEXT%%|${s}|g" \
-                -e "s|%%SYSEXT_NODOT%%|${s//\./_}|g" \
-                "${tmpl}/containers_pushsign"
-            echo ""
-        fi
-    done
+    # cat "${tmpl}/containers_logincosign"
+    # echo ""
+    # for s in "${sysexts[@]}"; do
+    #     if [[ -f "${s}/Containerfile" ]]; then
+    #         sed \
+    #             -e "s|%%SYSEXT%%|${s}|g" \
+    #             -e "s|%%SYSEXT_NODOT%%|${s//\./_}|g" \
+    #             "${tmpl}/containers_pushsign"
+    #         echo ""
+    #     fi
+    # done
     } > ".github/workflows/containers-${shortname}-${release}.yml"
 }
 
