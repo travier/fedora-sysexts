@@ -225,36 +225,6 @@ jobs:
             --from
             ${{ env.IMAGE }}:${{ env.RELEASE }}
 
-      - name: "Checking if we need to build container: docker-ce"
-        id: check-docker-ce
-        env:
-          SYSEXT: docker-ce
-        run: |
-          cd "${SYSEXT}"
-          if [[ "${PR}" == "true" ]]; then
-              diff="$(git diff origin/main HEAD --stat -- .)"
-              if [[ -z "${diff}" ]]; then
-                  echo "Skipping: No changes for this sysext in this PR"
-                  echo "BUILD=false" >> "$GITHUB_OUTPUT"
-                  exit 0
-              fi
-          fi
-          echo "BUILD=true" >> "$GITHUB_OUTPUT"
-
-      - name: "Build container: docker-ce"
-        uses: redhat-actions/buildah-build@v2
-        if: (steps.check-docker-ce.outputs.BUILD == 'true')
-        with:
-          context: 'docker-ce'
-          image: ${{ env.DESTINATION }}
-          tags: ${{ env.RELEASE }}.docker-ce
-          containerfiles: 'docker-ce/Containerfile'
-          layers: false
-          oci: true
-          extra-args:
-            --from
-            ${{ env.IMAGE }}:${{ env.RELEASE }}
-
       - name: "Checking if we need to build container: emacs"
         id: check-emacs
         env:
