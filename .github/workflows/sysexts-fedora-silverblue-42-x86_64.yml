@@ -1,8 +1,8 @@
-name: "Build sysexts: Fedora Silverblue (41, x86_64)"
+name: "Build sysexts: Fedora Silverblue (42, x86_64)"
 
 env:
-  IMAGE: 'quay.io/fedora-ostree-desktops/silverblue:41'
-  RELEASE: '41'
+  IMAGE: 'quay.io/fedora-ostree-desktops/silverblue:42'
+  RELEASE: '42'
   NAME: 'Fedora Silverblue'
   SHORTNAME: 'fedora-silverblue'
   GH_TOKEN: ${{ github.token }}
@@ -63,51 +63,6 @@ jobs:
           git config --global --add safe.directory "$GITHUB_WORKSPACE"
           git fetch --no-tags --prune --depth=1 origin +refs/heads/main:refs/remotes/origin/main
 
-      - name: "Build sysext: 1password-cli"
-        env:
-          SYSEXT: 1password-cli
-        run: |
-          cd "${SYSEXT}"
-          if [[ "${PR}" == "true" ]]; then
-              diff="$(git diff origin/main HEAD --stat -- . ; git diff origin/main HEAD --stat -- ../sysext.just)"
-              if [[ -z "${diff}" ]]; then
-                  echo "Skipping: No changes for this sysext in this PR"
-                  exit 0
-              fi
-          fi
-          just build ${IMAGE} ${ARCH}
-          mv "${SYSEXT}"*".raw" "../artifacts/"
-
-      - name: "Build sysext: 1password-gui"
-        env:
-          SYSEXT: 1password-gui
-        run: |
-          cd "${SYSEXT}"
-          if [[ "${PR}" == "true" ]]; then
-              diff="$(git diff origin/main HEAD --stat -- . ; git diff origin/main HEAD --stat -- ../sysext.just)"
-              if [[ -z "${diff}" ]]; then
-                  echo "Skipping: No changes for this sysext in this PR"
-                  exit 0
-              fi
-          fi
-          just build ${IMAGE} ${ARCH}
-          mv "${SYSEXT}"*".raw" "../artifacts/"
-
-      - name: "Build sysext: btop"
-        env:
-          SYSEXT: btop
-        run: |
-          cd "${SYSEXT}"
-          if [[ "${PR}" == "true" ]]; then
-              diff="$(git diff origin/main HEAD --stat -- . ; git diff origin/main HEAD --stat -- ../sysext.just)"
-              if [[ -z "${diff}" ]]; then
-                  echo "Skipping: No changes for this sysext in this PR"
-                  exit 0
-              fi
-          fi
-          just build ${IMAGE} ${ARCH}
-          mv "${SYSEXT}"*".raw" "../artifacts/"
-
       - name: "Build sysext: chromium"
         env:
           SYSEXT: chromium
@@ -141,21 +96,6 @@ jobs:
       - name: "Build sysext: distrobox"
         env:
           SYSEXT: distrobox
-        run: |
-          cd "${SYSEXT}"
-          if [[ "${PR}" == "true" ]]; then
-              diff="$(git diff origin/main HEAD --stat -- . ; git diff origin/main HEAD --stat -- ../sysext.just)"
-              if [[ -z "${diff}" ]]; then
-                  echo "Skipping: No changes for this sysext in this PR"
-                  exit 0
-              fi
-          fi
-          just build ${IMAGE} ${ARCH}
-          mv "${SYSEXT}"*".raw" "../artifacts/"
-
-      - name: "Build sysext: docker-ce"
-        env:
-          SYSEXT: docker-ce
         run: |
           cd "${SYSEXT}"
           if [[ "${PR}" == "true" ]]; then
@@ -486,36 +426,6 @@ jobs:
       - name: "Build sysext: ripgrep"
         env:
           SYSEXT: ripgrep
-        run: |
-          cd "${SYSEXT}"
-          if [[ "${PR}" == "true" ]]; then
-              diff="$(git diff origin/main HEAD --stat -- . ; git diff origin/main HEAD --stat -- ../sysext.just)"
-              if [[ -z "${diff}" ]]; then
-                  echo "Skipping: No changes for this sysext in this PR"
-                  exit 0
-              fi
-          fi
-          just build ${IMAGE} ${ARCH}
-          mv "${SYSEXT}"*".raw" "../artifacts/"
-
-      - name: "Build sysext: steam-devices"
-        env:
-          SYSEXT: steam-devices
-        run: |
-          cd "${SYSEXT}"
-          if [[ "${PR}" == "true" ]]; then
-              diff="$(git diff origin/main HEAD --stat -- . ; git diff origin/main HEAD --stat -- ../sysext.just)"
-              if [[ -z "${diff}" ]]; then
-                  echo "Skipping: No changes for this sysext in this PR"
-                  exit 0
-              fi
-          fi
-          just build ${IMAGE} ${ARCH}
-          mv "${SYSEXT}"*".raw" "../artifacts/"
-
-      - name: "Build sysext: steam"
-        env:
-          SYSEXT: steam
         run: |
           cd "${SYSEXT}"
           if [[ "${PR}" == "true" ]]; then
