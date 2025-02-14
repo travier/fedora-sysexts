@@ -1,12 +1,13 @@
-name: "Build containers: Fedora Kinoite (41)"
+name: "Build containers: Fedora Kinoite (41, x86_64)"
 
 env:
   IMAGE: 'quay.io/fedora-ostree-desktops/kinoite'
   RELEASE: '41'
-  NAME: 'Fedora Kinoite (41)'
+  NAME: 'Fedora Kinoite'
   REGISTRY: 'quay.io/travier'
   DESTINATION: 'fedora-kinoite-sysexts'
   PR: ${{ github.event_name == 'pull_request' }}
+  ARCH: 'x86_64'
 
 on:
   pull_request:

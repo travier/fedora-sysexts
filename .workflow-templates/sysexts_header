@@ -1,4 +1,4 @@
-name: "Build sysexts: %%NAME%% (%%ARCH%%)"
+name: "Build sysexts: %%NAME%% (%%RELEASE%%, %%ARCH%%)"
 
 env:
   IMAGE: '%%IMAGE%%'
