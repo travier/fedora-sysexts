@@ -1,4 +1,4 @@
-name: "Build sysexts: %%NAME%% (%%ARCH%%)"
+name: "Build sysexts: %%NAME%% (%%RELEASE%%, %%ARCH%%)"
 
 env:
   IMAGE: '%%IMAGE%%'
@@ -54,9 +54,9 @@ jobs:
       - name: "Checkout repo"
         uses: actions/checkout@v4
 
-      - name: "Setup artifacts directory"
+      - name: "Setup artifacts and dnf cache directories"
         run: |
-          mkdir -p artifacts
+          mkdir -p artifacts .dnf-cache
 
       - name: "Mark directory as safe"
         run: |

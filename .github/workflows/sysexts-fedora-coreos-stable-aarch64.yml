@@ -1,9 +1,9 @@
-name: "Build sysexts: Fedora CoreOS (stable) (aarch64)"
+name: "Build sysexts: Fedora CoreOS (stable, aarch64)"
 
 env:
   IMAGE: 'quay.io/fedora/fedora-coreos:stable'
   RELEASE: 'stable'
-  NAME: 'Fedora CoreOS (stable)'
+  NAME: 'Fedora CoreOS'
   SHORTNAME: 'fedora-coreos'
   GH_TOKEN: ${{ github.token }}
   PR: ${{ github.event_name == 'pull_request' }}
@@ -54,9 +54,9 @@ jobs:
       - name: "Checkout repo"
         uses: actions/checkout@v4
 
-      - name: "Setup artifacts directory"
+      - name: "Setup artifacts and dnf cache directories"
         run: |
-          mkdir -p artifacts
+          mkdir -p artifacts .dnf-cache
 
       - name: "Mark directory as safe"
         run: |
@@ -563,8 +563,8 @@ jobs:
             latest="true"
           fi
           gh release create \
-            --title "${NAME} sysexts (${ARCH})" \
-            --notes "System extensions for ${NAME} (${ARCH})" \
+            --title "${NAME} ${RELEASE} sysexts (${ARCH})" \
+            --notes "System extensions for ${NAME} ${RELEASE} (${ARCH})" \
             "${SHORTNAME}-${RELEASE}${arch}" \
             --latest=${latest} \
             ./*
