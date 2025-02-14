@@ -39,8 +39,20 @@ main() {
             'Fedora Silverblue'
 
         ${0} \
+            'quay.io/fedora-ostree-desktops/silverblue' \
+            '42' \
+            'x86_64' \
+            'Fedora Silverblue'
+
+        ${0} \
             'quay.io/fedora-ostree-desktops/kinoite' \
             '41' \
+            'x86_64' \
+            'Fedora Kinoite'
+
+        ${0} \
+            'quay.io/fedora-ostree-desktops/kinoite' \
+            '42' \
             'x86_64' \
             'Fedora Kinoite'
 

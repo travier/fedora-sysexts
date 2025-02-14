@@ -6,7 +6,9 @@ pre_commands := "rm -rf /opt && mkdir /opt"
 external_repos := "https://repository.mullvad.net/rpm/stable/mullvad.repo"
 base_images := "
 quay.io/fedora-ostree-desktops/silverblue:41
+quay.io/fedora-ostree-desktops/silverblue:42
 quay.io/fedora-ostree-desktops/kinoite:41
+quay.io/fedora-ostree-desktops/kinoite:42
 "
 
 import '../sysext.just'

@@ -11,8 +11,6 @@ mesa-va-drivers
 mesa-vulkan-drivers
 mesa-libxatracker
 "
-# quay.io/fedora-ostree-desktops/silverblue:41
-# quay.io/fedora-ostree-desktops/kinoite:41
 base_images := "
 "
 copr_repos := "xxmitsu/mesa-git"
