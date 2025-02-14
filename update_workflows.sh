@@ -39,6 +39,24 @@ main() {
             'fedora-coreos-sysexts'
 
         ${0} \
+            'quay.io/fedora-ostree-desktops/silverblue' \
+            '41' \
+            'x86_64' \
+            'Fedora Silverblue (41)' \
+            'fedora-silverblue' \
+            'quay.io/travier' \
+            'fedora-silverblue-sysexts'
+
+        ${0} \
+            'quay.io/fedora-ostree-desktops/silverblue' \
+            '42' \
+            'x86_64' \
+            'Fedora Silverblue (41)' \
+            'fedora-silverblue' \
+            'quay.io/travier' \
+            'fedora-silverblue-sysexts'
+
+        ${0} \
             'quay.io/fedora-ostree-desktops/kinoite' \
             '41' \
             'x86_64' \
@@ -48,13 +66,13 @@ main() {
             'fedora-kinoite-sysexts'
 
         ${0} \
-            'quay.io/fedora-ostree-desktops/silverblue' \
-            '41' \
+            'quay.io/fedora-ostree-desktops/kinoite' \
+            '42' \
             'x86_64' \
-            'Fedora Silverblue (41)' \
-            'fedora-silverblue' \
+            'Fedora Kinoite (41)' \
+            'fedora-kinoite' \
             'quay.io/travier' \
-            'fedora-silverblue-sysexts'
+            'fedora-kinoite-sysexts'
 
         exit 0
     fi
