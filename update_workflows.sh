@@ -9,8 +9,17 @@ set -euo pipefail
 # set -x
 
 main() {
+    if [[ ! -d .github ]] || [[ ! -d .git ]]; then
+        echo "This script must be run at the root of the repo"
+        exit 1
+    fi
+
     # Re-run for each target
     if [[ ${#} -eq 0 ]]; then
+        # Remove all existing worflows
+        rm "./.github/workflows/containers"*".yml"
+        rm "./.github/workflows/sysexts"*".yml"
+
         ${0} \
             'quay.io/fedora/fedora-coreos' \
             'stable' \
@@ -57,11 +66,6 @@ main() {
     local -r shortname="${5}"
     local -r registry="${6}"
     local -r destination="${7}"
-
-    if [[ ! -d .github ]] || [[ ! -d .git ]]; then
-        echo "This script must be run at the root of the repo"
-        exit 1
-    fi
 
     # Get the list of sysexts for a given target
     sysexts=()
