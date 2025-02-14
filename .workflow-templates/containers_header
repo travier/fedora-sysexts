@@ -1,4 +1,4 @@
-name: "Build containers: %%NAME%%"
+name: "Build containers: %%NAME%% (%%RELEASE%%, %%ARCH%%)"
 
 env:
   IMAGE: '%%IMAGE%%'
@@ -7,6 +7,7 @@ env:
   REGISTRY: '%%REGISTRY%%'
   DESTINATION: '%%DESTINATION%%'
   PR: ${{ github.event_name == 'pull_request' }}
+  ARCH: '%%ARCH%%'
 
 on:
   pull_request:

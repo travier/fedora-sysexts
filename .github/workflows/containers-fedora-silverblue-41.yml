@@ -1,12 +1,13 @@
-name: "Build containers: Fedora Silverblue (41)"
+name: "Build containers: Fedora Silverblue (41, x86_64)"
 
 env:
   IMAGE: 'quay.io/fedora-ostree-desktops/silverblue'
   RELEASE: '41'
-  NAME: 'Fedora Silverblue (41)'
+  NAME: 'Fedora Silverblue'
   REGISTRY: 'quay.io/travier'
   DESTINATION: 'fedora-silverblue-sysexts'
   PR: ${{ github.event_name == 'pull_request' }}
+  ARCH: 'x86_64'
 
 on:
   pull_request:

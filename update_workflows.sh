@@ -24,37 +24,25 @@ main() {
             'quay.io/fedora/fedora-coreos' \
             'stable' \
             'x86_64' \
-            'Fedora CoreOS (stable)' \
-            'fedora-coreos' \
-            'quay.io/travier' \
-            'fedora-coreos-sysexts'
+            'Fedora CoreOS'
 
         ${0} \
             'quay.io/fedora/fedora-coreos' \
             'stable' \
             'aarch64' \
-            'Fedora CoreOS (stable)' \
-            'fedora-coreos' \
-            'quay.io/travier' \
-            'fedora-coreos-sysexts'
-
-        ${0} \
-            'quay.io/fedora-ostree-desktops/kinoite' \
-            '41' \
-            'x86_64' \
-            'Fedora Kinoite (41)' \
-            'fedora-kinoite' \
-            'quay.io/travier' \
-            'fedora-kinoite-sysexts'
+            'Fedora CoreOS'
 
         ${0} \
             'quay.io/fedora-ostree-desktops/silverblue' \
             '41' \
             'x86_64' \
-            'Fedora Silverblue (41)' \
-            'fedora-silverblue' \
-            'quay.io/travier' \
-            'fedora-silverblue-sysexts'
+            'Fedora Silverblue'
+
+        ${0} \
+            'quay.io/fedora-ostree-desktops/kinoite' \
+            '41' \
+            'x86_64' \
+            'Fedora Kinoite'
 
         exit 0
     fi
@@ -63,9 +51,11 @@ main() {
     local -r release="${2}"
     local -r arch="${3}"
     local -r name="${4}"
-    local -r shortname="${5}"
-    local -r registry="${6}"
-    local -r destination="${7}"
+    local -r shortname="$(echo "${name}" | tr '[:upper:]' '[:lower:]' | sed 's/ /-/')"
+
+    # For containers only
+    local -r registry="quay.io/travier"
+    local -r destination_suffix="-sysexts"
 
     # Get the list of sysexts for a given target
     sysexts=()
@@ -123,7 +113,8 @@ main() {
         -e "s|%%RELEASE%%|${release}|g" \
         -e "s|%%NAME%%|${name}|g" \
         -e "s|%%REGISTRY%%|${registry}|g" \
-        -e "s|%%DESTINATION%%|${destination}|g" \
+        -e "s|%%DESTINATION%%|${shortname}${destination_suffix}|g" \
+        -e "s|%%ARCH%%|${arch}|g" \
         "${tmpl}/containers_header"
     echo ""
     for s in "${sysexts[@]}"; do
