@@ -615,6 +615,36 @@ jobs:
             --from
             ${{ env.IMAGE }}:${{ env.RELEASE }}
 
+      - name: "Checking if we need to build container: lact"
+        id: check-lact
+        env:
+          SYSEXT: lact
+        run: |
+          cd "${SYSEXT}"
+          if [[ "${PR}" == "true" ]]; then
+              diff="$(git diff origin/main HEAD --stat -- .)"
+              if [[ -z "${diff}" ]]; then
+                  echo "Skipping: No changes for this sysext in this PR"
+                  echo "BUILD=false" >> "$GITHUB_OUTPUT"
+                  exit 0
+              fi
+          fi
+          echo "BUILD=true" >> "$GITHUB_OUTPUT"
+
+      - name: "Build container: lact"
+        uses: redhat-actions/buildah-build@v2
+        if: (steps.check-lact.outputs.BUILD == 'true')
+        with:
+          context: 'lact'
+          image: ${{ env.DESTINATION }}
+          tags: ${{ env.RELEASE }}.lact
+          containerfiles: 'lact/Containerfile'
+          layers: false
+          oci: true
+          extra-args:
+            --from
+            ${{ env.IMAGE }}:${{ env.RELEASE }}
+
       - name: "Checking if we need to build container: libvirtd-desktop"
         id: check-libvirtd-desktop
         env:

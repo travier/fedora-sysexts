@@ -1,0 +1,11 @@
+#FROM baseimage
+FROM quay.io/fedora-ostree-desktops/kinoite:41
+
+RUN dnf install -y dnf5-plugins \
+    && \
+    dnf copr enable -y ilyaz/LACT \
+    && \
+    dnf install -y \
+    lact \
+    && \
+    dnf clean all
