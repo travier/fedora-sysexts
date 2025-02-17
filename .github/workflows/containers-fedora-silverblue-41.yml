@@ -615,6 +615,36 @@ jobs:
             --from
             ${{ env.IMAGE }}:${{ env.RELEASE }}
 
+      - name: "Checking if we need to build container: lact-libadwaita"
+        id: check-lact-libadwaita
+        env:
+          SYSEXT: lact-libadwaita
+        run: |
+          cd "${SYSEXT}"
+          if [[ "${PR}" == "true" ]]; then
+              diff="$(git diff origin/main HEAD --stat -- .)"
+              if [[ -z "${diff}" ]]; then
+                  echo "Skipping: No changes for this sysext in this PR"
+                  echo "BUILD=false" >> "$GITHUB_OUTPUT"
+                  exit 0
+              fi
+          fi
+          echo "BUILD=true" >> "$GITHUB_OUTPUT"
+
+      - name: "Build container: lact-libadwaita"
+        uses: redhat-actions/buildah-build@v2
+        if: (steps.check-lact-libadwaita.outputs.BUILD == 'true')
+        with:
+          context: 'lact-libadwaita'
+          image: ${{ env.DESTINATION }}
+          tags: ${{ env.RELEASE }}.lact-libadwaita
+          containerfiles: 'lact-libadwaita/Containerfile'
+          layers: false
+          oci: true
+          extra-args:
+            --from
+            ${{ env.IMAGE }}:${{ env.RELEASE }}
+
       - name: "Checking if we need to build container: libvirtd-desktop"
         id: check-libvirtd-desktop
         env:
