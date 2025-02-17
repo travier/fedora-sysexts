@@ -1,5 +1,4 @@
-#FROM baseimage
-FROM quay.io/fedora-ostree-desktops/kinoite:41
+FROM baseimage
 
 RUN dnf install -y dnf5-plugins \
     && \
