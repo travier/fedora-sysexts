@@ -1,5 +1,9 @@
 name := "steam"
-packages := "steam"
+packages := "
+gamescope
+mangohud
+steam
+"
 enable_repos := "rpmfusion-nonfree-steam"
 dnf_arch := "noarch i686 x86_64"
 base_images := "
