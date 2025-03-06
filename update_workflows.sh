@@ -17,7 +17,7 @@ main() {
     # Re-run for each target
     if [[ ${#} -eq 0 ]]; then
         # Remove all existing worflows
-        rm "./.github/workflows/containers"*".yml"
+        rm -f "./.github/workflows/containers"*".yml"
         rm "./.github/workflows/sysexts"*".yml"
 
         ${0} \
@@ -101,6 +101,9 @@ main() {
     if [[ "${arch}" == "aarch64" ]]; then
         sed -i "s/ubuntu-24.04/ubuntu-24.04-arm/" ".github/workflows/sysexts-${shortname}-${release}-${arch}.yml"
     fi
+
+    # Skip container builds for now as we are not using them yet.
+    return 0
 
     # Generate container sysexts workflows
     # Skip non x86-64 builds for now
