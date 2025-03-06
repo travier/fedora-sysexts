@@ -4,6 +4,7 @@ lact
 "
 base_images := "
 quay.io/fedora-ostree-desktops/kinoite:41
+quay.io/fedora-ostree-desktops/kinoite:42
 "
 copr_repos := "ilyaz/LACT"
 disable_repos := "'*'"

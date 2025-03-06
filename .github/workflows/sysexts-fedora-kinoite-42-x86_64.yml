@@ -1,13 +1,13 @@
-name: "Build sysexts: Fedora CoreOS (stable, aarch64)"
+name: "Build sysexts: Fedora Kinoite (42, x86_64)"
 
 env:
-  IMAGE: 'quay.io/fedora/fedora-coreos:stable'
-  RELEASE: 'stable'
-  NAME: 'Fedora CoreOS'
-  SHORTNAME: 'fedora-coreos'
+  IMAGE: 'quay.io/fedora-ostree-desktops/kinoite:42'
+  RELEASE: '42'
+  NAME: 'Fedora Kinoite'
+  SHORTNAME: 'fedora-kinoite'
   GH_TOKEN: ${{ github.token }}
   PR: ${{ github.event_name == 'pull_request' }}
-  ARCH: 'aarch64'
+  ARCH: 'x86_64'
 
 on:
   pull_request:
@@ -32,7 +32,7 @@ concurrency:
 
 jobs:
   build:
-    runs-on: "ubuntu-24.04-arm"
+    runs-on: "ubuntu-24.04"
     container:
       image: "quay.io/fedora/fedora:41"
       options: "--privileged --security-opt label=disable --user 0:0"
@@ -63,9 +63,54 @@ jobs:
           git config --global --add safe.directory "$GITHUB_WORKSPACE"
           git fetch --no-tags --prune --depth=1 origin +refs/heads/main:refs/remotes/origin/main
 
+      - name: "Build sysext: 1password-cli"
+        env:
+          SYSEXT: 1password-cli
+        run: |
+          cd "${SYSEXT}"
+          if [[ "${PR}" == "true" ]]; then
+              diff="$(git diff origin/main HEAD --stat -- . ; git diff origin/main HEAD --stat -- ../sysext.just)"
+              if [[ -z "${diff}" ]]; then
+                  echo "Skipping: No changes for this sysext in this PR"
+                  exit 0
+              fi
+          fi
+          just build ${IMAGE} ${ARCH}
+          mv "${SYSEXT}"*".raw" "../artifacts/"
+
+      - name: "Build sysext: 1password-gui"
+        env:
+          SYSEXT: 1password-gui
+        run: |
+          cd "${SYSEXT}"
+          if [[ "${PR}" == "true" ]]; then
+              diff="$(git diff origin/main HEAD --stat -- . ; git diff origin/main HEAD --stat -- ../sysext.just)"
+              if [[ -z "${diff}" ]]; then
+                  echo "Skipping: No changes for this sysext in this PR"
+                  exit 0
+              fi
+          fi
+          just build ${IMAGE} ${ARCH}
+          mv "${SYSEXT}"*".raw" "../artifacts/"
+
       - name: "Build sysext: btop"
         env:
           SYSEXT: btop
+        run: |
+          cd "${SYSEXT}"
+          if [[ "${PR}" == "true" ]]; then
+              diff="$(git diff origin/main HEAD --stat -- . ; git diff origin/main HEAD --stat -- ../sysext.just)"
+              if [[ -z "${diff}" ]]; then
+                  echo "Skipping: No changes for this sysext in this PR"
+                  exit 0
+              fi
+          fi
+          just build ${IMAGE} ${ARCH}
+          mv "${SYSEXT}"*".raw" "../artifacts/"
+
+      - name: "Build sysext: chromium"
+        env:
+          SYSEXT: chromium
         run: |
           cd "${SYSEXT}"
           if [[ "${PR}" == "true" ]]; then
@@ -93,66 +138,6 @@ jobs:
           just build ${IMAGE} ${ARCH}
           mv "${SYSEXT}"*".raw" "../artifacts/"
 
-      - name: "Build sysext: cri-o-1.29"
-        env:
-          SYSEXT: cri-o-1.29
-        run: |
-          cd "${SYSEXT}"
-          if [[ "${PR}" == "true" ]]; then
-              diff="$(git diff origin/main HEAD --stat -- . ; git diff origin/main HEAD --stat -- ../sysext.just)"
-              if [[ -z "${diff}" ]]; then
-                  echo "Skipping: No changes for this sysext in this PR"
-                  exit 0
-              fi
-          fi
-          just build ${IMAGE} ${ARCH}
-          mv "${SYSEXT}"*".raw" "../artifacts/"
-
-      - name: "Build sysext: cri-o-1.30"
-        env:
-          SYSEXT: cri-o-1.30
-        run: |
-          cd "${SYSEXT}"
-          if [[ "${PR}" == "true" ]]; then
-              diff="$(git diff origin/main HEAD --stat -- . ; git diff origin/main HEAD --stat -- ../sysext.just)"
-              if [[ -z "${diff}" ]]; then
-                  echo "Skipping: No changes for this sysext in this PR"
-                  exit 0
-              fi
-          fi
-          just build ${IMAGE} ${ARCH}
-          mv "${SYSEXT}"*".raw" "../artifacts/"
-
-      - name: "Build sysext: cri-o-1.31"
-        env:
-          SYSEXT: cri-o-1.31
-        run: |
-          cd "${SYSEXT}"
-          if [[ "${PR}" == "true" ]]; then
-              diff="$(git diff origin/main HEAD --stat -- . ; git diff origin/main HEAD --stat -- ../sysext.just)"
-              if [[ -z "${diff}" ]]; then
-                  echo "Skipping: No changes for this sysext in this PR"
-                  exit 0
-              fi
-          fi
-          just build ${IMAGE} ${ARCH}
-          mv "${SYSEXT}"*".raw" "../artifacts/"
-
-      - name: "Build sysext: cri-o-1.32"
-        env:
-          SYSEXT: cri-o-1.32
-        run: |
-          cd "${SYSEXT}"
-          if [[ "${PR}" == "true" ]]; then
-              diff="$(git diff origin/main HEAD --stat -- . ; git diff origin/main HEAD --stat -- ../sysext.just)"
-              if [[ -z "${diff}" ]]; then
-                  echo "Skipping: No changes for this sysext in this PR"
-                  exit 0
-              fi
-          fi
-          just build ${IMAGE} ${ARCH}
-          mv "${SYSEXT}"*".raw" "../artifacts/"
-
       - name: "Build sysext: distrobox"
         env:
           SYSEXT: distrobox
@@ -168,9 +153,54 @@ jobs:
           just build ${IMAGE} ${ARCH}
           mv "${SYSEXT}"*".raw" "../artifacts/"
 
+      - name: "Build sysext: emacs"
+        env:
+          SYSEXT: emacs
+        run: |
+          cd "${SYSEXT}"
+          if [[ "${PR}" == "true" ]]; then
+              diff="$(git diff origin/main HEAD --stat -- . ; git diff origin/main HEAD --stat -- ../sysext.just)"
+              if [[ -z "${diff}" ]]; then
+                  echo "Skipping: No changes for this sysext in this PR"
+                  exit 0
+              fi
+          fi
+          just build ${IMAGE} ${ARCH}
+          mv "${SYSEXT}"*".raw" "../artifacts/"
+
       - name: "Build sysext: erofs-utils"
         env:
           SYSEXT: erofs-utils
+        run: |
+          cd "${SYSEXT}"
+          if [[ "${PR}" == "true" ]]; then
+              diff="$(git diff origin/main HEAD --stat -- . ; git diff origin/main HEAD --stat -- ../sysext.just)"
+              if [[ -z "${diff}" ]]; then
+                  echo "Skipping: No changes for this sysext in this PR"
+                  exit 0
+              fi
+          fi
+          just build ${IMAGE} ${ARCH}
+          mv "${SYSEXT}"*".raw" "../artifacts/"
+
+      - name: "Build sysext: firefox"
+        env:
+          SYSEXT: firefox
+        run: |
+          cd "${SYSEXT}"
+          if [[ "${PR}" == "true" ]]; then
+              diff="$(git diff origin/main HEAD --stat -- . ; git diff origin/main HEAD --stat -- ../sysext.just)"
+              if [[ -z "${diff}" ]]; then
+                  echo "Skipping: No changes for this sysext in this PR"
+                  exit 0
+              fi
+          fi
+          just build ${IMAGE} ${ARCH}
+          mv "${SYSEXT}"*".raw" "../artifacts/"
+
+      - name: "Build sysext: fuse2"
+        env:
+          SYSEXT: fuse2
         run: |
           cd "${SYSEXT}"
           if [[ "${PR}" == "true" ]]; then
@@ -201,6 +231,21 @@ jobs:
       - name: "Build sysext: git-tools"
         env:
           SYSEXT: git-tools
+        run: |
+          cd "${SYSEXT}"
+          if [[ "${PR}" == "true" ]]; then
+              diff="$(git diff origin/main HEAD --stat -- . ; git diff origin/main HEAD --stat -- ../sysext.just)"
+              if [[ -z "${diff}" ]]; then
+                  echo "Skipping: No changes for this sysext in this PR"
+                  exit 0
+              fi
+          fi
+          just build ${IMAGE} ${ARCH}
+          mv "${SYSEXT}"*".raw" "../artifacts/"
+
+      - name: "Build sysext: google-chrome"
+        env:
+          SYSEXT: google-chrome
         run: |
           cd "${SYSEXT}"
           if [[ "${PR}" == "true" ]]; then
@@ -273,9 +318,9 @@ jobs:
           just build ${IMAGE} ${ARCH}
           mv "${SYSEXT}"*".raw" "../artifacts/"
 
-      - name: "Build sysext: kubernetes-1.29"
+      - name: "Build sysext: keepassxc"
         env:
-          SYSEXT: kubernetes-1.29
+          SYSEXT: keepassxc
         run: |
           cd "${SYSEXT}"
           if [[ "${PR}" == "true" ]]; then
@@ -288,9 +333,9 @@ jobs:
           just build ${IMAGE} ${ARCH}
           mv "${SYSEXT}"*".raw" "../artifacts/"
 
-      - name: "Build sysext: kubernetes-1.30"
+      - name: "Build sysext: krb5-workstation"
         env:
-          SYSEXT: kubernetes-1.30
+          SYSEXT: krb5-workstation
         run: |
           cd "${SYSEXT}"
           if [[ "${PR}" == "true" ]]; then
@@ -303,9 +348,9 @@ jobs:
           just build ${IMAGE} ${ARCH}
           mv "${SYSEXT}"*".raw" "../artifacts/"
 
-      - name: "Build sysext: kubernetes-1.31"
+      - name: "Build sysext: lact"
         env:
-          SYSEXT: kubernetes-1.31
+          SYSEXT: lact
         run: |
           cd "${SYSEXT}"
           if [[ "${PR}" == "true" ]]; then
@@ -318,9 +363,9 @@ jobs:
           just build ${IMAGE} ${ARCH}
           mv "${SYSEXT}"*".raw" "../artifacts/"
 
-      - name: "Build sysext: kubernetes-1.32"
+      - name: "Build sysext: libvirtd-desktop"
         env:
-          SYSEXT: kubernetes-1.32
+          SYSEXT: libvirtd-desktop
         run: |
           cd "${SYSEXT}"
           if [[ "${PR}" == "true" ]]; then
@@ -333,9 +378,9 @@ jobs:
           just build ${IMAGE} ${ARCH}
           mv "${SYSEXT}"*".raw" "../artifacts/"
 
-      - name: "Build sysext: kubernetes-cri-o-1.29"
+      - name: "Build sysext: microsoft-edge"
         env:
-          SYSEXT: kubernetes-cri-o-1.29
+          SYSEXT: microsoft-edge
         run: |
           cd "${SYSEXT}"
           if [[ "${PR}" == "true" ]]; then
@@ -348,39 +393,9 @@ jobs:
           just build ${IMAGE} ${ARCH}
           mv "${SYSEXT}"*".raw" "../artifacts/"
 
-      - name: "Build sysext: kubernetes-cri-o-1.30"
+      - name: "Build sysext: moby-engine"
         env:
-          SYSEXT: kubernetes-cri-o-1.30
-        run: |
-          cd "${SYSEXT}"
-          if [[ "${PR}" == "true" ]]; then
-              diff="$(git diff origin/main HEAD --stat -- . ; git diff origin/main HEAD --stat -- ../sysext.just)"
-              if [[ -z "${diff}" ]]; then
-                  echo "Skipping: No changes for this sysext in this PR"
-                  exit 0
-              fi
-          fi
-          just build ${IMAGE} ${ARCH}
-          mv "${SYSEXT}"*".raw" "../artifacts/"
-
-      - name: "Build sysext: kubernetes-cri-o-1.31"
-        env:
-          SYSEXT: kubernetes-cri-o-1.31
-        run: |
-          cd "${SYSEXT}"
-          if [[ "${PR}" == "true" ]]; then
-              diff="$(git diff origin/main HEAD --stat -- . ; git diff origin/main HEAD --stat -- ../sysext.just)"
-              if [[ -z "${diff}" ]]; then
-                  echo "Skipping: No changes for this sysext in this PR"
-                  exit 0
-              fi
-          fi
-          just build ${IMAGE} ${ARCH}
-          mv "${SYSEXT}"*".raw" "../artifacts/"
-
-      - name: "Build sysext: kubernetes-cri-o-1.32"
-        env:
-          SYSEXT: kubernetes-cri-o-1.32
+          SYSEXT: moby-engine
         run: |
           cd "${SYSEXT}"
           if [[ "${PR}" == "true" ]]; then
@@ -408,6 +423,21 @@ jobs:
           just build ${IMAGE} ${ARCH}
           mv "${SYSEXT}"*".raw" "../artifacts/"
 
+      - name: "Build sysext: mullvad-vpn"
+        env:
+          SYSEXT: mullvad-vpn
+        run: |
+          cd "${SYSEXT}"
+          if [[ "${PR}" == "true" ]]; then
+              diff="$(git diff origin/main HEAD --stat -- . ; git diff origin/main HEAD --stat -- ../sysext.just)"
+              if [[ -z "${diff}" ]]; then
+                  echo "Skipping: No changes for this sysext in this PR"
+                  exit 0
+              fi
+          fi
+          just build ${IMAGE} ${ARCH}
+          mv "${SYSEXT}"*".raw" "../artifacts/"
+
       - name: "Build sysext: neovim"
         env:
           SYSEXT: neovim
@@ -423,9 +453,9 @@ jobs:
           just build ${IMAGE} ${ARCH}
           mv "${SYSEXT}"*".raw" "../artifacts/"
 
-      - name: "Build sysext: python"
+      - name: "Build sysext: openh264"
         env:
-          SYSEXT: python
+          SYSEXT: openh264
         run: |
           cd "${SYSEXT}"
           if [[ "${PR}" == "true" ]]; then
@@ -441,21 +471,6 @@ jobs:
       - name: "Build sysext: ripgrep"
         env:
           SYSEXT: ripgrep
-        run: |
-          cd "${SYSEXT}"
-          if [[ "${PR}" == "true" ]]; then
-              diff="$(git diff origin/main HEAD --stat -- . ; git diff origin/main HEAD --stat -- ../sysext.just)"
-              if [[ -z "${diff}" ]]; then
-                  echo "Skipping: No changes for this sysext in this PR"
-                  exit 0
-              fi
-          fi
-          just build ${IMAGE} ${ARCH}
-          mv "${SYSEXT}"*".raw" "../artifacts/"
-
-      - name: "Build sysext: semanage"
-        env:
-          SYSEXT: semanage
         run: |
           cd "${SYSEXT}"
           if [[ "${PR}" == "true" ]]; then
@@ -501,6 +516,81 @@ jobs:
       - name: "Build sysext: vim"
         env:
           SYSEXT: vim
+        run: |
+          cd "${SYSEXT}"
+          if [[ "${PR}" == "true" ]]; then
+              diff="$(git diff origin/main HEAD --stat -- . ; git diff origin/main HEAD --stat -- ../sysext.just)"
+              if [[ -z "${diff}" ]]; then
+                  echo "Skipping: No changes for this sysext in this PR"
+                  exit 0
+              fi
+          fi
+          just build ${IMAGE} ${ARCH}
+          mv "${SYSEXT}"*".raw" "../artifacts/"
+
+      - name: "Build sysext: vscode"
+        env:
+          SYSEXT: vscode
+        run: |
+          cd "${SYSEXT}"
+          if [[ "${PR}" == "true" ]]; then
+              diff="$(git diff origin/main HEAD --stat -- . ; git diff origin/main HEAD --stat -- ../sysext.just)"
+              if [[ -z "${diff}" ]]; then
+                  echo "Skipping: No changes for this sysext in this PR"
+                  exit 0
+              fi
+          fi
+          just build ${IMAGE} ${ARCH}
+          mv "${SYSEXT}"*".raw" "../artifacts/"
+
+      - name: "Build sysext: vscodium"
+        env:
+          SYSEXT: vscodium
+        run: |
+          cd "${SYSEXT}"
+          if [[ "${PR}" == "true" ]]; then
+              diff="$(git diff origin/main HEAD --stat -- . ; git diff origin/main HEAD --stat -- ../sysext.just)"
+              if [[ -z "${diff}" ]]; then
+                  echo "Skipping: No changes for this sysext in this PR"
+                  exit 0
+              fi
+          fi
+          just build ${IMAGE} ${ARCH}
+          mv "${SYSEXT}"*".raw" "../artifacts/"
+
+      - name: "Build sysext: wireguard-tools"
+        env:
+          SYSEXT: wireguard-tools
+        run: |
+          cd "${SYSEXT}"
+          if [[ "${PR}" == "true" ]]; then
+              diff="$(git diff origin/main HEAD --stat -- . ; git diff origin/main HEAD --stat -- ../sysext.just)"
+              if [[ -z "${diff}" ]]; then
+                  echo "Skipping: No changes for this sysext in this PR"
+                  exit 0
+              fi
+          fi
+          just build ${IMAGE} ${ARCH}
+          mv "${SYSEXT}"*".raw" "../artifacts/"
+
+      - name: "Build sysext: wireshark"
+        env:
+          SYSEXT: wireshark
+        run: |
+          cd "${SYSEXT}"
+          if [[ "${PR}" == "true" ]]; then
+              diff="$(git diff origin/main HEAD --stat -- . ; git diff origin/main HEAD --stat -- ../sysext.just)"
+              if [[ -z "${diff}" ]]; then
+                  echo "Skipping: No changes for this sysext in this PR"
+                  exit 0
+              fi
+          fi
+          just build ${IMAGE} ${ARCH}
+          mv "${SYSEXT}"*".raw" "../artifacts/"
+
+      - name: "Build sysext: zoxide"
+        env:
+          SYSEXT: zoxide
         run: |
           cd "${SYSEXT}"
           if [[ "${PR}" == "true" ]]; then

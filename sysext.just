@@ -237,7 +237,7 @@ download-rpms target arch=arch:
         --workdir "/var/srv" \
         --security-opt label=disable \
         "{{target}}" \
-        bash -c "${pre_commands}dnf download --resolve ${dnf_arch} ${dnf_opts} ${disablerepos} ${enablerepos} ${packages}"
+        bash -c "export FORCE_COLUMNS=100 && ${pre_commands}dnf download --resolve ${dnf_arch} ${dnf_opts} ${disablerepos} ${enablerepos} ${packages}"
 
 # Manual download step, that can be overridden to dowload non RPM content
 download-manual arch=arch:
@@ -415,7 +415,7 @@ reset-selinux-labels target arch=arch:
     fi
 
     if [[ -n "{{packages}}" ]]; then
-        pre_commands+="dnf install -y ${dnf_opts} ${disablerepos} ./rpms/* && "
+        pre_commands+="export FORCE_COLUMNS=100 && dnf install -y ${dnf_opts} ${disablerepos} ./rpms/* && "
     fi
 
     filecontexts="/etc/selinux/targeted/contexts/files/file_contexts"

@@ -35,7 +35,7 @@ jobs:
     runs-on: "ubuntu-24.04"
     container:
       image: "quay.io/fedora/fedora:41"
-      options: "--privileged --security-opt label=disable --user 0:0 -v /proc/:/host/proc/:rw"
+      options: "--privileged --security-opt label=disable --user 0:0"
     steps:
       - name: "Install tools"
         run: |
