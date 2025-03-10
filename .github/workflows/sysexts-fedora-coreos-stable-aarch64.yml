@@ -558,10 +558,12 @@ jobs:
             "${SHORTNAME}-${RELEASE}${arch}" \
             || true
 
+          # Only mark the FCOS x86_64 tag as latest release
           latest=false
-          if [[ "${SHORTNAME}" == "fedora-coreos" ]]; then
+          if [[ "${SHORTNAME}" == "fedora-coreos" ]] && [[ "${ARCH}" == "x86_64" ]]; then
             latest="true"
           fi
+
           gh release create \
             --title "${NAME} ${RELEASE} sysexts (${ARCH})" \
             --notes "System extensions for ${NAME} ${RELEASE} (${ARCH})" \
