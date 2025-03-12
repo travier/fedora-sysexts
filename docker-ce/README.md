@@ -9,8 +9,7 @@ Docker Engine from [community repos](https://docs.docker.com/engine/install/fedo
   ```
   $ sudo groupadd --system docker
   ```
-- Enable and start the daemon:
+- Restart the socket:
   ```
-  $ sudo systemctl enable --now docker
+  $ sudo systemctl enable --now docker.socket
   ```
-- For an unknown reason yet, you will have to start it manually on each boot.
