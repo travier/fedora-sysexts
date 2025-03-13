@@ -4,7 +4,6 @@ cri-tools1.32
 kubernetes1.32
 kubernetes1.32-client
 kubernetes1.32-kubeadm
-kubernetes1.32-systemd
 "
 exclude_packages := "
 cri-tools
@@ -19,3 +18,16 @@ quay.io/fedora/fedora-coreos:stable x86_64,aarch64
 import '../sysext.just'
 
 all: default
+
+# Setup folder that is expected by Kubernetes
+install-manual:
+    #!/bin/bash
+    set -euo pipefail
+    # set -x
+    if [[ "${UID}" == "0" ]]; then
+        SUDO=""
+    else
+        SUDO="sudo"
+    fi
+    cd rootfs
+    ${SUDO} install -d -m 755 -o 0 -g 0 usr/libexec/kubernetes/kubelet-plugins/volume/exec
