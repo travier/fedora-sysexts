@@ -9,6 +9,9 @@ kubernetes1.29-systemd
 exclude_packages := "
 cri-tools
 "
+upholds := "
+kubelet.service
+"
 base_images := "
 quay.io/fedora/fedora-coreos:stable x86_64,aarch64
 "

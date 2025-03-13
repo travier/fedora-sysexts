@@ -1,6 +1,4 @@
-# docker-ce
-
-Docker Engine from [community repos](https://docs.docker.com/engine/install/fedora/).
+# moby-engine
 
 ## How to use
 

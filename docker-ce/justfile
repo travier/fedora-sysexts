@@ -6,6 +6,9 @@ containerd.io
 docker-buildx-plugin
 docker-compose-plugin
 "
+upholds := "
+docker.socket
+"
 external_repos := "https://download.docker.com/linux/fedora/docker-ce.repo"
 base_images := "
 quay.io/fedora-ostree-desktops/silverblue:41
