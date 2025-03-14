@@ -18,7 +18,7 @@ RUN mv /opt{,.bak} \
     && \
     sed -i 's|^Exec=/opt/Mullvad VPN|Exec=/usr/bin|g' /usr/share/applications/mullvad-vpn.desktop \
     && \
-    rmdir opt \
+    rmdir /opt \
     && \
     mv /opt{.bak,} \
     && \

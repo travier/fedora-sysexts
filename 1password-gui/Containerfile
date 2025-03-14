@@ -19,7 +19,7 @@ RUN mv /opt{,.bak} \
     && \
     sed -i 's|^Exec=/opt/1Password|Exec=/usr/bin|g' /usr/share/applications/1password.desktop \
     && \
-    rmdir opt \
+    rmdir /opt \
     && \
     mv /opt{.bak,} \
     && \
