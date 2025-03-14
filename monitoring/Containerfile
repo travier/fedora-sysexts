@@ -1,9 +1,11 @@
 FROM baseimage
 
-RUN dnf install -y \
+RUN <<EORUN
+set -xeuo pipefail
+dnf install -y \
     bwm-ng \
-    iotop \
-    && \
-    dnf clean all
+    iotop
+dnf clean all
+EORUN
 
 # TODO: Add bandwhich installation

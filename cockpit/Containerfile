@@ -1,12 +1,14 @@
 FROM baseimage
 
-RUN dnf install -y \
+RUN <<EORUN
+set -xeuo pipefail
+dnf install -y \
     cockpit-files \
     cockpit-networkmanager \
     cockpit-ostree \
     cockpit-podman \
     cockpit-storaged \
     cockpit-system \
-    cockpit-ws \
-    && \
-    dnf clean all
+    cockpit-ws
+dnf clean all
+EORUN

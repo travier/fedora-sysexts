@@ -1,7 +1,9 @@
 FROM baseimage
 
-RUN dnf install -y \
+RUN <<EORUN
+set -xeuo pipefail
+dnf install -y \
     mozilla-openh264 \
-    openh264 \
-    && \
-    dnf clean all
+    openh264
+dnf clean all
+EORUN

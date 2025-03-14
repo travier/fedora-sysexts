@@ -1,11 +1,11 @@
 FROM baseimage
 
-RUN dnf install -y dnf5-plugins \
-    && \
-    dnf copr enable -y ganto/lxc4 \
-    && \
-    dnf install -y \
+RUN <<EORUN
+set -xeuo pipefail
+dnf install -y dnf5-plugins
+dnf copr enable -y ganto/lxc4
+dnf install -y \
     incus \
-    incus-client \
-    && \
-    dnf clean all
+    incus-client
+dnf clean all
+EORUN

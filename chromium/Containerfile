@@ -1,6 +1,7 @@
 FROM baseimage
 
-RUN dnf install -y \
-    chromium \
-    && \
-    dnf clean all
+RUN <<EORUN
+set -xeuo pipefail
+dnf install -y chromium
+dnf clean all
+EORUN

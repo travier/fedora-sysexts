@@ -1,7 +1,9 @@
 FROM baseimage
 
-RUN dnf install -y \
+RUN <<EORUN
+set -xeuo pipefail
+dnf install -y \
     fuse \
-    fuse-libs \
-    && \
-    dnf clean all
+    fuse-libs
+dnf clean all
+EORUN

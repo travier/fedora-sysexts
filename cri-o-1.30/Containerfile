@@ -1,8 +1,12 @@
 FROM baseimage
 
-RUN dnf install -y \
+ARG VERSION=1.30
+
+RUN <<EORUN
+set -xeuo pipefail
+dnf install -y \
     --exclude cri-tools \
-    cri-o1.30 \
-    cri-tools1.30 \
-    && \
-    dnf clean all
+    cri-o${VERSION} \
+    cri-tools${VERSION}
+dnf clean all
+EORUN
