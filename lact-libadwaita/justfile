@@ -7,7 +7,6 @@ quay.io/fedora-ostree-desktops/silverblue:41
 quay.io/fedora-ostree-desktops/silverblue:42
 "
 copr_repos := "ilyaz/LACT"
-disable_repos := "'*'"
 enable_repos := "copr:copr.fedorainfracloud.org:ilyaz:LACT"
 
 
