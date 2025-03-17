@@ -21,6 +21,9 @@ swtpm
 virt-install
 "
 upholds := "
+virtinterfaced-admin.socket
+virtinterfaced-ro.socket
+virtinterfaced.socket
 virtlockd-admin.socket
 virtlockd.socket
 virtlogd-admin.socket
@@ -28,6 +31,12 @@ virtlogd.socket
 virtnetworkd-admin.socket
 virtnetworkd-ro.socket
 virtnetworkd.socket
+virtnodedevd-admin.socket
+virtnodedevd-ro.socket
+virtnodedevd.socket
+virtnwfilterd-admin.socket
+virtnwfilterd-ro.socket
+virtnwfilterd.socket
 virtqemud-admin.socket
 virtqemud-ro.socket
 virtqemud.socket
