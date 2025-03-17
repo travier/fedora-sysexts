@@ -21,8 +21,18 @@ swtpm
 virt-install
 "
 upholds := "
-virtqemud.socket
+virtlockd-admin.socket
+virtlockd.socket
+virtlogd-admin.socket
+virtlogd.socket
+virtnetworkd-admin.socket
+virtnetworkd-ro.socket
 virtnetworkd.socket
+virtqemud-admin.socket
+virtqemud-ro.socket
+virtqemud.socket
+virtstoraged-admin.socket
+virtstoraged-ro.socket
 virtstoraged.socket
 "
 base_images := "
