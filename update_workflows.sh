@@ -14,51 +14,48 @@ main() {
         exit 1
     fi
 
-    # Re-run for each target
-    if [[ ${#} -eq 0 ]]; then
-        # Remove all existing worflows
-        rm -f "./.github/workflows/containers"*".yml"
-        rm "./.github/workflows/sysexts"*".yml"
+    # Remove all existing worflows
+    rm -f "./.github/workflows/containers"*".yml"
+    rm "./.github/workflows/sysexts"*".yml"
 
-        main \
-            'quay.io/fedora/fedora-coreos' \
-            'stable' \
-            'x86_64' \
-            'Fedora CoreOS'
+    generate \
+        'quay.io/fedora/fedora-coreos' \
+        'stable' \
+        'x86_64' \
+        'Fedora CoreOS'
 
-        main \
-            'quay.io/fedora/fedora-coreos' \
-            'stable' \
-            'aarch64' \
-            'Fedora CoreOS'
+    generate \
+        'quay.io/fedora/fedora-coreos' \
+        'stable' \
+        'aarch64' \
+        'Fedora CoreOS'
 
-        main \
-            'quay.io/fedora-ostree-desktops/silverblue' \
-            '41' \
-            'x86_64' \
-            'Fedora Silverblue'
+    generate \
+        'quay.io/fedora-ostree-desktops/silverblue' \
+        '41' \
+        'x86_64' \
+        'Fedora Silverblue'
 
-        main \
-            'quay.io/fedora-ostree-desktops/silverblue' \
-            '42' \
-            'x86_64' \
-            'Fedora Silverblue'
+    generate \
+        'quay.io/fedora-ostree-desktops/silverblue' \
+        '42' \
+        'x86_64' \
+        'Fedora Silverblue'
 
-        main \
-            'quay.io/fedora-ostree-desktops/kinoite' \
-            '41' \
-            'x86_64' \
-            'Fedora Kinoite'
+    generate \
+        'quay.io/fedora-ostree-desktops/kinoite' \
+        '41' \
+        'x86_64' \
+        'Fedora Kinoite'
 
-        main \
-            'quay.io/fedora-ostree-desktops/kinoite' \
-            '42' \
-            'x86_64' \
-            'Fedora Kinoite'
+    generate \
+        'quay.io/fedora-ostree-desktops/kinoite' \
+        '42' \
+        'x86_64' \
+        'Fedora Kinoite'
+}
 
-        exit 0
-    fi
-
+generate() {
     local -r image="${1}"
     local -r release="${2}"
     local -r arch="${3}"
@@ -141,6 +138,7 @@ main() {
             echo ""
         fi
     done
+    # Skip pushing containers for now
     # cat "${tmpl}/containers_logincosign"
     # echo ""
     # for s in "${sysexts[@]}"; do
