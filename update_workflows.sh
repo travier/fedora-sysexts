@@ -20,37 +20,37 @@ main() {
         rm -f "./.github/workflows/containers"*".yml"
         rm "./.github/workflows/sysexts"*".yml"
 
-        ${0} \
+        main \
             'quay.io/fedora/fedora-coreos' \
             'stable' \
             'x86_64' \
             'Fedora CoreOS'
 
-        ${0} \
+        main \
             'quay.io/fedora/fedora-coreos' \
             'stable' \
             'aarch64' \
             'Fedora CoreOS'
 
-        ${0} \
+        main \
             'quay.io/fedora-ostree-desktops/silverblue' \
             '41' \
             'x86_64' \
             'Fedora Silverblue'
 
-        ${0} \
+        main \
             'quay.io/fedora-ostree-desktops/silverblue' \
             '42' \
             'x86_64' \
             'Fedora Silverblue'
 
-        ${0} \
+        main \
             'quay.io/fedora-ostree-desktops/kinoite' \
             '41' \
             'x86_64' \
             'Fedora Kinoite'
 
-        ${0} \
+        main \
             'quay.io/fedora-ostree-desktops/kinoite' \
             '42' \
             'x86_64' \
