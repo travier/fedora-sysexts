@@ -1,7 +1,9 @@
 FROM baseimage
 
-RUN dnf install -y \
+RUN <<EORUN
+set -xeuo pipefail
+dnf install -y \
     btop \
-    rocm-smi \
-    && \
-    dnf clean all
+    rocm-smi
+dnf clean all
+EORUN

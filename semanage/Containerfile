@@ -1,6 +1,7 @@
 FROM baseimage
 
-RUN dnf install -y \
-    policycoreutils-python-utils \
-    && \
-    dnf clean all
+RUN <<EORUN
+set -xeuo pipefail
+dnf install -y policycoreutils-python-utils
+dnf clean all
+EORUN

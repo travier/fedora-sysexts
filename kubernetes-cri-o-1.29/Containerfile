@@ -1,12 +1,15 @@
 FROM baseimage
 
-RUN dnf install -y \
+ARG VERSION=1.29
+
+RUN <<EORUN
+set -xeuo pipefail
+dnf install -y \
     --exclude cri-tools \
-    cri-o1.29 \
-    cri-tools1.29 \
-    kubernetes1.29 \
-    kubernetes1.29-client \
-    kubernetes1.29-kubeadm \
-    kubernetes1.29-systemd \
-    && \
-    dnf clean all
+    cri-o${VERSION} \
+    cri-tools${VERSION} \
+    kubernetes${VERSION} \
+    kubernetes${VERSION}-client \
+    kubernetes${VERSION}-kubeadm
+dnf clean all
+EORUN

@@ -1,10 +1,9 @@
 FROM baseimage
 
-RUN dnf install -y dnf5-plugins \
-    && \
-    dnf copr enable -y ilyaz/LACT \
-    && \
-    dnf install -y \
-    lact-libadwaita \
-    && \
-    dnf clean all
+RUN <<EORUN
+set -xeuo pipefail
+dnf install -y dnf5-plugins
+dnf copr enable -y ilyaz/LACT
+dnf install -y lact-libadwaita
+dnf clean all
+EORUN

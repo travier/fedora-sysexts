@@ -1,8 +1,9 @@
 FROM baseimage
 
-RUN dnf remove -y nfs-utils-coreos \
-    && \
-    dnf install -y \
+RUN <<EORUN
+set -xeuo pipefail
+dnf remove -y nfs-utils-coreos
+dnf install -y \
     guestfs-tools \
     libguestfs \
     libguestfs-xfs \
@@ -28,6 +29,6 @@ RUN dnf remove -y nfs-utils-coreos \
     qemu-img \
     qemu-kvm \
     swtpm \
-    virt-install \
-    && \
-    dnf clean all
+    virt-install
+dnf clean all
+EORUN

@@ -1,6 +1,8 @@
 FROM baseimage
 
-RUN dnf install -y \
+RUN <<EORUN
+set -xeuo pipefail
+dnf install -y \
     guestfs-tools \
     libguestfs \
     libguestfs-xfs \
@@ -19,6 +21,6 @@ RUN dnf install -y \
     qemu \
     qemu-img \
     swtpm \
-    virt-install \
-    && \
-    dnf clean all
+    virt-install
+dnf clean all
+EORUN

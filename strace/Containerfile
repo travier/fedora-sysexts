@@ -1,6 +1,7 @@
 FROM baseimage
 
-RUN dnf install -y \
-    strace \
-    && \
-    dnf clean all
+RUN <<EORUN
+set -xeuo pipefail
+dnf install -y strace
+dnf clean all
+EORUN

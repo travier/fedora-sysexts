@@ -1,7 +1,9 @@
 FROM baseimage
 
-RUN dnf install -y --setopt=install_weak_deps=False \
+RUN <<EORUN
+set -xeuo pipefail
+dnf install -y --setopt=install_weak_deps=False \
     neovim \
-    tree-sitter-cli \
-    && \
-    dnf clean all
+    tree-sitter-cli
+dnf clean all
+EORUN
