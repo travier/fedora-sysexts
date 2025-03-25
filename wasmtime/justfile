@@ -1,0 +1,49 @@
+name := "wasmtime"
+base_images := "
+quay.io/fedora/fedora-coreos:stable
+quay.io/fedora/fedora-coreos:next
+quay.io/fedora-ostree-desktops/silverblue:41
+quay.io/fedora-ostree-desktops/silverblue:42
+quay.io/fedora-ostree-desktops/kinoite:41
+quay.io/fedora-ostree-desktops/kinoite:42
+"
+
+import '../sysext.just'
+
+all: default
+
+# Custom download step to get bandwhich
+download-manual arch=arch:
+    #!/bin/bash
+    set -euo pipefail
+    # set -x
+
+    mkdir binaries
+    cd binaries
+
+    echo "⬇️ Downloading wasmtime"
+    destfile="wasmtime-v31.0.0-x86_64-linux.tar.xz"
+    wget "https://github.com/bytecodealliance/wasmtime/releases/download/v31.0.0/${destfile}"
+    hash="ba5f2aebd96d9d81bdb98e18ba6b98b9519c27256d37b1fce283dae00eef543e  ${destfile}"
+    echo "${hash}" | sha256sum -c -
+    tar xf "${destfile}"
+
+# Custom installation step to install bandwhich
+install-manual:
+    #!/bin/bash
+    set -euo pipefail
+    # set -x
+
+    if [[ "${UID}" == "0" ]]; then
+        SUDO=""
+    else
+        SUDO="sudo"
+    fi
+
+    cd rootfs
+
+    echo "➡️ Installing bandwhich"
+    ${SUDO} install -D -m 755 ../binaries/wasmtime-v31.0.0-x86_64-linux/wasmtime usr/bin/wasmtime
+    ${SUDO} install -D -m 644 ../binaries/wasmtime-v31.0.0-x86_64-linux/LICENSE usr/share/licenses/wasmtime/LICENSE
+
+    ${SUDO} chown -R root: usr

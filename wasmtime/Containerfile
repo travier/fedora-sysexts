@@ -1,0 +1,6 @@
+FROM baseimage
+
+RUN <<EORUN
+set -xeuo pipefail
+# TODO: Install wasmtime
+EORUN
