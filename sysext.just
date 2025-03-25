@@ -148,12 +148,6 @@ check target arch=arch:
         exit 1
     fi
 
-    # Make sure that we install at least a package or some files
-    if [[ -z "{{packages}}" ]] && [[ -z "{{files}}" ]]; then
-        echo "sysexts must include at least one package or file tree"
-        exit 1
-    fi
-
 # Download RPMs to install. Use the following variables:
 # - packages: List of packages to download (and later install)
 # - enable_repos: List of additional repos to enable
