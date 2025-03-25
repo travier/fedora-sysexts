@@ -620,7 +620,7 @@ jobs:
 
           # Only mark the FCOS x86_64 tag as latest release
           latest=false
-          if [[ "${SHORTNAME}" == "fedora-coreos" ]] && [[ "${ARCH}" == "x86_64" ]]; then
+          if [[ "${SHORTNAME}" == "fedora-coreos" ]] && [[ "${ARCH}" == "x86_64" ]] && [[ "${RELEASE}" == "stable"  ]]; then
             latest="true"
           fi
 

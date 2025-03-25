@@ -3,15 +3,18 @@
 For Fedora CoreOS, Atomic Desktops, IoT, or other Bootable Container systems
 (and classic ostree/rpm-ostree systems).
 
-Currently only built for:
-- Fedora Silverblue 41
-- Fedora Kinoite 41
-- Fedora CoreOS (stable stream)
+Currently built weekly for the latest available versions of:
 
-While not built for the testing and next stream for Fedora CoreOS, it is likely
-that the sysexts built for the stable one work for all of them. The only
-exception would be during Fedora major version rebases when next and finally
-testing moves to Fedora N+1 while stable stays on Fedora N.
+| Variant           | Releases / Stream | Architectures        |
+|-------------------|-------------------|----------------------|
+| Fedora CoreOS     | *stable* & *next* | `x86_64` & `aarch64` |
+| Fedora Silverblue | 41 & 42           | `x86_64`             |
+| Fedora Kinoite    | 41 & 42           | `x86_64`             |
+
+While not always built for the *testing* and *next* stream for Fedora CoreOS,
+it is likely that the sysexts built for the stable one work for all of them.
+The only exception would be during Fedora major version rebases when *next*
+(and then *testing*) moves to Fedora N+1 while *stable* stays on Fedora N.
 
 ## How does this fit with bootc and Bootable Containers?
 

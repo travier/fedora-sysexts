@@ -11,6 +11,7 @@ cockpit-ws
 "
 base_images := "
 quay.io/fedora/fedora-coreos:stable
+quay.io/fedora/fedora-coreos:next
 "
 
 import '../sysext.just'

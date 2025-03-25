@@ -31,6 +31,18 @@ main() {
         'Fedora CoreOS'
 
     generate \
+        'quay.io/fedora/fedora-coreos' \
+        'next' \
+        'x86_64' \
+        'Fedora CoreOS'
+
+    generate \
+        'quay.io/fedora/fedora-coreos' \
+        'next' \
+        'aarch64' \
+        'Fedora CoreOS'
+
+    generate \
         'quay.io/fedora-ostree-desktops/silverblue' \
         '41' \
         'x86_64' \

@@ -44,6 +44,7 @@ virtstoraged.socket
 "
 base_images := "
 quay.io/fedora/fedora-coreos:stable
+quay.io/fedora/fedora-coreos:next
 "
 # Pending nfs-utils packaging rework
 pre_commands := "dnf remove -y nfs-utils-coreos"
