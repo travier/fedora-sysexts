@@ -1,0 +1,7 @@
+FROM baseimage
+
+RUN <<EORUN
+set -xeuo pipefail
+dnf install -y source-foundry-hack-fonts
+dnf clean all
+EORUN
