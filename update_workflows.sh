@@ -72,7 +72,7 @@ generate() {
     local -r release="${2}"
     local -r arch="${3}"
     local -r name="${4}"
-    local -r shortname="$(echo "${name}" | tr '[:upper:]' '[:lower:]' | sed 's/ /-/')"
+    local -r shortname="$(echo "${name}" | tr '[:upper:]' '[:lower:]' | sed 's/ /-/g')"
 
     # For containers only
     local -r registry="quay.io/travier"
