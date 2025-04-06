@@ -64,7 +64,7 @@ build target arch=arch: \
     clean \
     (download-rpms target arch) \
     (download-manual arch) \
-    (setup-rootfs arch) \
+    (setup-rootfs target arch) \
     install-rpms \
     install-files \
     install-manual \
@@ -244,7 +244,7 @@ download-manual arch=arch:
     exit 0
 
 # Sets up the rootfs directory and creates the extension release config
-setup-rootfs arch=arch:
+setup-rootfs target arch=arch:
     #!/bin/bash
     set -euo pipefail
     # set -x
@@ -286,9 +286,15 @@ setup-rootfs arch=arch:
     fi
 
     echo "➡️ Setting up extension config file"
+    version_id=$(podman run --rm -ti \
+        --arch={{arch}} \
+        --security-opt label=disable \
+        "{{target}}" \
+        bash -c 'source /etc/os-release ; echo -n ${VERSION_ID}')
     ${SUDO} install -d -m0755 usr/lib/extension-release.d
     {
-    echo "ID=\"_any\""
+    echo "ID=\"fedora\""
+    echo "VERSION_ID=\"${version_id}\""
     # Post process architecture to match systemd architecture list
     arch="$(echo {{arch}} | sed 's/_/-/g')"
     echo "ARCHITECTURE=\"${arch}\""
