@@ -475,15 +475,28 @@ build-erofs target arch=arch:
         SUDO="sudo"
     fi
 
-    echo "🔒 Creating EROFS sysext ({{compression}})"
-    version=$(podman run --rm -ti \
+    version_id=$(podman run --rm -ti \
         --arch={{arch}} \
         --security-opt label=disable \
         "{{target}}" \
-        bash -c 'source /etc/os-release ; echo -n ${OSTREE_VERSION}')
+        bash -c 'source /etc/os-release ; echo -n ${VERSION_ID}')
+
+    version=""
+    if [[ -f ./version ]]; then
+        version="$(cat ./version)"
+    else
+        version=$(podman run --rm -ti \
+            --arch={{arch}} \
+            --security-opt label=disable \
+            "{{target}}" \
+            bash -c 'source /etc/os-release ; echo -n ${OSTREE_VERSION}')
+    fi
+
     # Post process architecture to match systemd architecture list
     arch="$(echo {{arch}} | sed 's/_/-/g')"
-    ${SUDO} mkfs.erofs -z{{compression}} {{name}}-${version}-${arch}.raw rootfs > /dev/null
+
+    echo "🔒 Creating EROFS sysext ({{compression}})"
+    ${SUDO} mkfs.erofs -z{{compression}} {{name}}-${version}-${version_id}-${arch}.raw rootfs > /dev/null
 
     if [[ "${UID}" != "0" ]]; then
         ${SUDO} chown "${USER}:" {{name}}*.raw
