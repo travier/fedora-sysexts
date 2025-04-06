@@ -13,6 +13,9 @@ arch := arch()
 # Do not download any packages by default
 packages := ""
 
+# Package to use to set the version for a sysext
+version_package := ""
+
 # Do not enable additional repos by default
 enable_repos := ""
 
@@ -67,6 +70,8 @@ build target arch=arch: \
     clean \
     (download-rpms target arch) \
     (download-manual arch) \
+    version \
+    (inputs target arch) \
     (setup-rootfs target arch) \
     install-rpms \
     install-files \
@@ -262,6 +267,105 @@ download-manual arch=arch:
     # set -x
     exit 0
 
+# Recipe to override to set a custom version
+version:
+    #!/bin/bash
+    set -euo pipefail
+    # set -x
+
+    echo "🏷️ Writing down version"
+
+    if [[ -n "{{version_package}}" ]]; then
+        if [[ $(ls rpms/*.rpm | grep -cE "^rpms/{{version_package}}-[0-9]" ) -ne 1 ]]; then
+            echo "More than one package matched: {{version_package}}."
+            exit 1
+        fi
+        rpm -qp --queryformat '%{VERSION}-%{RELEASE}' rpms/{{version_package}}*.rpm > ./version
+        exit 0
+    fi
+
+    if [[ -z "{{packages}}" ]]; then
+        echo "No package listed. You must define the 'version' recipe in your justfile for this sysext."
+        exit 1
+    fi
+
+    packages=($(echo "{{packages}}" | xargs))
+
+    if [[ ${#packages[@]} -ne 1 ]]; then
+        if [[ $(ls rpms/*.rpm | grep -cE "^rpms/{{name}}-[0-9]") -ne 1 ]]; then
+            echo "More that one package listed. Set 'version_package' or define the 'version' recipe in your justfile for this sysext."
+            exit 1
+        fi
+        rpm -qp --queryformat '%{VERSION}-%{RELEASE}' rpms/{{name}}*.rpm > ./version
+        exit 0
+    fi
+
+    # Only one package listed, let's use its version
+    rpm="$(ls rpms/${packages[0]}*.rpm | sort -h | head -1)"
+    epoch="$(rpm -qp --queryformat '%{EPOCH}' ${rpm})"
+    version="$(rpm -qp --queryformat '%{VERSION}-%{RELEASE}' ${rpm})"
+    if [[ "${epoch}" == "(none)" ]]; then
+        epoch=""
+    else
+        epoch="${epoch}-"
+    fi
+    echo "${epoch}${version}" > ./version
+
+# Generate 'inputs' files for change detection in CI
+inputs target arch=arch:
+    #!/bin/bash
+    set -euo pipefail
+    # set -x
+
+    echo "🏷️ Writing down inputs"
+
+    # Make sure that we always have a version set
+    version=""
+    if [[ -f ./version ]]; then
+        version="$(cat ./version)"
+    else
+        version=$(podman run --rm \
+            --arch={{arch}} \
+            --security-opt label=disable \
+            "{{target}}" \
+            bash -c 'source /etc/os-release ; echo -n ${OSTREE_VERSION}')
+    fi
+    # Remove special characters from the version
+    version="$(cat ./version | sed "s/\^/_/" | sed "s/:/_/")"
+    # Write back version to file
+    echo "${version}" > ./version
+
+    # Get and store name, tag and digest for the container image used to build the sysext
+    echo "{{target}}@$(podman inspect {{target}} | jq -r '.[0].Digest')" > ./digest
+
+    # Store version_id (Fedora release)
+    version_id=$(podman run --rm \
+        --arch={{arch}} \
+        --security-opt label=disable \
+        "{{target}}" \
+        bash -c 'source /etc/os-release ; echo -n ${VERSION_ID}')
+    echo "${version_id}" > ./version_id
+
+    # Store the hashes of the RPMs used to build the sysext
+    if [[ -d ./rpms ]]; then
+        cd rpms
+        sha256sum *.rpm >> ../inputs
+        cd ..
+    fi
+    # Store the hashes of all the files added to the sysext
+    if [[ -n "{{files}}" ]]; then
+        for f in {{files}}; do
+            find ${f} -type f | sort -h | xargs sha256sum >> ./inputs
+        done
+    fi
+    # Make sure that we have an inputs file in all cases
+    touch ./inputs
+
+    # Store the hashes of the scripts used to build the sysext
+    sha256sum justfile >> ./scripts
+    cd ..
+    sha256sum sysext.just >> ./{{name}}/scripts
+
 # Sets up the rootfs directory and creates the extension release config
 setup-rootfs target arch=arch:
     #!/bin/bash
@@ -273,6 +377,8 @@ setup-rootfs target arch=arch:
     else
         SUDO="sudo"
     fi
+
+    version_id="$(cat ./version_id)"
 
     mkdir rootfs
     cd rootfs
@@ -304,18 +410,14 @@ setup-rootfs target arch=arch:
         } | ${SUDO} tee "usr/lib/systemd/system/multi-user.target.d/10-{{name}}-sysext.conf" > /dev/null
     fi
 
+    # Post process architecture to match systemd architecture list
+    arch="$(echo {{arch}} | sed 's/_/-/g')"
+
     echo "➡️ Setting up extension config file"
-    version_id=$(podman run --rm -ti \
-        --arch={{arch}} \
-        --security-opt label=disable \
-        "{{target}}" \
-        bash -c 'source /etc/os-release ; echo -n ${VERSION_ID}')
     ${SUDO} install -d -m0755 usr/lib/extension-release.d
     {
     echo "ID=\"fedora\""
     echo "VERSION_ID=\"${version_id}\""
-    # Post process architecture to match systemd architecture list
-    arch="$(echo {{arch}} | sed 's/_/-/g')"
     echo "ARCHITECTURE=\"${arch}\""
     if [[ "${reload_manager}"  == "true" ]]; then
         echo "EXTENSION_RELOAD_MANAGER=1"
@@ -496,23 +598,8 @@ build-erofs target arch=arch:
         SUDO="sudo"
     fi
 
-    version_id=$(podman run --rm -ti \
-        --arch={{arch}} \
-        --security-opt label=disable \
-        "{{target}}" \
-        bash -c 'source /etc/os-release ; echo -n ${VERSION_ID}')
-
-    version=""
-    if [[ -f ./version ]]; then
-        version="$(cat ./version)"
-    else
-        version=$(podman run --rm -ti \
-            --arch={{arch}} \
-            --security-opt label=disable \
-            "{{target}}" \
-            bash -c 'source /etc/os-release ; echo -n ${OSTREE_VERSION}')
-    fi
-
+    version="$(cat ./version)"
+    version_id="$(cat ./version_id)"
     # Post process architecture to match systemd architecture list
     arch="$(echo {{arch}} | sed 's/_/-/g')"
 
@@ -538,6 +625,7 @@ clean:
     fi
 
     echo "🧹 Cleaning up files from previous builds"
+    rm -rf inputs scripts digest version version_id
     rm -rf ./rpms
     rm -rf ./binaries
     ${SUDO} rm -rf ./rootfs ./rootfs.ignored

@@ -4,4 +4,9 @@ binaries/
 *.erofs
 *.raw
 *.rpm
+version
+version_id
+inputs
+digest
+scripts
 /.dnf-cache/
