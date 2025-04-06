@@ -1,0 +1,52 @@
+name := "youki"
+base_images := "
+quay.io/fedora/fedora-coreos:stable x86_64,aarch64
+quay.io/fedora/fedora-coreos:next x86_64,aarch64
+"
+
+import '../sysext.just'
+
+all: default
+
+# Custom download step to get bandwhich
+download-manual arch=arch:
+    #!/bin/bash
+    set -euo pipefail
+    # set -x
+
+    mkdir binaries
+    cd binaries
+
+    ARCH="{{arch}}"
+    VERSION="0.5.3" # TODO
+    if [[ "${ARCH}" == "x86_64" ]]; then
+        SHA256SUM="173b8998cd0abf22e38e36611b34cc19a16431b353dd893e3d988cfc77b4e6ac"
+    else
+        SHA256SUM="a15dfe9a1eec2d595b9a972a8a0fa1a919ee3d3523e77ca8c22099bfadf7e88d"
+    fi
+
+    echo "⬇️ Downloading youki"
+    curl -L --location --remote-name-all "https://github.com/youki-dev/youki/releases/download/v${VERSION}/youki-${VERSION}-${ARCH}-gnu.tar.gz"
+    echo "${SHA256SUM}  youki-${VERSION}-${ARCH}-gnu.tar.gz" | sha256sum --check
+    tar xf youki-${VERSION}-${ARCH}-gnu.tar.gz
+    rm youki-${VERSION}-${ARCH}-gnu.tar.gz README.md
+
+# Custom installation step to install bandwhich
+install-manual:
+    #!/bin/bash
+    set -euo pipefail
+    # set -x
+
+    if [[ "${UID}" == "0" ]]; then
+        SUDO=""
+    else
+        SUDO="sudo"
+    fi
+
+    cd rootfs
+
+    echo "➡️ Installing youki"
+    ${SUDO} install -D -m 755 ../binaries/youki   usr/bin/youki
+    ${SUDO} install -D -m 644 ../binaries/LICENSE usr/share/licenses/youki/LICENSE
+
+    ${SUDO} chown -R root: usr
