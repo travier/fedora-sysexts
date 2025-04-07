@@ -8,7 +8,7 @@ import '../sysext.just'
 
 all: default
 
-# Custom download step to get bandwhich
+# Custom download step to get the binary
 download-manual arch=arch:
     #!/bin/bash
     set -euo pipefail
@@ -31,9 +31,9 @@ download-manual arch=arch:
     sha256sum --check cilium-linux-${ARCH}.tar.gz.sha256sum
     tar xzvfC cilium-linux-${ARCH}.tar.gz ./
 
-    curl -L --fail --remote-name-all https://github.com/cilium/cilium-cli/raw/refs/tags/${VERSION}/LICENSE
+    curl -L --fail --remote-name-all "https://github.com/cilium/cilium-cli/raw/refs/tags/${VERSION}/LICENSE"
 
-# Custom installation step to install bandwhich
+# Custom installation step to install the binary
 install-manual:
     #!/bin/bash
     set -euo pipefail
