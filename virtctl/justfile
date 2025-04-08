@@ -1,0 +1,55 @@
+name := "virtctl"
+base_images := "
+quay.io/fedora/fedora-coreos:stable x86_64,aarch64
+quay.io/fedora/fedora-coreos:next x86_64,aarch64
+"
+
+import '../sysext.just'
+
+all: default
+
+# Custom download step to get the binary
+download-manual arch=arch:
+    #!/bin/bash
+    set -euo pipefail
+    # set -x
+
+    mkdir binaries
+    cd binaries
+
+    ARCH="{{arch}}"
+    VERSION="1.5.0" # TODO
+    if [[ "${ARCH}" == "x86_64" ]]; then
+        SHA256SUM="100fc12f13f4bdbcf32a2d74c1f4ed7cfd98404496f7b5d2d2ba48b3683aeffa"
+        ARCH="amd64"
+    else
+        SHA256SUM="aabcf1571639aa5b9bdbaf005d78b5b2c21ebcf1b2f9f7bdc43caff693077549"
+        ARCH="arm64"
+    fi
+
+    echo "⬇️ Downloading virtctl"
+    curl -L --location --remote-name-all "https://github.com/kubevirt/kubevirt/releases/download/v${VERSION}/virtctl-v${VERSION}-linux-${ARCH}"
+    echo "${SHA256SUM}  virtctl-v${VERSION}-linux-${ARCH}" | sha256sum --check
+    mv "virtctl-v${VERSION}-linux-${ARCH}" virtctl
+
+    curl -L --fail --remote-name-all "https://github.com/kubevirt/kubevirt/raw/refs/heads/main/LICENSE"
+
+# Custom installation step to install the binary
+install-manual:
+    #!/bin/bash
+    set -euo pipefail
+    # set -x
+
+    if [[ "${UID}" == "0" ]]; then
+        SUDO=""
+    else
+        SUDO="sudo"
+    fi
+
+    cd rootfs
+
+    echo "➡️ Installing virtctl"
+    ${SUDO} install -D -m 755 ../binaries/virtctl  usr/bin/virtctl
+    ${SUDO} install -D -m 644 ../binaries/LICENSE usr/share/licenses/virtctl/LICENSE
+
+    ${SUDO} chown -R root: usr

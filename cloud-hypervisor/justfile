@@ -1,0 +1,15 @@
+name := "cloud-hypervisor"
+packages := "
+cloud-hypervisor
+edk2-cloud-hypervisor
+rust-hypervisor-firmware-bin
+"
+external_repos := "https://download.opensuse.org/repositories/home:cloud-hypervisor/Fedora_41/home:cloud-hypervisor.repo"
+base_images := "
+quay.io/fedora/fedora-coreos:stable x86_64,aarch64
+quay.io/fedora/fedora-coreos:next x86_64,aarch64
+"
+
+import '../sysext.just'
+
+all: default
