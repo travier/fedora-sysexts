@@ -451,6 +451,8 @@ reset-selinux-labels target arch=arch:
         pre_commands+="export FORCE_COLUMNS=100 && dnf install -y ${dnf_opts} ${disablerepos} ./rpms/* && "
     fi
 
+    mkdir -p ../.dnf-cache
+
     filecontexts="/etc/selinux/targeted/contexts/files/file_contexts"
     echo "🏷️ Resetting SELinux labels"
     podman run --rm -ti \
