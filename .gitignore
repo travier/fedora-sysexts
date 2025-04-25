@@ -11,3 +11,4 @@ digest
 scripts
 json
 /.dnf-cache/
+/docs/*/
