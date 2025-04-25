@@ -1,14 +1,11 @@
 name := "mullvad-vpn"
-packages := "
-mullvad-vpn
-"
+packages := "mullvad-vpn"
+version_package := "MullvadVPN"
 pre_commands := "rm -rf /opt && mkdir /opt"
 external_repos := "https://repository.mullvad.net/rpm/stable/mullvad.repo"
 base_images := "
-quay.io/fedora-ostree-desktops/silverblue:41
-quay.io/fedora-ostree-desktops/silverblue:42
-quay.io/fedora-ostree-desktops/kinoite:41
-quay.io/fedora-ostree-desktops/kinoite:42
+quay.io/fedora-ostree-desktops/base-atomic:41 x86_64,aarch64
+quay.io/fedora-ostree-desktops/base-atomic:42 x86_64,aarch64
 "
 
 import '../sysext.just'

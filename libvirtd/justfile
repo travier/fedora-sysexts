@@ -42,6 +42,7 @@ virtstoraged-admin.socket
 virtstoraged-ro.socket
 virtstoraged.socket
 "
+version_package := "libvirt-client"
 base_images := "
 quay.io/fedora/fedora-coreos:stable
 quay.io/fedora/fedora-coreos:next

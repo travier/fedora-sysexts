@@ -1,12 +1,10 @@
 name := "microsoft-edge"
 packages := "microsoft-edge-stable"
 base_images := "
-quay.io/fedora-ostree-desktops/silverblue:41
-quay.io/fedora-ostree-desktops/silverblue:42
-quay.io/fedora-ostree-desktops/kinoite:41
-quay.io/fedora-ostree-desktops/kinoite:42
+quay.io/fedora-ostree-desktops/base-atomic:41 x86_64
+quay.io/fedora-ostree-desktops/base-atomic:42 x86_64
 "
-pre_commands := "rm -rf /opt; mkdir /opt; rpm --import https://packages.microsoft.com/keys/microsoft.asc; echo -e '[edge-yum]\nname=edge-yum\nbaseurl=https://packages.microsoft.com/yumrepos/edge/\nenabled=1\ngpgcheck=1\ngpgkey=https://packages.microsoft.com/keys/microsoft.asc' | tee /etc/yum.repos.d/edge.repo > /dev/null"
+pre_commands := "rm -rf /opt; mkdir /opt; rpm --import https://packages.microsoft.com/keys/microsoft.asc; echo -e '[edge-yum]\nname=edge-yum\nbaseurl=https://packages.microsoft.com/yumrepos/edge/\nenabled=1\ngpgcheck=1\ngpgkey=https://packages.microsoft.com/keys/microsoft.asc' > /etc/yum.repos.d/edge.repo"
 
 import '../sysext.just'
 

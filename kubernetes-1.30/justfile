@@ -1,16 +1,19 @@
-name := "kubernetes-1.30"
+kube_version := "1.30"
+name := "kubernetes-" + kube_version
 packages := "
-cri-tools1.30
-kubernetes1.30
-kubernetes1.30-client
-kubernetes1.30-kubeadm
+cri-tools"  + kube_version + "
+kubernetes" + kube_version + "
+kubernetes" + kube_version + "-client
+kubernetes" + kube_version + "-kubeadm
 "
 exclude_packages := "
+cri-o
 cri-tools
 "
 upholds := "
 kubelet.service
 "
+version_package := "kubernetes" + kube_version
 base_images := "
 quay.io/fedora/fedora-coreos:stable x86_64,aarch64
 quay.io/fedora/fedora-coreos:next x86_64,aarch64

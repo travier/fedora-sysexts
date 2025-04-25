@@ -3,10 +3,8 @@ packages := "google-chrome-stable"
 enable_repos := "google-chrome"
 pre_commands := "rm -rf /opt && mkdir /opt"
 base_images := "
-quay.io/fedora-ostree-desktops/silverblue:41
-quay.io/fedora-ostree-desktops/silverblue:42
-quay.io/fedora-ostree-desktops/kinoite:41
-quay.io/fedora-ostree-desktops/kinoite:42
+quay.io/fedora-ostree-desktops/base-atomic:41 x86_64
+quay.io/fedora-ostree-desktops/base-atomic:42 x86_64
 "
 
 import '../sysext.just'

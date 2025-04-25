@@ -1,7 +1,7 @@
 name := "youki"
 base_images := "
-quay.io/fedora/fedora-coreos:stable x86_64,aarch64
-quay.io/fedora/fedora-coreos:next x86_64,aarch64
+quay.io/fedora-ostree-desktops/base-atomic:41 x86_64,aarch64
+quay.io/fedora-ostree-desktops/base-atomic:42 x86_64,aarch64
 "
 
 import '../sysext.just'
@@ -17,19 +17,29 @@ download-manual arch=arch:
     mkdir binaries
     cd binaries
 
-    ARCH="{{arch}}"
-    VERSION="0.5.3" # TODO
-    if [[ "${ARCH}" == "x86_64" ]]; then
-        SHA256SUM="173b8998cd0abf22e38e36611b34cc19a16431b353dd893e3d988cfc77b4e6ac"
+    arch="{{arch}}"
+    version="0.5.3" # TODO
+    if [[ "${arch}" == "x86_64" ]]; then
+        sha256sum="173b8998cd0abf22e38e36611b34cc19a16431b353dd893e3d988cfc77b4e6ac"
     else
-        SHA256SUM="a15dfe9a1eec2d595b9a972a8a0fa1a919ee3d3523e77ca8c22099bfadf7e88d"
+        sha256sum="a15dfe9a1eec2d595b9a972a8a0fa1a919ee3d3523e77ca8c22099bfadf7e88d"
     fi
 
     echo "⬇️ Downloading youki"
-    curl -L --location --remote-name-all "https://github.com/youki-dev/youki/releases/download/v${VERSION}/youki-${VERSION}-${ARCH}-gnu.tar.gz"
-    echo "${SHA256SUM}  youki-${VERSION}-${ARCH}-gnu.tar.gz" | sha256sum --check
-    tar xf youki-${VERSION}-${ARCH}-gnu.tar.gz
-    rm youki-${VERSION}-${ARCH}-gnu.tar.gz README.md
+    curl --location --fail --output "youki-${version}-${arch}-gnu.tar.gz" \
+        "https://github.com/youki-dev/youki/releases/download/v${version}/youki-${version}-${arch}-gnu.tar.gz"
+    echo "${sha256sum}  youki-${version}-${arch}-gnu.tar.gz" | sha256sum --check
+
+    # Version & metadata
+    echo "${version}" > ../version
+    echo "${sha256sum} youki-${version}-${arch}-gnu.tar.gz" > ../inputs
+
+    tar xf youki-${version}-${arch}-gnu.tar.gz
+    rm youki-${version}-${arch}-gnu.tar.gz README.md
+
+# Skip default recipe
+version:
+    true
 
 # Custom installation step to install the binary
 install-manual:
