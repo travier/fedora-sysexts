@@ -1,0 +1,91 @@
+# Redirect caddyfile for processing systemd-sysupdate requests.
+#
+# This Caddyfile will redirect incoming requests to GitHub releases, making it
+# appear to clients like systemd-sysupdate as if all sysexts released are in
+# the same directory.
+# For clients, the directory layout looks like e.g.:
+#
+# SHA256SUMS
+# kubernetes-1.30.2-f41-aarch64.raw
+# kubernetes-1.30.2-f41-x86-64.raw
+# kubernetes-1.30.2-f42-aarch64.raw
+# kubernetes-1.30.2-f42-x86-64.raw
+# kubernetes-1.30.4-f41-aarch64.raw
+# kubernetes-1.30.4-f41-x86-64.raw
+# kubernetes-1.30.4-f42-aarch64.raw
+# kubernetes-1.30.4-f42-x86-64.raw
+# kubernetes-1.30.conf
+# ...
+#
+# while in fact requests are being redirected to GitHub releases depending on
+# which pattern matches the request.
+#
+# This is heavily inspired from:
+# https://github.com/flatcar/sysext-bakery/blob/main/tools/http-url-rewrite-server/Caddyfile
+# which is distributed under the Apache License 2.0
+
+{
+    # Disable admin interface
+    admin off
+    # Only use the explicitly provided config
+    persist_config off
+}
+
+# For testing locally, use:
+# podman run --rm -ti -v $PWD/Caddyfile:/etc/caddy/Caddyfile:Z -p 8080:8080 --user 1000:1000 docker.io/caddy:latest
+http://:8080 {
+    vars base_dest_url "https://github.com/travier/fedora-sysexts/releases/download"
+
+    # Extension image:
+    #   <name>/<extension>.raw (<extension> = <name>-<version>-<release>-<arch>)
+    #     ==>  https://[...]/releases/download/<extension>/<extension>.raw
+    @raw path_regexp raw ^.*/extensions/([^/]+)/([^/]+).raw$
+    redir @raw {vars.base_dest_url}/{re.raw.2}/{re.raw.2}.raw
+
+    # Extension sysupdate conf (short URL for installation)
+    #   <name>.conf
+    #     ==>  https://[...]/releases/download/<name>/<name>.conf
+    @gconf path_regexp gconf ^.*/extensions/([^/]+).conf$
+    redir @gconf {vars.base_dest_url}/{re.gconf.1}/{re.gconf.1}.conf
+
+    # Extension sysupdate conf (namespaced URL)
+    #   <name>/<name>.conf
+    #     ==>  https://[...]/releases/download/<name>/<name>.conf
+    @econf path_regexp econf ^.*/extensions/([^/]+)/([^/]+).conf$
+    redir @econf {vars.base_dest_url}/{re.econf.1}/{re.econf.1}.conf
+
+    # Extension specific SHA file with extension name in path
+    #     <name>/SHA256SUMS
+    #       ==>  https://[...]/releases/download/<name>/SHA256SUMS
+    @esha path_regexp esha ^/extensions/([^/]+)/SHA256SUMS$
+    redir @esha {vars.base_dest_url}/{re.esha.1}/SHA256SUMS
+
+    # Global SHA256SUMS file with all extensions
+    #     SHA256SUMS
+    #       ==>  https://[...]/releases/download/latest/SHA256SUMS
+    @gsha path_regexp gsha ^/extensions/SHA256SUMS$
+    redir @gsha {vars.base_dest_url}/latest/SHA256SUMS
+
+    # None of the above matched, redirect to the website.
+    redir https://travier.github.io/fedora-sysexts{uri}
+
+    ###########################################################################
+
+    # Redirects to the experimental project that is used for testing
+    vars base_dest_url_exp "https://github.com/travier/fedora-sysexts-exp/releases/download"
+
+    @rawexp path_regexp rawexp ^.*/extensions-exp/([^/]+)/([^/]+).raw$
+    redir @rawexp {vars.base_dest_url_exp}/{re.rawexp.2}/{re.rawexp.2}.raw
+
+    @gconfexp path_regexp gconfexp ^.*/extensions-exp/([^/]+).conf$
+    redir @gconfexp {vars.base_dest_url_exp}/{re.gconfexp.1}/{re.gconfexp.1}.conf
+
+    @econfexp path_regexp econfexp ^.*/extensions-exp/([^/]+)/([^/]+).conf$
+    redir @econfexp {vars.base_dest_url_exp}/{re.econfexp.1}/{re.econfexp.1}.conf
+
+    @eshaexp path_regexp eshaexp ^/extensions-exp/([^/]+)/SHA256SUMS$
+    redir @eshaexp {vars.base_dest_url_exp}/{re.eshaexp.1}/SHA256SUMS
+
+    @gshaexp path_regexp gshaexp ^/extensions-exp/SHA256SUMS$
+    redir @gshaexp {vars.base_dest_url_exp}/latest/SHA256SUMS
+}
