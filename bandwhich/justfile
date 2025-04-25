@@ -1,0 +1,64 @@
+name := "bandwhich"
+base_images := "
+quay.io/fedora-ostree-desktops/base-atomic:41 x86_64,aarch64
+quay.io/fedora-ostree-desktops/base-atomic:42 x86_64,aarch64
+"
+
+import '../sysext.just'
+
+all: default
+
+# Custom download step to get bandwhich
+download-manual arch=arch:
+    #!/bin/bash
+    set -euo pipefail
+    # set -x
+
+    mkdir binaries
+    cd binaries
+
+    arch="{{arch}}"
+    version="0.23.1" # TODO
+    if [[ "${arch}" == "x86_64" ]]; then
+        sha256sum="0de12665fcd1ecafbed84c372fb8edc568bb9eaffee95f53710b8c0b4c687637"
+    else
+        sha256sum="46311a6e2652fc3fc386c1186baa6b986e925c686237434445b656112358ce4d"
+    fi
+
+    echo "⬇️ Downloading bandwhich"
+    destfile="bandwhich-v${version}-${arch}-unknown-linux-gnu.tar.gz"
+    wget "https://github.com/imsnif/bandwhich/releases/download/v${version}/${destfile}"
+    echo "${sha256sum}  ${destfile}" | sha256sum --check
+    tar xf "${destfile}"
+    gzip -9 assets/bandwhich.1
+
+    # Version & metadata
+    echo "${version}" > ../version
+    sha256sum ${destfile} >> ../inputs
+
+# Skip default recipe
+version:
+    true
+
+# Custom installation step to install bandwhich
+install-manual:
+    #!/bin/bash
+    set -euo pipefail
+    # set -x
+
+    if [[ "${UID}" == "0" ]]; then
+        SUDO=""
+    else
+        SUDO="sudo"
+    fi
+
+    cd rootfs
+
+    echo "➡️ Installing bandwhich"
+    ${SUDO} install -D -m 755 ../binaries/bandwhich             usr/bin/bandwhich
+    ${SUDO} install -D -m 644 ../binaries/assets/bandwhich.bash usr/share/bash-completion/completions/bandwhich.bash
+    ${SUDO} install -D -m 644 ../binaries/assets/_bandwhich     usr/share/zsh/site-functions/_bandwhich
+    ${SUDO} install -D -m 644 ../binaries/assets/bandwhich.fish usr/share/fish/vendor_completions.d/bandwhich.fish
+    ${SUDO} install -D -m 644 ../binaries/assets/bandwhich.1.gz usr/share/man/man1/bandwhich.1.gz
+
+    ${SUDO} chown -R root: usr
