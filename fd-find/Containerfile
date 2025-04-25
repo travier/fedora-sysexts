@@ -1,0 +1,7 @@
+FROM baseimage
+
+RUN <<EORUN
+set -xeuo pipefail
+dnf install -y fd-find
+dnf clean all
+EORUN
