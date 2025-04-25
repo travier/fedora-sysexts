@@ -2,7 +2,7 @@
 
 The [Bitwarden](https://bitwarden.com/) password manager.
 
-### Differences from the Flatpak version
+## Differences from the Flatpak version
 
 While both the packaged version and the Flatpak version are equal in core
 functionality, some features (e.g.: biometrics autosetup and the ssh-agent sock

@@ -1,5 +1,8 @@
 # MPD
 
+Note: Temporarily not built until we can make per-variant (Silverblue, Kinoite,
+CoreOS) builds or we directly duplicate this sysext for each variant.
+
 Includes:
 - [Music Player Daemon](https://www.musicpd.org) (Server-side application for playing music)
 - [mpc](https://www.musicpd.org/clients/mpc) (A minimalist command line interface to MPD)

@@ -30,8 +30,7 @@ See the [Virtual Machine Manager Flatpak](https://flathub.org/apps/org.virt_mana
       }
   });
   ```
-- Enable and restart libvirtd (via virtqemud, virtnetworkd & virtstoraged):
+- Restart libvirtd (via virtqemud, virtnetworkd & virtstoraged):
   ```
-  $ sudo systemctl enable virtqemud.socket virtnetworkd.socket virtstoraged.socket
   $ sudo systemctl restart virtqemud.socket virtnetworkd.socket virtstoraged.socket
   ```
