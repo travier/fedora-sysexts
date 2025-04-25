@@ -1,0 +1,13 @@
+source 'https://rubygems.org'
+
+gem "jekyll", "~> 4.3"
+gem "just-the-docs"
+gem "webrick", "~> 1.8"
+
+gem 'jekyll-remote-theme', '~> 0.4.3'
+
+# Silence warnings
+gem "logger"
+gem "csv"
+gem "ostruct"
+gem "base64"

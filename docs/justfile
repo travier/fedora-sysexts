@@ -1,0 +1,4 @@
+export JEKYLL_ENV:="production"
+
+serve:
+  bundle exec jekyll serve --strict_front_matter --config _config.yml,_config_local.yml
