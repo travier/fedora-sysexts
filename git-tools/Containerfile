@@ -1,9 +1,0 @@
-FROM baseimage
-
-RUN <<EORUN
-set -xeuo pipefail
-dnf install -y \
-    git-absorb \
-    git-delta
-dnf clean all
-EORUN
