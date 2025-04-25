@@ -1,0 +1,9 @@
+FROM baseimage
+
+RUN <<EORUN
+set -xeuo pipefail
+dnf install -y \
+    adobe-source-code-pro-fonts \
+    adobe-source-code-vf-fonts
+dnf clean all
+EORUN
