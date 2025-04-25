@@ -81,6 +81,26 @@ build target arch=arch: \
     (reset-selinux-labels target arch) \
     (build-erofs target arch)
 
+# Split recipes for faster skip-builds in CI: Only download and generate inputs
+prepare-build target arch=arch: \
+    (check target arch) \
+    clean \
+    (download-rpms target arch) \
+    (download-manual arch) \
+    version \
+    (inputs target arch)
+
+# Split recipes for faster skip-builds in CI: Only builds, must be call after prepare-build
+resume-build target arch=arch: \
+    (setup-rootfs target arch) \
+    install-rpms \
+    install-files \
+    install-manual \
+    move-etc \
+    rm-ignored \
+    (reset-selinux-labels target arch) \
+    (build-erofs target arch)
+
 # List the supported targets for this sysext. To use in CI and scripting
 targets:
     #!/bin/bash
