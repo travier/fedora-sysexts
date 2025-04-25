@@ -19,6 +19,9 @@ enable_repos := ""
 # Do not enable any Copr repos by default
 copr_repos := ""
 
+# Do not enable RPM Fusion repos by default
+rpm_fusion_repos := ""
+
 # Disable repos from the build container
 disable_repos := ""
 
@@ -218,6 +221,22 @@ download-rpms target arch=arch:
             pre_commands+=" ; dnf config-manager addrepo --from-repofile=${r}"
         done
         pre_commands+=" ; "
+    fi
+
+    if [[ -n "{{rpm_fusion_repos}}" ]]; then
+        release=$(podman run --rm \
+            --arch={{arch}} \
+            --security-opt label=disable \
+            "{{target}}" \
+            bash -c 'rpm -E %fedora' | tr -d '\n')
+        for r in {{rpm_fusion_repos}}; do
+            if [[ "${r}" != "free" ]] && [[ "${r}" != "nonfree" ]]; then
+                echo "Unrecognized RPM Fusion repo: ${r}"
+                exit 1
+            fi
+            echo "➕ Enabling RPM Fusion repo: '${r}'"
+            pre_commands+=" dnf install -y https://mirrors.rpmfusion.org/${r}/fedora/rpmfusion-${r}-release-${release}.noarch.rpm ;"
+        done
     fi
 
     mkdir -p ../.dnf-cache

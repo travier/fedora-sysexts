@@ -1,11 +1,11 @@
 name := "mpd"
-pre_commands:= "dnf install -y https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm"
 packages := "
-    mpd
-    mpc
-    mpdris2
-    ncmpcpp
+mpd
+mpc
+mpdris2
+ncmpcpp
 "
+rpm_fusion_repos := "free nonfree"
 base_images := "
 quay.io/fedora/fedora-coreos:stable x86_64,aarch64
 quay.io/fedora/fedora-coreos:next x86_64,aarch64
