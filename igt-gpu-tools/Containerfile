@@ -1,0 +1,7 @@
+FROM baseimage
+
+RUN <<EORUN
+set -xeuo pipefail
+dnf install -y igt-gpu-tools
+dnf clean all
+EORUN
