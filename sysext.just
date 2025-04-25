@@ -87,7 +87,7 @@ targets:
         exit 1
     fi
 
-    echo "{{base_images}}" | xargs
+    echo "{{base_images}}" | { grep -v "^$" || test $? = 1; }
 
 # Sanity check that some variables are set
 check target arch=arch:
