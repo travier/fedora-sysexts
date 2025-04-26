@@ -1,3 +1,0 @@
-# cockpit
-
-Work in progress.
