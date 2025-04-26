@@ -1,0 +1,19 @@
+  build-%%JOBNAME%%:
+    runs-on: "%%RUNSON%%"
+    container:
+      image: "ghcr.io/travier/fedora-sysexts-exp/buildroot:latest"
+      options: "--privileged --security-opt label=disable --user 0:0"
+    env:
+      IMAGE: "%%IMAGE%%"
+    steps:
+      - name: "Checkout repo"
+        uses: actions/checkout@v4
+
+      - name: "Setup artifacts and dnf cache directories"
+        run: |
+          mkdir -p artifacts .dnf-cache
+
+      - name: "Mark directory as safe"
+        run: |
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          git fetch --no-tags --prune --depth=1 origin +refs/heads/main:refs/remotes/origin/main
