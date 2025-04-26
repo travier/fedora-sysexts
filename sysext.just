@@ -293,6 +293,18 @@ version:
     set -euo pipefail
     # set -x
 
+    package_version() {
+        rpm="${1}"
+        epoch="$(rpm -qp --queryformat '%{EPOCH}' ${rpm})"
+        version="$(rpm -qp --queryformat '%{VERSION}-%{RELEASE}' ${rpm})"
+        if [[ "${epoch}" == "(none)" ]]; then
+            epoch=""
+        else
+            epoch="${epoch}-"
+        fi
+        echo "${epoch}${version}" > ./version
+    }
+
     echo "🏷️ Writing down version"
 
     if [[ -n "{{version_package}}" ]]; then
@@ -300,7 +312,8 @@ version:
             echo "More than one package matched: {{version_package}}."
             exit 1
         fi
-        rpm -qp --queryformat '%{VERSION}-%{RELEASE}' rpms/{{version_package}}*.rpm > ./version
+        rpm="$(ls rpms/*.rpm | sort -h | grep -E "^rpms/{{version_package}}-[0-9]" | head -1)"
+        package_version "${rpm}"
         exit 0
     fi
 
@@ -316,20 +329,14 @@ version:
             echo "More that one package listed. Set 'version_package' or define the 'version' recipe in your justfile for this sysext."
             exit 1
         fi
-        rpm -qp --queryformat '%{VERSION}-%{RELEASE}' rpms/{{name}}*.rpm > ./version
+        rpm="$(ls rpms/*.rpm | sort -h | grep -E "^rpms/{{name}}-[0-9]" | head -1)"
+        package_version "${rpm}"
         exit 0
     fi
 
     # Only one package listed, let's use its version
     rpm="$(ls rpms/${packages[0]}*.rpm | sort -h | head -1)"
-    epoch="$(rpm -qp --queryformat '%{EPOCH}' ${rpm})"
-    version="$(rpm -qp --queryformat '%{VERSION}-%{RELEASE}' ${rpm})"
-    if [[ "${epoch}" == "(none)" ]]; then
-        epoch=""
-    else
-        epoch="${epoch}-"
-    fi
-    echo "${epoch}${version}" > ./version
+    package_version "${rpm}"
 
 # Generate 'inputs' files for change detection in CI
 inputs target arch=arch:
