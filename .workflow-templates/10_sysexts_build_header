@@ -1,7 +1,7 @@
   build-%%JOBNAME%%:
     runs-on: "%%RUNSON%%"
     container:
-      image: "ghcr.io/travier/fedora-sysexts-exp/buildroot:latest"
+      image: "ghcr.io/travier/fedora-sysexts/buildroot:latest"
       options: "--privileged --security-opt label=disable --user 0:0"
     env:
       IMAGE: "%%IMAGE%%"

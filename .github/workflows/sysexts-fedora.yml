@@ -29,7 +29,7 @@ jobs:
   build-fedora-41-x86_64:
     runs-on: "ubuntu-24.04"
     container:
-      image: "ghcr.io/travier/fedora-sysexts-exp/buildroot:latest"
+      image: "ghcr.io/travier/fedora-sysexts/buildroot:latest"
       options: "--privileged --security-opt label=disable --user 0:0"
     env:
       IMAGE: "quay.io/fedora-ostree-desktops/base-atomic:41"
@@ -355,7 +355,7 @@ jobs:
   build-fedora-42-x86_64:
     runs-on: "ubuntu-24.04"
     container:
-      image: "ghcr.io/travier/fedora-sysexts-exp/buildroot:latest"
+      image: "ghcr.io/travier/fedora-sysexts/buildroot:latest"
       options: "--privileged --security-opt label=disable --user 0:0"
     env:
       IMAGE: "quay.io/fedora-ostree-desktops/base-atomic:42"
@@ -681,7 +681,7 @@ jobs:
   build-fedora-coreos-stable-x86_64:
     runs-on: "ubuntu-24.04"
     container:
-      image: "ghcr.io/travier/fedora-sysexts-exp/buildroot:latest"
+      image: "ghcr.io/travier/fedora-sysexts/buildroot:latest"
       options: "--privileged --security-opt label=disable --user 0:0"
     env:
       IMAGE: "quay.io/fedora/fedora-coreos:stable"
@@ -773,7 +773,7 @@ jobs:
   build-fedora-coreos-next-x86_64:
     runs-on: "ubuntu-24.04"
     container:
-      image: "ghcr.io/travier/fedora-sysexts-exp/buildroot:latest"
+      image: "ghcr.io/travier/fedora-sysexts/buildroot:latest"
       options: "--privileged --security-opt label=disable --user 0:0"
     env:
       IMAGE: "quay.io/fedora/fedora-coreos:next"
@@ -865,7 +865,7 @@ jobs:
   build-fedora-41-aarch64:
     runs-on: "ubuntu-24.04-arm"
     container:
-      image: "ghcr.io/travier/fedora-sysexts-exp/buildroot:latest"
+      image: "ghcr.io/travier/fedora-sysexts/buildroot:latest"
       options: "--privileged --security-opt label=disable --user 0:0"
     env:
       IMAGE: "quay.io/fedora-ostree-desktops/base-atomic:41"
@@ -1161,7 +1161,7 @@ jobs:
   build-fedora-42-aarch64:
     runs-on: "ubuntu-24.04-arm"
     container:
-      image: "ghcr.io/travier/fedora-sysexts-exp/buildroot:latest"
+      image: "ghcr.io/travier/fedora-sysexts/buildroot:latest"
       options: "--privileged --security-opt label=disable --user 0:0"
     env:
       IMAGE: "quay.io/fedora-ostree-desktops/base-atomic:42"
@@ -1451,7 +1451,7 @@ jobs:
   build-fedora-coreos-stable-aarch64:
     runs-on: "ubuntu-24.04-arm"
     container:
-      image: "ghcr.io/travier/fedora-sysexts-exp/buildroot:latest"
+      image: "ghcr.io/travier/fedora-sysexts/buildroot:latest"
       options: "--privileged --security-opt label=disable --user 0:0"
     env:
       IMAGE: "quay.io/fedora/fedora-coreos:stable"
@@ -1537,7 +1537,7 @@ jobs:
   build-fedora-coreos-next-aarch64:
     runs-on: "ubuntu-24.04-arm"
     container:
-      image: "ghcr.io/travier/fedora-sysexts-exp/buildroot:latest"
+      image: "ghcr.io/travier/fedora-sysexts/buildroot:latest"
       options: "--privileged --security-opt label=disable --user 0:0"
     env:
       IMAGE: "quay.io/fedora/fedora-coreos:next"
