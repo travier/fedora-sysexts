@@ -40,7 +40,7 @@ runs:
           # Only build for releases if the inputs changed
           just prepare-build ${IMAGE}
 
-          new="$(cat digest inputs scripts | sha256sum)"
+          new="$(cat inputs | sha256sum)"
 
           VERSION_ID="$(cat ./version_id)"
           VERSION="$(cat ./version)"
@@ -48,10 +48,8 @@ runs:
           TAGNAME="${SYSEXT}-${VERSION}-${VERSION_ID}-${ARCH}"
 
           echo "Fetching info from existing release: ${TAGNAME}"
-          curl --location --fail --output digest.old  "${RELEASEURL}/${TAGNAME}/digest"  || touch digest.old
           curl --location --fail --output inputs.old  "${RELEASEURL}/${TAGNAME}/inputs"  || touch inputs.old
-          curl --location --fail --output scripts.old "${RELEASEURL}/${TAGNAME}/scripts" || touch scripts.old
-          old="$(cat digest.old inputs.old scripts.old | sha256sum)"
+          old="$(cat inputs.old | sha256sum)"
 
           if [[ "${new}" == "${old}" ]]; then
             echo "No changes in inputs since last release. Skipping."
