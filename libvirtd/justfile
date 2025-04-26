@@ -44,8 +44,8 @@ virtstoraged.socket
 "
 version_package := "libvirt-client"
 base_images := "
-quay.io/fedora/fedora-coreos:stable
-quay.io/fedora/fedora-coreos:next
+quay.io/fedora/fedora-coreos:stable x86_64,aarch64
+quay.io/fedora/fedora-coreos:next x86_64,aarch64
 "
 # Pending nfs-utils packaging rework
 pre_commands := "dnf remove -y nfs-utils-coreos"
