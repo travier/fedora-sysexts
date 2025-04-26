@@ -1,7 +1,7 @@
   publish-sysexts:
     runs-on: "ubuntu-24.04"
     container:
-      image: "ghcr.io/travier/fedora-sysexts-exp/buildroot:latest"
+      image: "ghcr.io/travier/fedora-sysexts/buildroot:latest"
       options: "--privileged --security-opt label=disable --user 0:0"
     # Run after the builds and versionned release
     needs:
