@@ -1,7 +1,7 @@
 name: "Build buildroot container image for CI"
 
 env:
-  NAME: "${{ github.repository }}/buildroot"
+  NAME: "${{ github.event.repository.name }}/buildroot"
   REGISTRY: "ghcr.io/${{ github.repository_owner }}"
 
 on:
