@@ -1522,6 +1522,12 @@ jobs:
           sysext: 'kubernetes-cri-o-1.32'
           image: ${{ env.IMAGE }}
 
+      - name: "Build sysext: libvirtd"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'libvirtd'
+          image: ${{ env.IMAGE }}
+
       - name: "Build sysext: python3"
         uses: ./.github/actions/build
         with:
@@ -1606,6 +1612,12 @@ jobs:
         uses: ./.github/actions/build
         with:
           sysext: 'kubernetes-cri-o-1.32'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: libvirtd"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'libvirtd'
           image: ${{ env.IMAGE }}
 
       - name: "Build sysext: python3"
