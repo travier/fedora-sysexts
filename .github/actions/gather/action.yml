@@ -1,0 +1,111 @@
+name: "Gather versions for sysexts"
+description: "Publish a release that references all available versions for each sysext"
+inputs:
+  sysexts:
+    description: "The list of sysexts to generate releases for"
+    required: true
+
+# This composite action needs the RELEASEURL environment variables to be set at
+# the workflow level
+
+runs:
+  using: "composite"
+  steps:
+    - name: "Publish release"
+      env:
+        GH_TOKEN: ${{ github.token }}
+        SYSEXTS: ${{ inputs.sysexts }}
+      if: (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
+      shell: bash
+      run: |
+        set -euxo pipefail
+
+        gh release list --limit 2000 --json tagName > releases.json
+
+        for sysext in $(echo ${SYSEXTS} | tr ';' ' '); do
+          rm -f ./SHA256SUMS* ./*.conf
+
+          releases=(
+            $(
+              cat releases.json \
+                | jq --arg SYSEXT "${sysext}" --raw-output '
+                  map(
+                    select(
+                      (.tagName | startswith($SYSEXT))
+                      and
+                      (.tagName != $SYSEXT)
+                    )
+                  )
+                  | .[].tagName
+                ' \
+                | sort -h
+            )
+          )
+          echo "Looking at releases: ${releases[@]}"
+          for rel in ${releases[@]}; do
+            echo "Fetching SHA256SUMS for release: ${rel}"
+            curl --location --fail --output "SHA256SUMS.${rel}" "${RELEASEURL}/${rel}/SHA256SUMS" || touch "SHA256SUMS.${rel}"
+          done
+          ls ./SHA256SUMS.* | sort -h | xargs cat > SHA256SUMS
+          new="$(cat SHA256SUMS | sha256sum)"
+
+          old=""
+          echo "Fetching SHA256SUMS from release: ${sysext}"
+          curl --location --fail --output SHA256SUMS.old "${RELEASEURL}/${sysext}/SHA256SUMS" || touch SHA256SUMS.old
+          old="$(cat SHA256SUMS.old | sha256sum)"
+
+          if [[ "${new}" == "${old}" ]]; then
+            echo "No changes for ${sysext} since last release. Skipping."
+          else
+            echo "Creating new release: ${sysext}"
+
+            sed "s/%%SYSEXT%%/${sysext}/g" .workflow-templates/systemd-sysupdate.conf > ${sysext}.conf
+
+            {
+            echo "Versions available:"
+            echo "\`\`\`"
+            cat ./SHA256SUMS
+            echo "\`\`\`"
+            } > notes
+
+            gh release delete \
+              --cleanup-tag \
+              --yes \
+              "${sysext}" \
+              || true
+
+            gh release create \
+              --title "${sysext} systemd system extensions for Fedora" \
+              --notes-file notes \
+              "${sysext}" \
+              --latest=false \
+              ./SHA256SUMS ./${sysext}.conf
+          fi
+        done
+
+        rm -f ./SHA256SUMS* ./*.conf
+
+        for sysext in $(echo ${SYSEXTS} | tr ';' ' '); do
+            curl --location --fail --output "SHA256SUMS.${sysext}" "${RELEASEURL}/${sysext}/SHA256SUMS" || touch "SHA256SUMS.${sysext}"
+        done
+        ls ./SHA256SUMS.* | sort -h | xargs cat > SHA256SUMS
+
+        {
+        echo "Versions available:"
+        echo "\`\`\`"
+        cat ./SHA256SUMS
+        echo "\`\`\`"
+        } > notes
+
+        gh release delete \
+          --cleanup-tag \
+          --yes \
+          latest \
+          || true
+
+        gh release create \
+          --title "systemd system extensions for Fedora" \
+          --notes-file notes \
+          latest \
+          --latest=true \
+          ./SHA256SUMS

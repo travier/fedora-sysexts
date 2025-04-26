@@ -16,83 +16,54 @@ main() {
 
     # Remove all existing worflows
     rm -f "./.github/workflows/containers"*".yml"
-    rm "./.github/workflows/sysexts"*".yml"
+    rm -f "./.github/workflows/sysexts"*".yml"
 
-    generate \
-        'quay.io/fedora/fedora-coreos' \
-        'stable' \
-        'x86_64' \
-        'Fedora CoreOS'
+    local -r releaseurl="https://github.com/\${{ github.repository }}/releases/download"
 
-    generate \
-        'quay.io/fedora/fedora-coreos' \
-        'stable' \
-        'aarch64' \
-        'Fedora CoreOS'
+    arches=(
+        'x86_64'
+        'aarch64'
+    )
 
-    generate \
-        'quay.io/fedora/fedora-coreos' \
-        'next' \
-        'x86_64' \
-        'Fedora CoreOS'
+    images=(
+        'quay.io/fedora-ostree-desktops/base-atomic:41'
+        'quay.io/fedora-ostree-desktops/base-atomic:42'
+        'quay.io/fedora/fedora-coreos:stable'
+        'quay.io/fedora/fedora-coreos:next'
+    )
+    # 'quay.io/fedora-ostree-desktops/silverblue:41'
+    # 'quay.io/fedora-ostree-desktops/silverblue:42'
+    # 'quay.io/fedora-ostree-desktops/kinoite:41'
+    # 'quay.io/fedora-ostree-desktops/kinoite:42'
 
-    generate \
-        'quay.io/fedora/fedora-coreos' \
-        'next' \
-        'aarch64' \
-        'Fedora CoreOS'
+    # Set jobnames
+    declare -A jobnames
+    jobnames["quay.io/fedora-ostree-desktops/base-atomic:41"]="fedora-41"
+    jobnames["quay.io/fedora-ostree-desktops/base-atomic:42"]="fedora-42"
+    jobnames["quay.io/fedora/fedora-coreos:stable"]="fedora-coreos-stable"
+    jobnames["quay.io/fedora/fedora-coreos:next"]="fedora-coreos-next"
 
-    generate \
-        'quay.io/fedora-ostree-desktops/silverblue' \
-        '41' \
-        'x86_64' \
-        'Fedora Silverblue'
-
-    generate \
-        'quay.io/fedora-ostree-desktops/silverblue' \
-        '42' \
-        'x86_64' \
-        'Fedora Silverblue'
-
-    generate \
-        'quay.io/fedora-ostree-desktops/kinoite' \
-        '41' \
-        'x86_64' \
-        'Fedora Kinoite'
-
-    generate \
-        'quay.io/fedora-ostree-desktops/kinoite' \
-        '42' \
-        'x86_64' \
-        'Fedora Kinoite'
-}
-
-generate() {
-    local -r image="${1}"
-    local -r release="${2}"
-    local -r arch="${3}"
-    local -r name="${4}"
-    local -r shortname="$(echo "${name}" | tr '[:upper:]' '[:lower:]' | sed 's/ /-/g')"
-
-    # For containers only
-    local -r registry="quay.io/travier"
-    local -r destination_suffix="-sysexts"
-
-    # Get the list of sysexts for a given target
-    sysexts=()
-    for s in $(git ls-tree -d --name-only HEAD | grep -Ev ".github|templates"); do
-        pushd "${s}" > /dev/null
-        # Only require the architecture to be explicitly listed for non x86_64 for now
-        if [[ "${arch}" == "x86_64" ]]; then
-            if [[ $(just targets | grep -c "${image}:${release}") == "1" ]]; then
-                sysexts+=("${s}")
-            fi
-        else
-            if [[ $(just targets | grep -cE "${image}:${release} .*${arch}.*") == "1" ]]; then
-                sysexts+=("${s}")
-            fi
-        fi
-        popd > /dev/null
+    # Get the list of sysexts for each image and each arch
+    declare -A sysexts
+    for arch in "${arches[@]}"; do
+        for image in "${images[@]}"; do
+            list=()
+            for s in $(git ls-tree -d --name-only HEAD | grep -Ev ".github|.workflow-templates|docs|.docs-templates"); do
+                pushd "${s}" > /dev/null
+                # Only require the architecture to be explicitly listed for non x86_64 for now
+                if [[ "${arch}" == "x86_64" ]]; then
+                    if [[ $(just targets | grep -c "${image}") == "1" ]]; then
+                        list+=("${s}")
+                    fi
+                else
+                    if [[ $(just targets | grep -cE "${image} .*${arch}.*") == "1" ]]; then
+                        list+=("${s}")
+                    fi
+                fi
+                popd > /dev/null
+            done
+            sysexts["${image}-${arch}"]="$(echo "${list[@]}" | tr ' ' ';')"
+        done
     done
 
     local -r tmpl=".workflow-templates/"
@@ -103,66 +74,39 @@ generate() {
 
     # Generate EROFS sysexts workflows
     {
-    sed \
-        -e "s|%%IMAGE%%|${image}:${release}|g" \
-        -e "s|%%RELEASE%%|${release}|g" \
-        -e "s|%%NAME%%|${name}|g" \
-        -e "s|%%SHORTNAME%%|${shortname}|g" \
-        -e "s|%%ARCH%%|${arch}|g" \
-        "${tmpl}/sysexts_header"
-    echo ""
-    for s in "${sysexts[@]}"; do
-        sed "s|%%SYSEXT%%|${s}|g" "${tmpl}/sysexts_body"
-        echo ""
-    done
-    cat "${tmpl}/sysexts_footer"
-    } > ".github/workflows/sysexts-${shortname}-${release}-${arch}.yml"
+    sed -e "s|%%RELEASEURL%%|${releaseurl}|g" \
+        "${tmpl}/00_sysexts_header"
 
-    # Fix GitHub runner for aarch64
-    if [[ "${arch}" == "aarch64" ]]; then
-        sed -i "s/ubuntu-24.04/ubuntu-24.04-arm/" ".github/workflows/sysexts-${shortname}-${release}-${arch}.yml"
-    fi
-
-    # Skip container builds for now as we are not using them yet.
-    return 0
-
-    # Generate container sysexts workflows
-    # Skip non x86-64 builds for now
-    if [[ "${arch}" != "x86_64" ]]; then
-        return 0
-    fi
-    {
-    sed \
-        -e "s|%%IMAGE%%|${image}|g" \
-        -e "s|%%RELEASE%%|${release}|g" \
-        -e "s|%%NAME%%|${name}|g" \
-        -e "s|%%REGISTRY%%|${registry}|g" \
-        -e "s|%%DESTINATION%%|${shortname}${destination_suffix}|g" \
-        -e "s|%%ARCH%%|${arch}|g" \
-        "${tmpl}/containers_header"
-    echo ""
-    for s in "${sysexts[@]}"; do
-        if [[ -f "${s}/Containerfile" ]]; then
-            sed \
-                -e "s|%%SYSEXT%%|${s}|g" \
-                -e "s|%%SYSEXT_NODOT%%|${s//\./_}|g" \
-                "${tmpl}/containers_build"
-            echo ""
+    for arch in "${arches[@]}"; do
+        runson="ubuntu-24.04"
+        if [[ "${arch}" == "aarch64" ]]; then
+            runson="ubuntu-24.04-arm"
         fi
+        for image in "${images[@]}"; do
+            sed -e "s|%%JOBNAME%%|${jobnames["${image}"]}-${arch}|g" \
+                -e "s|%%RUNSON%%|${runson}|g" \
+                -e "s|%%IMAGE%%|${image}|g" \
+                "${tmpl}/10_sysexts_build_header"
+            echo ""
+            for s in $(echo "${sysexts["${image}-${arch}"]}" | tr ';' ' '); do
+                sed "s|%%SYSEXT%%|${s}|g" "${tmpl}/15_sysexts_build"
+                echo ""
+            done
+        done
     done
-    # Skip pushing containers for now
-    # cat "${tmpl}/containers_logincosign"
-    # echo ""
-    # for s in "${sysexts[@]}"; do
-    #     if [[ -f "${s}/Containerfile" ]]; then
-    #         sed \
-    #             -e "s|%%SYSEXT%%|${s}|g" \
-    #             -e "s|%%SYSEXT_NODOT%%|${s//\./_}|g" \
-    #             "${tmpl}/containers_pushsign"
-    #         echo ""
-    #     fi
-    # done
-    } > ".github/workflows/containers-${shortname}-${release}.yml"
+
+    # TODO: Dynamic list of jobs to depend on
+    all_sysexts=()
+    for arch in "${arches[@]}"; do
+        for image in "${images[@]}"; do
+            for s in $(echo "${sysexts["${image}-${arch}"]}" | tr ';' ' '); do
+                all_sysexts+=("${s}")
+            done
+        done
+    done
+    uniq_sysexts="$(echo "${all_sysexts[@]}" | tr ' ' '\n' | sort -u | tr '\n' ';')"
+    sed -e "s|%%SYSEXTS%%|${uniq_sysexts}|g" "${tmpl}/20_sysexts_gather"
+    } > ".github/workflows/sysexts-fedora.yml"
 }
 
 main "${@}"

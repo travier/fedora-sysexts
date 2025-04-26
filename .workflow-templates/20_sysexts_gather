@@ -1,0 +1,31 @@
+  publish-sysexts:
+    runs-on: "ubuntu-24.04"
+    container:
+      image: "ghcr.io/travier/fedora-sysexts-exp/buildroot:latest"
+      options: "--privileged --security-opt label=disable --user 0:0"
+    # Run after the builds and versionned release
+    needs:
+      - build-fedora-41-x86_64
+      - build-fedora-41-aarch64
+      - build-fedora-42-x86_64
+      - build-fedora-42-aarch64
+      - build-fedora-coreos-stable-x86_64
+      - build-fedora-coreos-stable-aarch64
+      - build-fedora-coreos-next-x86_64
+      - build-fedora-coreos-next-aarch64
+    # Still run if any dependent job fails
+    # if: ${{ always() }}
+    if: (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
+    steps:
+      - name: "Checkout repo"
+        uses: actions/checkout@v4
+
+      - name: "Mark directory as safe"
+        run: |
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          git fetch --no-tags --prune --depth=1 origin +refs/heads/main:refs/remotes/origin/main
+
+      - name: "Gather all sysexts releases"
+        uses: ./.github/actions/gather
+        with:
+          sysexts: '%%SYSEXTS%%'

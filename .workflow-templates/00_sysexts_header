@@ -1,0 +1,28 @@
+name: "Build sysexts for Fedora"
+
+env:
+  GH_TOKEN: ${{ github.token }}
+  RELEASEURL: "%%RELEASEURL%%"
+
+on:
+  pull_request:
+    branches:
+      - "main"
+  push:
+    branches:
+      - "main"
+  schedule:
+    - cron:  '0 0 * * *'
+  workflow_dispatch:
+
+# Needed to allow creating a release
+permissions:
+  contents: write
+
+# Prevent multiple workflow runs from racing to ensure that pushes are made
+# sequentialy for the main branch. Also cancel in progress workflow runs.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref || github.run_id }}-${{ inputs.sysext }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
