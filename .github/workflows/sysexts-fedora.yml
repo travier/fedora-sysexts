@@ -1,0 +1,1653 @@
+name: "Build sysexts for Fedora"
+
+env:
+  GH_TOKEN: ${{ github.token }}
+  RELEASEURL: "https://github.com/${{ github.repository }}/releases/download"
+
+on:
+  pull_request:
+    branches:
+      - "main"
+  push:
+    branches:
+      - "main"
+  schedule:
+    - cron:  '0 0 * * *'
+  workflow_dispatch:
+
+# Needed to allow creating a release
+permissions:
+  contents: write
+
+# Prevent multiple workflow runs from racing to ensure that pushes are made
+# sequentialy for the main branch. Also cancel in progress workflow runs.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref || github.run_id }}-${{ inputs.sysext }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  build-fedora-41-x86_64:
+    runs-on: "ubuntu-24.04"
+    container:
+      image: "ghcr.io/travier/fedora-sysexts-exp/buildroot:latest"
+      options: "--privileged --security-opt label=disable --user 0:0"
+    env:
+      IMAGE: "quay.io/fedora-ostree-desktops/base-atomic:41"
+    steps:
+      - name: "Checkout repo"
+        uses: actions/checkout@v4
+
+      - name: "Setup artifacts and dnf cache directories"
+        run: |
+          mkdir -p artifacts .dnf-cache
+
+      - name: "Mark directory as safe"
+        run: |
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          git fetch --no-tags --prune --depth=1 origin +refs/heads/main:refs/remotes/origin/main
+
+      - name: "Build sysext: 1password-cli"
+        uses: ./.github/actions/build
+        with:
+          sysext: '1password-cli'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: 1password-gui"
+        uses: ./.github/actions/build
+        with:
+          sysext: '1password-gui'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: adobe-source-code-pro-fonts"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'adobe-source-code-pro-fonts'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: bandwhich"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'bandwhich'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: bitwarden"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'bitwarden'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: btop"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'btop'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: bwm-ng"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'bwm-ng'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: chromium"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'chromium'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: cilium-cli"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'cilium-cli'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: cloud-hypervisor"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'cloud-hypervisor'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: distrobox"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'distrobox'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: docker-ce"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'docker-ce'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: emacs"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'emacs'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: erofs-utils"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'erofs-utils'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: fd-find"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'fd-find'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: firefox"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'firefox'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: fish"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'fish'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: fuse2"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'fuse2'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: git-absorb"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'git-absorb'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: git-delta"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'git-delta'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: google-chrome"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'google-chrome'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: helix"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'helix'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: htop"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'htop'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: igt-gpu-tools"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'igt-gpu-tools'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: incus"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'incus'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: iotop"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'iotop'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: iwd"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'iwd'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: just"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'just'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: keepassxc"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'keepassxc'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: krb5-workstation"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'krb5-workstation'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: libvirtd-desktop"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'libvirtd-desktop'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: microsoft-edge"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'microsoft-edge'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: moby-engine"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'moby-engine'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: mullvad-vpn"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'mullvad-vpn'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: neovim"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'neovim'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: openh264"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'openh264'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: openssl"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'openssl'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: ripgrep"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'ripgrep'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: source-foundry-hack-fonts"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'source-foundry-hack-fonts'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: steam-devices"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'steam-devices'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: strace"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'strace'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: tree"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'tree'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: vim"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'vim'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: virtctl"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'virtctl'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: vscode"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'vscode'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: vscodium"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'vscodium'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: wasmtime"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'wasmtime'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: wireguard-tools"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'wireguard-tools'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: youki"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'youki'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: zoxide"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'zoxide'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: zsh"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'zsh'
+          image: ${{ env.IMAGE }}
+
+  build-fedora-42-x86_64:
+    runs-on: "ubuntu-24.04"
+    container:
+      image: "ghcr.io/travier/fedora-sysexts-exp/buildroot:latest"
+      options: "--privileged --security-opt label=disable --user 0:0"
+    env:
+      IMAGE: "quay.io/fedora-ostree-desktops/base-atomic:42"
+    steps:
+      - name: "Checkout repo"
+        uses: actions/checkout@v4
+
+      - name: "Setup artifacts and dnf cache directories"
+        run: |
+          mkdir -p artifacts .dnf-cache
+
+      - name: "Mark directory as safe"
+        run: |
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          git fetch --no-tags --prune --depth=1 origin +refs/heads/main:refs/remotes/origin/main
+
+      - name: "Build sysext: 1password-cli"
+        uses: ./.github/actions/build
+        with:
+          sysext: '1password-cli'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: 1password-gui"
+        uses: ./.github/actions/build
+        with:
+          sysext: '1password-gui'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: adobe-source-code-pro-fonts"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'adobe-source-code-pro-fonts'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: bandwhich"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'bandwhich'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: bitwarden"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'bitwarden'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: btop"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'btop'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: bwm-ng"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'bwm-ng'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: chromium"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'chromium'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: cilium-cli"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'cilium-cli'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: cloud-hypervisor"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'cloud-hypervisor'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: distrobox"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'distrobox'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: docker-ce"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'docker-ce'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: emacs"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'emacs'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: erofs-utils"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'erofs-utils'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: fd-find"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'fd-find'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: firefox"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'firefox'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: fish"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'fish'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: fuse2"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'fuse2'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: git-absorb"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'git-absorb'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: git-delta"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'git-delta'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: google-chrome"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'google-chrome'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: helix"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'helix'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: htop"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'htop'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: igt-gpu-tools"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'igt-gpu-tools'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: incus"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'incus'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: iotop"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'iotop'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: iwd"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'iwd'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: just"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'just'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: keepassxc"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'keepassxc'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: krb5-workstation"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'krb5-workstation'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: libvirtd-desktop"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'libvirtd-desktop'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: microsoft-edge"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'microsoft-edge'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: moby-engine"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'moby-engine'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: mullvad-vpn"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'mullvad-vpn'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: neovim"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'neovim'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: openh264"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'openh264'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: openssl"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'openssl'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: ripgrep"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'ripgrep'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: source-foundry-hack-fonts"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'source-foundry-hack-fonts'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: steam-devices"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'steam-devices'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: strace"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'strace'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: tree"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'tree'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: vim"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'vim'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: virtctl"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'virtctl'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: vscode"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'vscode'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: vscodium"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'vscodium'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: wasmtime"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'wasmtime'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: wireguard-tools"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'wireguard-tools'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: youki"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'youki'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: zoxide"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'zoxide'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: zsh"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'zsh'
+          image: ${{ env.IMAGE }}
+
+  build-fedora-coreos-stable-x86_64:
+    runs-on: "ubuntu-24.04"
+    container:
+      image: "ghcr.io/travier/fedora-sysexts-exp/buildroot:latest"
+      options: "--privileged --security-opt label=disable --user 0:0"
+    env:
+      IMAGE: "quay.io/fedora/fedora-coreos:stable"
+    steps:
+      - name: "Checkout repo"
+        uses: actions/checkout@v4
+
+      - name: "Setup artifacts and dnf cache directories"
+        run: |
+          mkdir -p artifacts .dnf-cache
+
+      - name: "Mark directory as safe"
+        run: |
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          git fetch --no-tags --prune --depth=1 origin +refs/heads/main:refs/remotes/origin/main
+
+      - name: "Build sysext: gdb"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'gdb'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: kubernetes-1.29"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'kubernetes-1.29'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: kubernetes-1.30"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'kubernetes-1.30'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: kubernetes-1.31"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'kubernetes-1.31'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: kubernetes-1.32"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'kubernetes-1.32'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: kubernetes-cri-o-1.29"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'kubernetes-cri-o-1.29'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: kubernetes-cri-o-1.30"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'kubernetes-cri-o-1.30'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: kubernetes-cri-o-1.31"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'kubernetes-cri-o-1.31'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: kubernetes-cri-o-1.32"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'kubernetes-cri-o-1.32'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: libvirtd"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'libvirtd'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: python3"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'python3'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: semanage"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'semanage'
+          image: ${{ env.IMAGE }}
+
+  build-fedora-coreos-next-x86_64:
+    runs-on: "ubuntu-24.04"
+    container:
+      image: "ghcr.io/travier/fedora-sysexts-exp/buildroot:latest"
+      options: "--privileged --security-opt label=disable --user 0:0"
+    env:
+      IMAGE: "quay.io/fedora/fedora-coreos:next"
+    steps:
+      - name: "Checkout repo"
+        uses: actions/checkout@v4
+
+      - name: "Setup artifacts and dnf cache directories"
+        run: |
+          mkdir -p artifacts .dnf-cache
+
+      - name: "Mark directory as safe"
+        run: |
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          git fetch --no-tags --prune --depth=1 origin +refs/heads/main:refs/remotes/origin/main
+
+      - name: "Build sysext: gdb"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'gdb'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: kubernetes-1.29"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'kubernetes-1.29'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: kubernetes-1.30"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'kubernetes-1.30'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: kubernetes-1.31"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'kubernetes-1.31'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: kubernetes-1.32"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'kubernetes-1.32'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: kubernetes-cri-o-1.29"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'kubernetes-cri-o-1.29'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: kubernetes-cri-o-1.30"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'kubernetes-cri-o-1.30'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: kubernetes-cri-o-1.31"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'kubernetes-cri-o-1.31'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: kubernetes-cri-o-1.32"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'kubernetes-cri-o-1.32'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: libvirtd"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'libvirtd'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: python3"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'python3'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: semanage"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'semanage'
+          image: ${{ env.IMAGE }}
+
+  build-fedora-41-aarch64:
+    runs-on: "ubuntu-24.04-arm"
+    container:
+      image: "ghcr.io/travier/fedora-sysexts-exp/buildroot:latest"
+      options: "--privileged --security-opt label=disable --user 0:0"
+    env:
+      IMAGE: "quay.io/fedora-ostree-desktops/base-atomic:41"
+    steps:
+      - name: "Checkout repo"
+        uses: actions/checkout@v4
+
+      - name: "Setup artifacts and dnf cache directories"
+        run: |
+          mkdir -p artifacts .dnf-cache
+
+      - name: "Mark directory as safe"
+        run: |
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          git fetch --no-tags --prune --depth=1 origin +refs/heads/main:refs/remotes/origin/main
+
+      - name: "Build sysext: adobe-source-code-pro-fonts"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'adobe-source-code-pro-fonts'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: bandwhich"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'bandwhich'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: btop"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'btop'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: bwm-ng"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'bwm-ng'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: chromium"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'chromium'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: cilium-cli"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'cilium-cli'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: cloud-hypervisor"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'cloud-hypervisor'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: distrobox"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'distrobox'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: docker-ce"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'docker-ce'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: emacs"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'emacs'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: erofs-utils"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'erofs-utils'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: fd-find"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'fd-find'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: firefox"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'firefox'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: fish"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'fish'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: fuse2"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'fuse2'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: git-absorb"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'git-absorb'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: git-delta"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'git-delta'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: helix"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'helix'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: htop"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'htop'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: igt-gpu-tools"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'igt-gpu-tools'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: incus"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'incus'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: iotop"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'iotop'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: iwd"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'iwd'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: just"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'just'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: keepassxc"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'keepassxc'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: krb5-workstation"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'krb5-workstation'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: libvirtd-desktop"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'libvirtd-desktop'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: moby-engine"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'moby-engine'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: mullvad-vpn"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'mullvad-vpn'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: neovim"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'neovim'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: openh264"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'openh264'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: openssl"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'openssl'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: ripgrep"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'ripgrep'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: source-foundry-hack-fonts"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'source-foundry-hack-fonts'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: steam-devices"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'steam-devices'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: strace"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'strace'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: tree"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'tree'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: vim"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'vim'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: virtctl"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'virtctl'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: vscode"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'vscode'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: vscodium"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'vscodium'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: wasmtime"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'wasmtime'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: wireguard-tools"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'wireguard-tools'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: youki"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'youki'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: zoxide"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'zoxide'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: zsh"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'zsh'
+          image: ${{ env.IMAGE }}
+
+  build-fedora-42-aarch64:
+    runs-on: "ubuntu-24.04-arm"
+    container:
+      image: "ghcr.io/travier/fedora-sysexts-exp/buildroot:latest"
+      options: "--privileged --security-opt label=disable --user 0:0"
+    env:
+      IMAGE: "quay.io/fedora-ostree-desktops/base-atomic:42"
+    steps:
+      - name: "Checkout repo"
+        uses: actions/checkout@v4
+
+      - name: "Setup artifacts and dnf cache directories"
+        run: |
+          mkdir -p artifacts .dnf-cache
+
+      - name: "Mark directory as safe"
+        run: |
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          git fetch --no-tags --prune --depth=1 origin +refs/heads/main:refs/remotes/origin/main
+
+      - name: "Build sysext: adobe-source-code-pro-fonts"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'adobe-source-code-pro-fonts'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: bandwhich"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'bandwhich'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: btop"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'btop'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: bwm-ng"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'bwm-ng'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: chromium"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'chromium'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: cilium-cli"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'cilium-cli'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: distrobox"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'distrobox'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: docker-ce"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'docker-ce'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: emacs"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'emacs'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: erofs-utils"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'erofs-utils'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: fd-find"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'fd-find'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: firefox"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'firefox'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: fish"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'fish'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: fuse2"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'fuse2'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: git-absorb"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'git-absorb'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: git-delta"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'git-delta'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: helix"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'helix'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: htop"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'htop'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: igt-gpu-tools"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'igt-gpu-tools'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: incus"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'incus'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: iotop"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'iotop'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: iwd"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'iwd'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: just"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'just'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: keepassxc"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'keepassxc'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: krb5-workstation"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'krb5-workstation'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: libvirtd-desktop"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'libvirtd-desktop'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: moby-engine"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'moby-engine'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: mullvad-vpn"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'mullvad-vpn'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: neovim"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'neovim'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: openh264"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'openh264'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: openssl"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'openssl'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: ripgrep"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'ripgrep'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: source-foundry-hack-fonts"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'source-foundry-hack-fonts'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: steam-devices"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'steam-devices'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: strace"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'strace'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: tree"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'tree'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: vim"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'vim'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: virtctl"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'virtctl'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: vscode"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'vscode'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: vscodium"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'vscodium'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: wasmtime"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'wasmtime'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: wireguard-tools"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'wireguard-tools'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: youki"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'youki'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: zoxide"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'zoxide'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: zsh"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'zsh'
+          image: ${{ env.IMAGE }}
+
+  build-fedora-coreos-stable-aarch64:
+    runs-on: "ubuntu-24.04-arm"
+    container:
+      image: "ghcr.io/travier/fedora-sysexts-exp/buildroot:latest"
+      options: "--privileged --security-opt label=disable --user 0:0"
+    env:
+      IMAGE: "quay.io/fedora/fedora-coreos:stable"
+    steps:
+      - name: "Checkout repo"
+        uses: actions/checkout@v4
+
+      - name: "Setup artifacts and dnf cache directories"
+        run: |
+          mkdir -p artifacts .dnf-cache
+
+      - name: "Mark directory as safe"
+        run: |
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          git fetch --no-tags --prune --depth=1 origin +refs/heads/main:refs/remotes/origin/main
+
+      - name: "Build sysext: gdb"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'gdb'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: kubernetes-1.29"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'kubernetes-1.29'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: kubernetes-1.30"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'kubernetes-1.30'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: kubernetes-1.31"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'kubernetes-1.31'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: kubernetes-1.32"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'kubernetes-1.32'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: kubernetes-cri-o-1.29"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'kubernetes-cri-o-1.29'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: kubernetes-cri-o-1.30"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'kubernetes-cri-o-1.30'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: kubernetes-cri-o-1.31"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'kubernetes-cri-o-1.31'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: kubernetes-cri-o-1.32"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'kubernetes-cri-o-1.32'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: python3"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'python3'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: semanage"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'semanage'
+          image: ${{ env.IMAGE }}
+
+  build-fedora-coreos-next-aarch64:
+    runs-on: "ubuntu-24.04-arm"
+    container:
+      image: "ghcr.io/travier/fedora-sysexts-exp/buildroot:latest"
+      options: "--privileged --security-opt label=disable --user 0:0"
+    env:
+      IMAGE: "quay.io/fedora/fedora-coreos:next"
+    steps:
+      - name: "Checkout repo"
+        uses: actions/checkout@v4
+
+      - name: "Setup artifacts and dnf cache directories"
+        run: |
+          mkdir -p artifacts .dnf-cache
+
+      - name: "Mark directory as safe"
+        run: |
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          git fetch --no-tags --prune --depth=1 origin +refs/heads/main:refs/remotes/origin/main
+
+      - name: "Build sysext: gdb"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'gdb'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: kubernetes-1.29"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'kubernetes-1.29'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: kubernetes-1.30"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'kubernetes-1.30'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: kubernetes-1.31"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'kubernetes-1.31'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: kubernetes-1.32"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'kubernetes-1.32'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: kubernetes-cri-o-1.29"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'kubernetes-cri-o-1.29'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: kubernetes-cri-o-1.30"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'kubernetes-cri-o-1.30'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: kubernetes-cri-o-1.31"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'kubernetes-cri-o-1.31'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: kubernetes-cri-o-1.32"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'kubernetes-cri-o-1.32'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: python3"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'python3'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: semanage"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'semanage'
+          image: ${{ env.IMAGE }}
+
+  publish-sysexts:
+    runs-on: "ubuntu-24.04"
+    container:
+      image: "ghcr.io/travier/fedora-sysexts-exp/buildroot:latest"
+      options: "--privileged --security-opt label=disable --user 0:0"
+    # Run after the builds and versionned release
+    needs:
+      - build-fedora-41-x86_64
+      - build-fedora-41-aarch64
+      - build-fedora-42-x86_64
+      - build-fedora-42-aarch64
+      - build-fedora-coreos-stable-x86_64
+      - build-fedora-coreos-stable-aarch64
+      - build-fedora-coreos-next-x86_64
+      - build-fedora-coreos-next-aarch64
+    # Still run if any dependent job fails
+    # if: ${{ always() }}
+    if: (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
+    steps:
+      - name: "Checkout repo"
+        uses: actions/checkout@v4
+
+      - name: "Mark directory as safe"
+        run: |
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          git fetch --no-tags --prune --depth=1 origin +refs/heads/main:refs/remotes/origin/main
+
+      - name: "Gather all sysexts releases"
+        uses: ./.github/actions/gather
+        with:
+          sysexts: '1password-cli;1password-gui;adobe-source-code-pro-fonts;bandwhich;bitwarden;btop;bwm-ng;chromium;cilium-cli;cloud-hypervisor;distrobox;docker-ce;emacs;erofs-utils;fd-find;firefox;fish;fuse2;gdb;git-absorb;git-delta;google-chrome;helix;htop;igt-gpu-tools;incus;iotop;iwd;just;keepassxc;krb5-workstation;kubernetes-1.29;kubernetes-1.30;kubernetes-1.31;kubernetes-1.32;kubernetes-cri-o-1.29;kubernetes-cri-o-1.30;kubernetes-cri-o-1.31;kubernetes-cri-o-1.32;libvirtd;libvirtd-desktop;microsoft-edge;moby-engine;mullvad-vpn;neovim;openh264;openssl;python3;ripgrep;semanage;source-foundry-hack-fonts;steam-devices;strace;tree;vim;virtctl;vscode;vscodium;wasmtime;wireguard-tools;youki;zoxide;zsh;'
