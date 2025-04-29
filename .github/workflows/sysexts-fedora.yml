@@ -678,6 +678,134 @@ jobs:
           sysext: 'zsh'
           image: ${{ env.IMAGE }}
 
+  build-fedora-silverblue-41-x86_64:
+    runs-on: "ubuntu-24.04"
+    container:
+      image: "ghcr.io/travier/fedora-sysexts/buildroot:latest"
+      options: "--privileged --security-opt label=disable --user 0:0"
+    env:
+      IMAGE: "quay.io/fedora-ostree-desktops/silverblue:41"
+    steps:
+      - name: "Checkout repo"
+        uses: actions/checkout@v4
+
+      - name: "Setup artifacts and dnf cache directories"
+        run: |
+          mkdir -p artifacts .dnf-cache
+
+      - name: "Mark directory as safe"
+        run: |
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          git fetch --no-tags --prune --depth=1 origin +refs/heads/main:refs/remotes/origin/main
+
+      - name: "Build sysext: steam-silverblue"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'steam-silverblue'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: wireshark-silverblue"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'wireshark-silverblue'
+          image: ${{ env.IMAGE }}
+
+  build-fedora-silverblue-42-x86_64:
+    runs-on: "ubuntu-24.04"
+    container:
+      image: "ghcr.io/travier/fedora-sysexts/buildroot:latest"
+      options: "--privileged --security-opt label=disable --user 0:0"
+    env:
+      IMAGE: "quay.io/fedora-ostree-desktops/silverblue:42"
+    steps:
+      - name: "Checkout repo"
+        uses: actions/checkout@v4
+
+      - name: "Setup artifacts and dnf cache directories"
+        run: |
+          mkdir -p artifacts .dnf-cache
+
+      - name: "Mark directory as safe"
+        run: |
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          git fetch --no-tags --prune --depth=1 origin +refs/heads/main:refs/remotes/origin/main
+
+      - name: "Build sysext: steam-silverblue"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'steam-silverblue'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: wireshark-silverblue"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'wireshark-silverblue'
+          image: ${{ env.IMAGE }}
+
+  build-fedora-kinoite-41-x86_64:
+    runs-on: "ubuntu-24.04"
+    container:
+      image: "ghcr.io/travier/fedora-sysexts/buildroot:latest"
+      options: "--privileged --security-opt label=disable --user 0:0"
+    env:
+      IMAGE: "quay.io/fedora-ostree-desktops/kinoite:41"
+    steps:
+      - name: "Checkout repo"
+        uses: actions/checkout@v4
+
+      - name: "Setup artifacts and dnf cache directories"
+        run: |
+          mkdir -p artifacts .dnf-cache
+
+      - name: "Mark directory as safe"
+        run: |
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          git fetch --no-tags --prune --depth=1 origin +refs/heads/main:refs/remotes/origin/main
+
+      - name: "Build sysext: steam-kinoite"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'steam-kinoite'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: wireshark-kinoite"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'wireshark-kinoite'
+          image: ${{ env.IMAGE }}
+
+  build-fedora-kinoite-42-x86_64:
+    runs-on: "ubuntu-24.04"
+    container:
+      image: "ghcr.io/travier/fedora-sysexts/buildroot:latest"
+      options: "--privileged --security-opt label=disable --user 0:0"
+    env:
+      IMAGE: "quay.io/fedora-ostree-desktops/kinoite:42"
+    steps:
+      - name: "Checkout repo"
+        uses: actions/checkout@v4
+
+      - name: "Setup artifacts and dnf cache directories"
+        run: |
+          mkdir -p artifacts .dnf-cache
+
+      - name: "Mark directory as safe"
+        run: |
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          git fetch --no-tags --prune --depth=1 origin +refs/heads/main:refs/remotes/origin/main
+
+      - name: "Build sysext: steam-kinoite"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'steam-kinoite'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: wireshark-kinoite"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'wireshark-kinoite'
+          image: ${{ env.IMAGE }}
+
   build-fedora-coreos-stable-x86_64:
     runs-on: "ubuntu-24.04"
     container:
@@ -1448,6 +1576,110 @@ jobs:
           sysext: 'zsh'
           image: ${{ env.IMAGE }}
 
+  build-fedora-silverblue-41-aarch64:
+    runs-on: "ubuntu-24.04-arm"
+    container:
+      image: "ghcr.io/travier/fedora-sysexts/buildroot:latest"
+      options: "--privileged --security-opt label=disable --user 0:0"
+    env:
+      IMAGE: "quay.io/fedora-ostree-desktops/silverblue:41"
+    steps:
+      - name: "Checkout repo"
+        uses: actions/checkout@v4
+
+      - name: "Setup artifacts and dnf cache directories"
+        run: |
+          mkdir -p artifacts .dnf-cache
+
+      - name: "Mark directory as safe"
+        run: |
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          git fetch --no-tags --prune --depth=1 origin +refs/heads/main:refs/remotes/origin/main
+
+      - name: "Build sysext: wireshark-silverblue"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'wireshark-silverblue'
+          image: ${{ env.IMAGE }}
+
+  build-fedora-silverblue-42-aarch64:
+    runs-on: "ubuntu-24.04-arm"
+    container:
+      image: "ghcr.io/travier/fedora-sysexts/buildroot:latest"
+      options: "--privileged --security-opt label=disable --user 0:0"
+    env:
+      IMAGE: "quay.io/fedora-ostree-desktops/silverblue:42"
+    steps:
+      - name: "Checkout repo"
+        uses: actions/checkout@v4
+
+      - name: "Setup artifacts and dnf cache directories"
+        run: |
+          mkdir -p artifacts .dnf-cache
+
+      - name: "Mark directory as safe"
+        run: |
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          git fetch --no-tags --prune --depth=1 origin +refs/heads/main:refs/remotes/origin/main
+
+      - name: "Build sysext: wireshark-silverblue"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'wireshark-silverblue'
+          image: ${{ env.IMAGE }}
+
+  build-fedora-kinoite-41-aarch64:
+    runs-on: "ubuntu-24.04-arm"
+    container:
+      image: "ghcr.io/travier/fedora-sysexts/buildroot:latest"
+      options: "--privileged --security-opt label=disable --user 0:0"
+    env:
+      IMAGE: "quay.io/fedora-ostree-desktops/kinoite:41"
+    steps:
+      - name: "Checkout repo"
+        uses: actions/checkout@v4
+
+      - name: "Setup artifacts and dnf cache directories"
+        run: |
+          mkdir -p artifacts .dnf-cache
+
+      - name: "Mark directory as safe"
+        run: |
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          git fetch --no-tags --prune --depth=1 origin +refs/heads/main:refs/remotes/origin/main
+
+      - name: "Build sysext: wireshark-kinoite"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'wireshark-kinoite'
+          image: ${{ env.IMAGE }}
+
+  build-fedora-kinoite-42-aarch64:
+    runs-on: "ubuntu-24.04-arm"
+    container:
+      image: "ghcr.io/travier/fedora-sysexts/buildroot:latest"
+      options: "--privileged --security-opt label=disable --user 0:0"
+    env:
+      IMAGE: "quay.io/fedora-ostree-desktops/kinoite:42"
+    steps:
+      - name: "Checkout repo"
+        uses: actions/checkout@v4
+
+      - name: "Setup artifacts and dnf cache directories"
+        run: |
+          mkdir -p artifacts .dnf-cache
+
+      - name: "Mark directory as safe"
+        run: |
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          git fetch --no-tags --prune --depth=1 origin +refs/heads/main:refs/remotes/origin/main
+
+      - name: "Build sysext: wireshark-kinoite"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'wireshark-kinoite'
+          image: ${{ env.IMAGE }}
+
   build-fedora-coreos-stable-aarch64:
     runs-on: "ubuntu-24.04-arm"
     container:
@@ -1643,6 +1875,14 @@ jobs:
       - build-fedora-41-aarch64
       - build-fedora-42-x86_64
       - build-fedora-42-aarch64
+      - build-fedora-silverblue-41-x86_64
+      - build-fedora-silverblue-41-aarch64
+      - build-fedora-silverblue-42-x86_64
+      - build-fedora-silverblue-42-aarch64
+      - build-fedora-kinoite-41-x86_64
+      - build-fedora-kinoite-41-aarch64
+      - build-fedora-kinoite-42-x86_64
+      - build-fedora-kinoite-42-aarch64
       - build-fedora-coreos-stable-x86_64
       - build-fedora-coreos-stable-aarch64
       - build-fedora-coreos-next-x86_64
@@ -1661,4 +1901,4 @@ jobs:
       - name: "Gather all sysexts releases"
         uses: ./.github/actions/gather
         with:
-          sysexts: '1password-cli;1password-gui;adobe-source-code-pro-fonts;bandwhich;bitwarden;btop;bwm-ng;chromium;cilium-cli;cloud-hypervisor;distrobox;docker-ce;emacs;erofs-utils;fd-find;firefox;fish;fuse2;gdb;git-absorb;git-delta;google-chrome;helix;htop;igt-gpu-tools;incus;iotop;iwd;just;keepassxc;krb5-workstation;kubernetes-1.29;kubernetes-1.30;kubernetes-1.31;kubernetes-1.32;kubernetes-cri-o-1.29;kubernetes-cri-o-1.30;kubernetes-cri-o-1.31;kubernetes-cri-o-1.32;libvirtd;libvirtd-desktop;microsoft-edge;moby-engine;mullvad-vpn;neovim;openh264;openssl;python3;ripgrep;semanage;source-foundry-hack-fonts;steam-devices;strace;tree;vim;virtctl;vscode;vscodium;wasmtime;wireguard-tools;youki;zoxide;zsh;'
+          sysexts: '1password-cli;1password-gui;adobe-source-code-pro-fonts;bandwhich;bitwarden;btop;bwm-ng;chromium;cilium-cli;cloud-hypervisor;distrobox;docker-ce;emacs;erofs-utils;fd-find;firefox;fish;fuse2;gdb;git-absorb;git-delta;google-chrome;helix;htop;igt-gpu-tools;incus;iotop;iwd;just;keepassxc;krb5-workstation;kubernetes-1.29;kubernetes-1.30;kubernetes-1.31;kubernetes-1.32;kubernetes-cri-o-1.29;kubernetes-cri-o-1.30;kubernetes-cri-o-1.31;kubernetes-cri-o-1.32;libvirtd;libvirtd-desktop;microsoft-edge;moby-engine;mullvad-vpn;neovim;openh264;openssl;python3;ripgrep;semanage;source-foundry-hack-fonts;steam-devices;steam-kinoite;steam-silverblue;strace;tree;vim;virtctl;vscode;vscodium;wasmtime;wireguard-tools;wireshark-kinoite;wireshark-silverblue;youki;zoxide;zsh;'
