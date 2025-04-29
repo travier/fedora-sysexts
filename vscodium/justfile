@@ -24,7 +24,7 @@ download-rpms target arch=arch:
     url="https://api.github.com/repos/VSCodium/vscodium/releases/latest"
     curl --fail --silent "${url}" > json
     release="$(cat json | jq -r '.tag_name')"
-    rpmurl="$(cat json | jq -r '.assets[] | select(.name == "codium-'${release}'-el9.'${arch}'.rpm") | .browser_download_url')"
+    rpmurl="$(cat json | jq -r '.assets[] | select(.name == "codium-'${release}'-el8.'${arch}'.rpm") | .browser_download_url')"
     wget "${rpmurl}"{,.sha256}
     sha256sum -c ./*.rpm.sha256
     rm ./*.rpm.sha256 ./json
