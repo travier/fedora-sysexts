@@ -1,0 +1,31 @@
+name := "wireshark-kinoite"
+packages := "
+tcpdump
+wireshark
+"
+version_package := "wireshark"
+base_images := "
+quay.io/fedora-ostree-desktops/kinoite:41 x86_64,aarch64
+quay.io/fedora-ostree-desktops/kinoite:42 x86_64,aarch64
+"
+
+import '../sysext.just'
+
+all: default
+
+install-manual:
+    #!/bin/bash
+    set -euo pipefail
+    # set -x
+
+    if [[ "${UID}" == "0" ]]; then
+        SUDO=""
+    else
+        SUDO="sudo"
+    fi
+
+    cd rootfs
+
+    # 72 is the UID for tcpdump on Atomic Desktops
+    ${SUDO} chown 0:72 usr/bin/dumpcap
+    ${SUDO} setcap 'cap_net_raw,cap_net_admin=ep' usr/bin/dumpcap
