@@ -1647,9 +1647,8 @@ jobs:
       - build-fedora-coreos-stable-aarch64
       - build-fedora-coreos-next-x86_64
       - build-fedora-coreos-next-aarch64
-    # Still run if any dependent job fails
-    # if: ${{ always() }}
-    if: (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
+    # Use `always()` to still run if any dependent job fails
+    if: ${{ always() && (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main' }}
     steps:
       - name: "Checkout repo"
         uses: actions/checkout@v4
