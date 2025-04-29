@@ -1,0 +1,17 @@
+name := "steam-kinoite"
+packages := "
+gamescope
+mangohud
+steam
+"
+version_package := "steam"
+rpm_fusion_repos := "free nonfree"
+dnf_arch := "noarch i686 x86_64"
+base_images := "
+quay.io/fedora-ostree-desktops/kinoite:41 x86_64
+quay.io/fedora-ostree-desktops/kinoite:42 x86_64
+"
+
+import '../sysext.just'
+
+all: default
