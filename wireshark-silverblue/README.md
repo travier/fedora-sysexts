@@ -1,7 +1,7 @@
-# wireshark
+# wireshark-silverblue
 
-Note: Temporarily not built until we can make per-variant (Silverblue, Kinoite,
-CoreOS) builds or we directly duplicate this sysext for each variant.
+This sysext is for Fedora Silverblue only. If you are using `Kinoite`, use
+`wireshark-kinoite` instead.
 
 ## How to use
 

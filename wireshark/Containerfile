@@ -1,7 +1,0 @@
-FROM baseimage
-
-RUN <<EORUN
-set -xeuo pipefail
-dnf install -y wireshark
-dnf clean all
-EORUN

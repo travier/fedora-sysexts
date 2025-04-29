@@ -1,15 +1,12 @@
-name := "wireshark"
+name := "wireshark-silverblue"
 packages := "
 tcpdump
 wireshark
 "
-# quay.io/fedora-ostree-desktops/base-atomic:41 x86_64,aarch64
-# quay.io/fedora-ostree-desktops/base-atomic:42 x86_64,aarch64
+version_package := "wireshark"
 base_images := "
 quay.io/fedora-ostree-desktops/silverblue:41 x86_64,aarch64
 quay.io/fedora-ostree-desktops/silverblue:42 x86_64,aarch64
-quay.io/fedora-ostree-desktops/kinoite:41 x86_64,aarch64
-quay.io/fedora-ostree-desktops/kinoite:42 x86_64,aarch64
 "
 
 import '../sysext.just'
