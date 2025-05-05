@@ -111,20 +111,17 @@ sysexts.
 
 ## Know issues
 
-### Use `systemctl restart systemd-sysext.service` to refresh sysexts
+### Use `systemctl restart systemd-sysext.service` to refresh sysexts on Fedora 41
 
-Until systemd v257 is released and lands in Fedora, make sure to use `systemctl
-restart systemd-sysext.service` instead of `systemd-sysext merge`.
-`systemd-sysext unmerge` is safe to use.
+On Fedora 41 based images, make sure to use `systemctl restart
+systemd-sysext.service` instead of `systemd-sysext merge`. `systemd-sysext
+unmerge` is safe to use.
 
-See:
+This issue is fixed in systemd v257 which landed in Fedora 42. See:
 - <https://github.com/coreos/fedora-coreos-tracker/issues/1744>
 - <https://github.com/systemd/systemd/issues/34387>
 - <https://github.com/systemd/systemd/pull/34414>
 - <https://github.com/systemd/systemd/pull/35132>
-
-This should be fixed in Fedora 42 based images, but has not been fully verified
-yet.
 
 ### Current limitation of systemd-sysupdate
 
