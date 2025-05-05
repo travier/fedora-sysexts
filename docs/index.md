@@ -54,7 +54,7 @@ specific variant (CoreOS, Silverblue, Kinoite, etc.). When this is the case, it
 is generally explicit from the name (`wireshark-silverblue`) or noted in the
 help text on the sysext page. The sysexts built only for Fedora CoreOS are also
 only built for the current Fedora releases used by each Fedora CoreOS streams
-(*stable, *testing* and *next*).
+(*stable*, *testing* and *next*).
 
 ## Integration with bootc / Bootable Containers
 
