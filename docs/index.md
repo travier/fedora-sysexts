@@ -49,9 +49,12 @@ container build. Otherwise, sysexts might be a good fit.
 
 You can find all the available sysexts in the list on the side of this page.
 The sysexts are built for the current stable releases of Fedora, for `x86_64`
-and `aarch64`, if the software is avaible for it. Some images only target
-Fedora CoreOS and are thus only built for the current releases used by Fedora
-CoreOS.
+and `aarch64`, if the software is available for it. Some images only target a
+specific variant (CoreOS, Silverblue, Kinoite, etc.). When this is the case, it
+is generally explicit from the name (`wireshark-silverblue`) or noted in the
+help text on the sysext page. The sysexts built only for Fedora CoreOS are also
+only built for the current Fedora releases used by each Fedora CoreOS streams
+(*stable, *testing* and *next*).
 
 ## Integration with bootc / Bootable Containers
 
