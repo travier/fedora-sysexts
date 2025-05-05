@@ -43,14 +43,14 @@ main() {
         sed -e "s|%%SYSEXT%%|${s}|g" \
             -e "s|%%RELEASEURL%%|${releaseurl}|g" \
             -e "s|%%EXTENSIONSURL%%|${extensionsurl}|g" \
-           "${tmpl}/setup-install-update.md"
+           "${tmpl}/body.md"
         } > "docs/${s}/index.md"
     done
 
     pushd docs > /dev/null
     docs_dir="$(ls -d ./*/ | grep -vE "_site|vendor")"
     popd > /dev/null
-    sysexts_dirs="$(ls -d ./*/ | grep -vE "docs|mpd|steam|steam-devices|wireshark")"
+    sysexts_dirs="$(ls -d ./*/ | grep -vE "docs")"
 
     diff="$(diff -u <(echo "${docs_dir}") <(echo "${sysexts_dirs}") || true)"
     if [[ -n "${diff}" ]]; then

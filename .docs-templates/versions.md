@@ -1,5 +1,0 @@
-## Compatible images
-
-```
-
-```
