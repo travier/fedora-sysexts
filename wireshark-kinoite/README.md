@@ -1,6 +1,6 @@
 # wireshark-kinoite
 
-This sysext is for Fedora Kinoite only. If you are using `Silverblue`, use
+This sysext is for Fedora Kinoite only. If you are using Fedora Silverblue, use
 `wireshark-silverblue` instead.
 
 ## How to use
@@ -25,3 +25,8 @@ easier.
 ## Why not use layering?
 
 See: <https://github.com/fedora-silverblue/issue-tracker/issues/50>
+
+## Compatibility
+
+This sysext is compatible with Fedora Kinoite only. If you are using
+Fedora Silverblue, use `wireshark-silverblue` instead.

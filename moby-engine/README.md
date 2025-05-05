@@ -13,3 +13,7 @@ moby-engine (Docker) from the Fedora repos.
   ```
   $ sudo systemctl enable --now docker.socket
   ```
+
+## Compatibility
+
+This sysext is compatible with Fedora Atomic Desktops.

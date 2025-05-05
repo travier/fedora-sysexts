@@ -30,3 +30,7 @@ Use localhost and port 6600 to connect with the client.
 # Why
 
 MPD is in RPMFusion, mpDris2 behaves weirdly/can't autostart in a quadlet/distrobox.
+
+## Compatibility
+
+This sysext is currently not built anymore.

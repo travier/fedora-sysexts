@@ -34,3 +34,8 @@ See the [Virtual Machine Manager Flatpak](https://flathub.org/apps/org.virt_mana
   ```
   $ sudo systemctl restart virtqemud.socket virtnetworkd.socket virtstoraged.socket
   ```
+
+## Compatibility
+
+This sysext is compatible with all Fedora variants (CoreOS, Atomic Desktops,
+etc.).

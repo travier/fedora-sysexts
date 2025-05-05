@@ -7,4 +7,8 @@ remapping.
 If you don't want to use the Steam Flatpak and instead have Steam on the system
 directly, look at the `steam-silverblue` and `steam-kinoite` sysexts.
 
-Work in progress. Please report success (and failure) with this sysext. Thanks!
+## Compatibility
+
+This sysext is a work in progress. It targets the Fedora Atomic Desktops.
+
+Please report success or failure with this sysext in an issue.
