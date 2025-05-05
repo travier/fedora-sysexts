@@ -88,8 +88,10 @@ variant: fcos
 version: 1.5.0
 storage:
   files:
+      # Make sure to name your sysext as <sysext-name>.raw, without the version here
     - path: "/var/lib/extensions/kubernetes-cri-o-1.32.raw"
       contents:
+        # Use the full URL with the version to download the sysext
         source: "https://extensions.fcos.fr/extensions/kubernetes-cri-o-1.32/kubernetes-cri-o-1.32-1.32.3-1.fc42-42-x86-64.raw"
 systemd:
   units:
@@ -136,6 +138,16 @@ few limitations:
   in the background for now. See:
   - <https://github.com/fedora-selinux/selinux-policy/pull/2604>
   - <https://github.com/fedora-selinux/selinux-policy/issues/2622>
+
+## Common errors
+
+### Failed to read metadata for image ...: No medium found
+
+If you encounter this error, it likely means that you have set your sysext
+image with the full name in the `/var/lib/extensions` directory.
+`systemd-sysext` expects the sysexts images to be named only with their own
+name, without any version (thus why we use the `/var/lib/extensions.d`
+directory in the general case).
 
 ## Building, contributing and license
 
