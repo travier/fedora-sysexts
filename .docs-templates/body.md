@@ -74,3 +74,30 @@ for c in $(/usr/lib/systemd/systemd-sysupdate components --json=short | jq --raw
 done
 ```
 </details>
+
+<details markdown="block">
+<summary>Uninstall</summary>
+Define a helper function:
+
+```
+uninstall_sysext() {
+  SYSEXT="${1}"
+  sudo rm -i "/var/lib/extensions/${SYSEXT}.raw"
+  sudo rm -i "/var/lib/extensions.d/${SYSEXT}-"*".raw"
+  sudo rm -i "/etc/sysupdate.${SYSEXT}.d/${SYSEXT}.conf"
+}
+```
+
+Uninstall the sysext:
+
+```
+uninstall_sysext %%SYSEXT%%
+```
+
+Reboot your system or refresh the merged sysexts:
+
+```
+sudo systemctl restart systemd-sysext.service
+systemd-sysext status
+```
+</details>
