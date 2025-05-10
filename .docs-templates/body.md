@@ -11,6 +11,7 @@ Run those commands if you have not yet installed any sysext on your system:
 ```
 sudo install -d -m 0755 -o 0 -g 0 /var/lib/extensions /var/lib/extensions.d
 sudo restorecon -RFv /var/lib/extensions /var/lib/extensions.d
+sudo systemctl enable --now systemd-sysext.service
 ```
 </details>
 
@@ -45,6 +46,8 @@ Note that this will merge all installed sysexts unconditionally:
 sudo systemctl restart systemd-sysext.service
 systemd-sysext status
 ```
+
+You can also reboot the system.
 </details>
 
 <details markdown="block">
