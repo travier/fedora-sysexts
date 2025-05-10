@@ -11,6 +11,7 @@ Run those commands if you have not yet installed any sysext on your system:
 ```
 sudo install -d -m 0755 -o 0 -g 0 /var/lib/extensions /var/lib/extensions.d
 sudo restorecon -RFv /var/lib/extensions /var/lib/extensions.d
+sudo systemctl enable --now systemd-sysext.service
 ```
 </details>
 
@@ -45,6 +46,8 @@ Note that this will merge all installed sysexts unconditionally:
 sudo systemctl restart systemd-sysext.service
 systemd-sysext status
 ```
+
+You can also reboot the system.
 </details>
 
 <details markdown="block">
@@ -69,5 +72,32 @@ To update all sysexts on a system:
 for c in $(/usr/lib/systemd/systemd-sysupdate components --json=short | jq --raw-output '.components[]'); do
     sudo /usr/lib/systemd/systemd-sysupdate update --component "${c}"
 done
+```
+</details>
+
+<details markdown="block">
+<summary>Uninstall</summary>
+Define a helper function:
+
+```
+uninstall_sysext() {
+  SYSEXT="${1}"
+  sudo rm -i "/var/lib/extensions/${SYSEXT}.raw"
+  sudo rm -i "/var/lib/extensions.d/${SYSEXT}-"*".raw"
+  sudo rm -i "/etc/sysupdate.${SYSEXT}.d/${SYSEXT}.conf"
+}
+```
+
+Uninstall the sysext:
+
+```
+uninstall_sysext %%SYSEXT%%
+```
+
+Reboot your system or refresh the merged sysexts:
+
+```
+sudo systemctl restart systemd-sysext.service
+systemd-sysext status
 ```
 </details>
