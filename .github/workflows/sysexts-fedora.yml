@@ -1046,12 +1046,6 @@ jobs:
           sysext: 'cilium-cli'
           image: ${{ env.IMAGE }}
 
-      - name: "Build sysext: cloud-hypervisor"
-        uses: ./.github/actions/build
-        with:
-          sysext: 'cloud-hypervisor'
-          image: ${{ env.IMAGE }}
-
       - name: "Build sysext: distrobox"
         uses: ./.github/actions/build
         with:
