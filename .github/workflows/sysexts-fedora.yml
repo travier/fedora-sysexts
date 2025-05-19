@@ -856,6 +856,12 @@ jobs:
           sysext: 'kubernetes-1.32'
           image: ${{ env.IMAGE }}
 
+      - name: "Build sysext: kubernetes-1.33"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'kubernetes-1.33'
+          image: ${{ env.IMAGE }}
+
       - name: "Build sysext: kubernetes-cri-o-1.29"
         uses: ./.github/actions/build
         with:
@@ -878,6 +884,12 @@ jobs:
         uses: ./.github/actions/build
         with:
           sysext: 'kubernetes-cri-o-1.32'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: kubernetes-cri-o-1.33"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'kubernetes-cri-o-1.33'
           image: ${{ env.IMAGE }}
 
       - name: "Build sysext: libvirtd"
@@ -948,6 +960,12 @@ jobs:
           sysext: 'kubernetes-1.32'
           image: ${{ env.IMAGE }}
 
+      - name: "Build sysext: kubernetes-1.33"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'kubernetes-1.33'
+          image: ${{ env.IMAGE }}
+
       - name: "Build sysext: kubernetes-cri-o-1.29"
         uses: ./.github/actions/build
         with:
@@ -970,6 +988,12 @@ jobs:
         uses: ./.github/actions/build
         with:
           sysext: 'kubernetes-cri-o-1.32'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: kubernetes-cri-o-1.33"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'kubernetes-cri-o-1.33'
           image: ${{ env.IMAGE }}
 
       - name: "Build sysext: libvirtd"
@@ -1724,6 +1748,12 @@ jobs:
           sysext: 'kubernetes-1.32'
           image: ${{ env.IMAGE }}
 
+      - name: "Build sysext: kubernetes-1.33"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'kubernetes-1.33'
+          image: ${{ env.IMAGE }}
+
       - name: "Build sysext: kubernetes-cri-o-1.29"
         uses: ./.github/actions/build
         with:
@@ -1746,6 +1776,12 @@ jobs:
         uses: ./.github/actions/build
         with:
           sysext: 'kubernetes-cri-o-1.32'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: kubernetes-cri-o-1.33"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'kubernetes-cri-o-1.33'
           image: ${{ env.IMAGE }}
 
       - name: "Build sysext: libvirtd"
@@ -1816,6 +1852,12 @@ jobs:
           sysext: 'kubernetes-1.32'
           image: ${{ env.IMAGE }}
 
+      - name: "Build sysext: kubernetes-1.33"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'kubernetes-1.33'
+          image: ${{ env.IMAGE }}
+
       - name: "Build sysext: kubernetes-cri-o-1.29"
         uses: ./.github/actions/build
         with:
@@ -1838,6 +1880,12 @@ jobs:
         uses: ./.github/actions/build
         with:
           sysext: 'kubernetes-cri-o-1.32'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: kubernetes-cri-o-1.33"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'kubernetes-cri-o-1.33'
           image: ${{ env.IMAGE }}
 
       - name: "Build sysext: libvirtd"
@@ -1895,4 +1943,4 @@ jobs:
       - name: "Gather all sysexts releases"
         uses: ./.github/actions/gather
         with:
-          sysexts: '1password-cli;1password-gui;adobe-source-code-pro-fonts;bandwhich;bitwarden;btop;bwm-ng;chromium;cilium-cli;cloud-hypervisor;distrobox;docker-ce;emacs;erofs-utils;fd-find;firefox;fish;fuse2;gdb;git-absorb;git-delta;google-chrome;helix;htop;igt-gpu-tools;incus;iotop;iwd;just;keepassxc;krb5-workstation;kubernetes-1.29;kubernetes-1.30;kubernetes-1.31;kubernetes-1.32;kubernetes-cri-o-1.29;kubernetes-cri-o-1.30;kubernetes-cri-o-1.31;kubernetes-cri-o-1.32;libvirtd;libvirtd-desktop;microsoft-edge;moby-engine;mullvad-vpn;neovim;openh264;openssl;python3;ripgrep;semanage;source-foundry-hack-fonts;steam-devices;steam-kinoite;steam-silverblue;strace;tree;vim;virtctl;vscode;vscodium;wasmtime;wireguard-tools;wireshark-kinoite;wireshark-silverblue;youki;zoxide;zsh;'
+          sysexts: '1password-cli;1password-gui;adobe-source-code-pro-fonts;bandwhich;bitwarden;btop;bwm-ng;chromium;cilium-cli;cloud-hypervisor;distrobox;docker-ce;emacs;erofs-utils;fd-find;firefox;fish;fuse2;gdb;git-absorb;git-delta;google-chrome;helix;htop;igt-gpu-tools;incus;iotop;iwd;just;keepassxc;krb5-workstation;kubernetes-1.29;kubernetes-1.30;kubernetes-1.31;kubernetes-1.32;kubernetes-1.33;kubernetes-cri-o-1.29;kubernetes-cri-o-1.30;kubernetes-cri-o-1.31;kubernetes-cri-o-1.32;kubernetes-cri-o-1.33;libvirtd;libvirtd-desktop;microsoft-edge;moby-engine;mullvad-vpn;neovim;openh264;openssl;python3;ripgrep;semanage;source-foundry-hack-fonts;steam-devices;steam-kinoite;steam-silverblue;strace;tree;vim;virtctl;vscode;vscodium;wasmtime;wireguard-tools;wireshark-kinoite;wireshark-silverblue;youki;zoxide;zsh;'
