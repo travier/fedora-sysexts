@@ -1232,18 +1232,6 @@ jobs:
           sysext: 'neovim'
           image: ${{ env.IMAGE }}
 
-      - name: "Build sysext: nordvpn-gui"
-        uses: ./.github/actions/build
-        with:
-          sysext: 'nordvpn-gui'
-          image: ${{ env.IMAGE }}
-
-      - name: "Build sysext: nordvpn"
-        uses: ./.github/actions/build
-        with:
-          sysext: 'nordvpn'
-          image: ${{ env.IMAGE }}
-
       - name: "Build sysext: openh264"
         uses: ./.github/actions/build
         with:
@@ -1532,18 +1520,6 @@ jobs:
         uses: ./.github/actions/build
         with:
           sysext: 'neovim'
-          image: ${{ env.IMAGE }}
-
-      - name: "Build sysext: nordvpn-gui"
-        uses: ./.github/actions/build
-        with:
-          sysext: 'nordvpn-gui'
-          image: ${{ env.IMAGE }}
-
-      - name: "Build sysext: nordvpn"
-        uses: ./.github/actions/build
-        with:
-          sysext: 'nordvpn'
           image: ${{ env.IMAGE }}
 
       - name: "Build sysext: openh264"
