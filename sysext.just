@@ -77,7 +77,7 @@ build target arch=arch: \
     install-files \
     install-manual \
     move-etc \
-    rm-ignored \
+    validate \
     (reset-selinux-labels target arch) \
     (build-erofs target arch)
 
@@ -97,7 +97,7 @@ resume-build target arch=arch: \
     install-files \
     install-manual \
     move-etc \
-    rm-ignored \
+    validate \
     (reset-selinux-labels target arch) \
     (build-erofs target arch)
 
@@ -530,33 +530,57 @@ move-etc:
         ${SUDO} mv --no-clobber --no-copy ./etc ./usr/etc
     fi
 
-# Move all folders outside of /usr & /opt out of the sysext's rootfs.
-# Note: This step is still in progress. Currently only moves /var and /run.
-rm-ignored:
+# Validation pass that checks for common errors
+validate:
     #!/bin/bash
     set -euo pipefail
     # set -x
 
-    if [[ "${UID}" == "0" ]]; then
-        SUDO=""
-    else
-        SUDO="sudo"
-    fi
+    # Some checks vary by Fedora release
+    version_id="$(cat ./version_id)"
 
-    if [[ -d rootfs.ignored ]]; then
-        echo "🧹 Cleaning up previous rootfs.ignored"
-        ${SUDO} rm -rf ./rootfs.ignored
-    fi
-    mkdir rootfs.ignored
+    failed_checks=0
 
     cd rootfs
 
-    for dir in "var" "run"; do
-        if [[ -d ./"${dir}" ]] then
-            echo "➡️ Moving ${dir} out of rootfs"
-            ${SUDO} mv ./"${dir}" ../rootfs.ignored
-        fi
-    done
+    # Check sbin/bin merge starting with Fedora 42
+    if [[ "${version_id}" -ge 42 ]] && [[ -d "usr/sbin" ]]; then
+        failed_checks=$((failed_checks+1))
+        echo "❌ Found /usr/sbin directory on Fedora 42+ sysext (see bin/sbin merge change)"
+        ls -alh usr/sbin
+    fi
+
+    # Check that /var is empty as it will be ignored
+    if [[ -d "var" ]]; then
+        failed_checks=$((failed_checks+1))
+        echo "❌ Found /var directory, which will be ignored: clear it or convert it to a tmpfiles.d config"
+        ls -alh var
+    fi
+
+    # Check that /run is empty as it will be ignored
+    if [[ -d "run" ]]; then
+        failed_checks=$((failed_checks+1))
+        echo "❌ Found /run directory, which will be ignored: clear it or convert it to a tmpfiles.d config"
+        ls -alh run
+    fi
+
+    # Check that we don't use /opt as it will not work
+    if [[ -d "opt" ]]; then
+        failed_checks=$((failed_checks+1))
+        echo "❌ Found /opt directory, which will not work: move the content to /usr/lib"
+        ls -alh opt
+    fi
+
+    # Check that we don't have other directories as they will be ignored
+    if [[ "$(ls | grep -cvE "^usr$|^run$|^var$|^opt$")" -ne 0 ]]; then
+        failed_checks=$((failed_checks+1))
+        echo "❌ Found other directories which will be ignored: move them or clear them"
+        ls | grep -vE "^usr$|^run$|^var$|^opt$"
+    fi
+
+    if [[ "${failed_checks}" -ne 0 ]]; then
+        exit 1
+    fi
 
 # Reset SELinux labels to expected values from the policy
 reset-selinux-labels target arch=arch:
@@ -655,5 +679,5 @@ clean:
     rm -rf inputs scripts digest version version_id
     rm -rf ./rpms
     rm -rf ./binaries
-    ${SUDO} rm -rf ./rootfs ./rootfs.ignored
+    ${SUDO} rm -rf ./rootfs
     rm -f ./*.raw
