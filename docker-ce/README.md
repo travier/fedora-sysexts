@@ -11,7 +11,7 @@ Docker Engine from [community repos](https://docs.docker.com/engine/install/fedo
   ```
 - Restart the socket:
   ```
-  $ sudo systemctl enable --now docker.socket
+  $ sudo systemctl restart docker.socket
   ```
 
 ## Compatibility
