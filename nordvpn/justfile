@@ -1,0 +1,43 @@
+name := "nordvpn"
+packages := "nordvpn"
+files := "usr"
+upholds := "
+nordvpnd.service
+nordvpnd.socket
+"
+pre_commands := "rpm --import https://repo.nordvpn.com/yum/nordvpn/centos/x86_64/repodata/repomd.xml.key && echo -e '[code]\nname=NordVPN\nbaseurl=https://repo.nordvpn.com/yum/nordvpn/centos/x86_64/\nenabled=1\ngpgcheck=1\ngpgkey=https://repo.nordvpn.com/yum/nordvpn/centos/x86_64/repodata/repomd.xml.key' | tee /etc/yum.repos.d/nordvpn.repo > /dev/null"
+base_images := "
+quay.io/fedora-ostree-desktops/base-atomic:41 x86_64,aarch64
+quay.io/fedora-ostree-desktops/base-atomic:42 x86_64,aarch64
+"
+
+import '../sysext.just'
+
+all: default
+
+install-manual:
+    #!/bin/bash
+    set -euo pipefail
+    # set -x
+
+    if [[ "${UID}" == "0" ]]; then
+        SUDO=""
+    else
+        SUDO="sudo"
+    fi
+
+    cd rootfs
+
+    # Move /var content
+    ${SUDO} mv var/lib/nordvpn usr/share
+    ${SUDO} rmdir var/lib var
+    # Fix permission for tmpfiles config
+    ${SUDO} chmod 644 usr/lib/tmpfiles.d/nordvpn.conf
+    # Remove service mask
+    ${SUDO} rm usr/lib/systemd/system/nordvpn.service
+    # Merge sbin to bin for F42+
+    VERSION_ID="$(source /etc/os-release ; echo -n ${VERSION_ID})"
+    if [[ "${VERSION_ID}" -ge 42 ]]; then
+        ${SUDO} mv usr/sbin/nordvpnd usr/bin/nordvpnd
+        ${SUDO} rmdir usr/sbin
+    fi
