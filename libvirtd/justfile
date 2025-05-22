@@ -54,7 +54,6 @@ import '../sysext.just'
 
 all: default
 
-# Fixup netcat/nc as we don't run the alternatives command from scriplets
 install-manual:
     #!/bin/bash
     set -euo pipefail
@@ -68,4 +67,15 @@ install-manual:
 
     cd rootfs
 
+    # Fixup netcat/nc as we don't run the alternatives command from scriplets
     ${SUDO} ln -snf netcat usr/bin/nc
+
+    # Move extlinux to /usr/bin for x86_64
+    arch="{{arch}}"
+    if [[ "${arch}" == "x86_64" ]]; then
+        ${SUDO} mv sbin/extlinux usr/bin/extlinux
+        ${SUDO} rmdir sbin
+    fi
+
+    # Empty out /var & /boot
+    ${SUDO} rm -rf ./var ./boot
