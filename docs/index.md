@@ -107,10 +107,11 @@ systemd:
       mask: true
 ```
 
-See
-[travier/fedora-coreos-kubernetes](https://github.com/travier/fedora-coreos-kubernetes)
-for a more complete example deploying Kubernetes on Fedora CoreOS using
-sysexts.
+For more examples, see:
+- [travier/fedora-coreos-kubernetes](https://github.com/travier/fedora-coreos-kubernetes):
+  A more complete example deploying Kubernetes on Fedora CoreOS using sysexts.
+- [systemd system extension (sysext) tutorial](https://github.com/tormath1/sysext-tutorial):
+  A hands-on tutorial from the KubeCon EU 2025 London Contribfest session.
 
 ## Know issues
 
