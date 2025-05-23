@@ -8,3 +8,20 @@ quay.io/fedora/fedora-coreos:next x86_64,aarch64
 import '../sysext.just'
 
 all: default
+
+install-manual:
+    #!/bin/bash
+    set -euo pipefail
+    # set -x
+
+    if [[ "${UID}" == "0" ]]; then
+        SUDO=""
+    else
+        SUDO="sudo"
+    fi
+
+    cd rootfs
+
+    # Empty out /var
+    ${SUDO} rm var/lib/unbound/root.key
+    ${SUDO} rmdir var/lib/unbound var/lib var/cache/dnf var/cache var
