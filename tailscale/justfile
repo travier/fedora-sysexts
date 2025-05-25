@@ -1,0 +1,45 @@
+name := "tailscale"
+packages := "tailscale"
+files := "usr"
+# TODO: Disabled as this interactively query for confirmation and can not be bypassed
+# external_repos := "https://pkgs.tailscale.com/stable/fedora/tailscale.repo"
+# TODO: Workaround belown but something weird is going on here
+pre_commands := "dnf config-manager addrepo --from-repofile=https://pkgs.tailscale.com/stable/fedora/tailscale.repo && sed -i 's/repo_gpgcheck=1/repo_gpgcheck=0/g' /etc/yum.repos.d/tailscale.repo"
+upholds := "
+tailscaled.service
+"
+base_images := "
+quay.io/fedora-ostree-desktops/base-atomic:41 x86_64,aarch64
+quay.io/fedora-ostree-desktops/base-atomic:42 x86_64,aarch64
+"
+
+import '../sysext.just'
+
+all: default
+
+install-manual:
+    #!/bin/bash
+    set -euo pipefail
+    # set -x
+
+    if [[ "${UID}" == "0" ]]; then
+        SUDO=""
+    else
+        SUDO="sudo"
+    fi
+
+    cd rootfs
+
+    # Remove /var
+    ${SUDO} rmdir var/cache/tailscale var/cache var
+
+    # Move service from /lib to /usr/lib
+    ${SUDO} mv lib/systemd/system/tailscaled.service usr/lib/systemd/system/
+    ${SUDO} rmdir lib/systemd/system lib/systemd lib
+
+    # Merge sbin to bin for F42+
+    VERSION_ID="$(source /etc/os-release ; echo -n ${VERSION_ID})"
+    if [[ "${VERSION_ID}" -ge 42 ]]; then
+        ${SUDO} mv usr/sbin/tailscaled usr/bin/tailscaled
+        ${SUDO} rmdir usr/sbin
+    fi
