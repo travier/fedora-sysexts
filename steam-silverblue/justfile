@@ -8,9 +8,9 @@ version_package := "steam"
 rpm_fusion_repos := "free nonfree"
 dnf_arch := "noarch i686 x86_64"
 base_images := "
-quay.io/fedora-ostree-desktops/silverblue:41 x86_64
-quay.io/fedora-ostree-desktops/silverblue:42 x86_64
 "
+# quay.io/fedora-ostree-desktops/silverblue:41 x86_64
+# quay.io/fedora-ostree-desktops/silverblue:42 x86_64
 
 import '../sysext.just'
 
