@@ -53,6 +53,10 @@ upholds := ""
 # compression := "zstd"
 compression := "lz4"
 
+# print more logs to help debugging. Enable by setting JUST_DEBUG env variable.
+# Defaut to false.
+debug := env('JUST_DEBUG', '')
+
 # Default, empty, just recipe
 default:
     #!/bin/bash
@@ -105,7 +109,9 @@ resume-build target arch=arch: \
 targets:
     #!/bin/bash
     set -euo pipefail
-    # set -x
+    if [[ -n "{{debug}}" ]]; then
+      set -x
+    fi
 
     if [[ -z "{{base_images}}" ]]; then
         echo "sysexts must explicitely say which base operating system images they support"
@@ -118,7 +124,9 @@ targets:
 check target arch=arch:
     #!/bin/bash
     set -euo pipefail
-    # set -x
+    if [[ -n "{{debug}}" ]]; then
+      set -x
+    fi
 
     # Make sure that the sysext lists the base images that it supports
     if [[ -z "{{base_images}}" ]]; then
@@ -182,7 +190,9 @@ check target arch=arch:
 download-rpms target arch=arch:
     #!/bin/bash
     set -euo pipefail
-    # set -x
+    if [[ -n "{{debug}}" ]]; then
+      set -x
+    fi
 
     # Skip this step if we have not been asked to download packages
     if [[ -z "{{packages}}" ]]; then
@@ -278,7 +288,7 @@ download-rpms target arch=arch:
         --workdir "/var/srv" \
         --security-opt label=disable \
         "{{target}}" \
-        bash -c "export FORCE_COLUMNS=100 && ${pre_commands}dnf download --resolve ${dnf_arch} ${dnf_opts} ${disablerepos} ${enablerepos} ${packages}"
+        bash -xc "export FORCE_COLUMNS=100 && ${pre_commands}dnf download --resolve ${dnf_arch} ${dnf_opts} ${disablerepos} ${enablerepos} ${packages}"
 
 # Manual download step, that can be overridden to dowload non RPM content
 download-manual arch=arch:
@@ -291,7 +301,9 @@ download-manual arch=arch:
 version:
     #!/bin/bash
     set -euo pipefail
-    # set -x
+    if [[ -n "{{debug}}" ]]; then
+      set -x
+    fi
 
     package_version() {
         rpm="${1}"
@@ -342,7 +354,9 @@ version:
 inputs target arch=arch:
     #!/bin/bash
     set -euo pipefail
-    # set -x
+    if [[ -n "{{debug}}" ]]; then
+      set -x
+    fi
 
     echo "🏷️ Writing down inputs"
 
@@ -397,7 +411,9 @@ inputs target arch=arch:
 setup-rootfs target arch=arch:
     #!/bin/bash
     set -euo pipefail
-    # set -x
+    if [[ -n "{{debug}}" ]]; then
+      set -x
+    fi
 
     if [[ "${UID}" == "0" ]]; then
         SUDO=""
@@ -458,7 +474,9 @@ setup-rootfs target arch=arch:
 install-rpms:
     #!/bin/bash
     set -euo pipefail
-    # set -x
+    if [[ -n "{{debug}}" ]]; then
+      set -x
+    fi
 
     # Skip this step if we have not been asked to install packages
     if [[ -z "{{packages}}" ]]; then
@@ -485,7 +503,9 @@ install-rpms:
 install-files:
     #!/bin/bash
     set -euo pipefail
-    # set -x
+    if [[ -n "{{debug}}" ]]; then
+      set -x
+    fi
 
     # Skip this step if we have not been asked to copy files
     if [[ -z "{{files}}" ]]; then
@@ -510,14 +530,18 @@ install-files:
 install-manual:
     #!/bin/bash
     set -euo pipefail
-    # set -x
+    if [[ -n "{{debug}}" ]]; then
+      set -x
+    fi
     exit 0
 
 # Move /etc to /usr/etc. Might be converted to a confext generator.
 move-etc:
     #!/bin/bash
     set -euo pipefail
-    # set -x
+    if [[ -n "{{debug}}" ]]; then
+      set -x
+    fi
 
     if [[ "${UID}" == "0" ]]; then
         SUDO=""
@@ -536,7 +560,9 @@ move-etc:
 validate:
     #!/bin/bash
     set -euo pipefail
-    # set -x
+    if [[ -n "{{debug}}" ]]; then
+      set -x
+    fi
 
     # Some checks vary by Fedora release
     version_id="$(cat ./version_id)"
@@ -588,7 +614,9 @@ validate:
 reset-selinux-labels target arch=arch:
     #!/bin/bash
     set -euo pipefail
-    # set -x
+    if [[ -n "{{debug}}" ]]; then
+      set -x
+    fi
 
     if [[ "${UID}" == "0" ]]; then
         SUDO=""
@@ -647,7 +675,9 @@ reset-selinux-labels target arch=arch:
 build-erofs target arch=arch:
     #!/bin/bash
     set -euo pipefail
-    # set -x
+    if [[ -n "{{debug}}" ]]; then
+      set -x
+    fi
 
     if [[ "${UID}" == "0" ]]; then
         SUDO=""
@@ -673,7 +703,9 @@ build-erofs target arch=arch:
 clean:
     #!/bin/bash
     set -euo pipefail
-    # set -x
+    if [[ -n "{{debug}}" ]]; then
+      set -x
+    fi
 
     if [[ "${UID}" == "0" ]]; then
         SUDO=""
