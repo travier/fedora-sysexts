@@ -1,0 +1,8 @@
+FROM baseimage
+
+RUN <<EORUN
+set -xeuo pipefail
+dnf install -y \
+    git-lfs \
+dnf clean all
+EORUN
