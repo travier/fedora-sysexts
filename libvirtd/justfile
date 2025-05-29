@@ -70,9 +70,8 @@ install-manual:
     # Fixup netcat/nc as we don't run the alternatives command from scriplets
     ${SUDO} ln -snf netcat usr/bin/nc
 
-    # Move extlinux to /usr/bin for x86_64
-    arch="{{arch}}"
-    if [[ "${arch}" == "x86_64" ]]; then
+    # Move extlinux to /usr/bin as needed
+    if [[ -f sbin/extlinux ]]; then
         ${SUDO} mv sbin/extlinux usr/bin/extlinux
         ${SUDO} rmdir sbin
     fi
