@@ -8,8 +8,10 @@ inputs:
     description: "The image to use as a base for the sysext"
     required: true
 
-# This composite action needs the RELEASEURL environment variables to be set at
-# the workflow level
+# This composite action needs the following environment variables to be set at
+# the workflow or job level:
+# - RELEASEURL: Mandatory, needed to fetch older releases
+# - FORCE_REBUILD: Optional, used to force sysext's rebuild (and publication)
 
 runs:
   using: "composite"
@@ -24,8 +26,9 @@ runs:
         set -euxo pipefail
 
         cd "${SYSEXT}"
+
+        # For PRs, only build if the content changed
         if [[ "${PR}" == "true" ]]; then
-            # Only build for PRs if the content changed
             diff="$(
               git diff origin/main HEAD --stat -- . ; \
               git diff origin/main HEAD --stat -- ../sysext.just
@@ -34,31 +37,41 @@ runs:
                 echo "Skipping: No changes for this sysext in this PR"
                 exit 0
             fi
-            echo "Detected change for this sysext. Building."
+            echo "Detected changes for this sysext in this PR. Building."
             just build ${IMAGE}
-        else
-          # Only build for releases if the inputs changed
-          just prepare-build ${IMAGE}
-
-          new="$(cat inputs | sha256sum)"
-
-          VERSION_ID="$(cat ./version_id)"
-          VERSION="$(cat ./version)"
-          ARCH="$(uname -m | sed 's/_/-/g')"
-          TAGNAME="${SYSEXT}-${VERSION}-${VERSION_ID}-${ARCH}"
-
-          echo "Fetching info from existing release: ${TAGNAME}"
-          curl --location --fail --output inputs.old  "${RELEASEURL}/${TAGNAME}/inputs"  || touch inputs.old
-          old="$(cat inputs.old | sha256sum)"
-
-          if [[ "${new}" == "${old}" ]]; then
-            echo "No changes in inputs since last release. Skipping."
             exit 0
-          fi
-
-          echo "Detected changes. Building new sysext for: ${TAGNAME}"
-          just resume-build ${IMAGE}
         fi
+
+        # Check if we are asked to force a rebuild
+        if [ -n ${FORCE_REBUILD+x} ]; then
+            if [[ "${FORCE_REBUILD}" == true ]]; then
+                echo "Building (forced rebuild)"
+                just build ${IMAGE}
+                exit 0
+            fi
+        fi
+
+        # Only build for releases if the inputs changed
+        just prepare-build ${IMAGE}
+
+        new="$(cat inputs | sha256sum)"
+
+        VERSION_ID="$(cat ./version_id)"
+        VERSION="$(cat ./version)"
+        ARCH="$(uname -m | sed 's/_/-/g')"
+        TAGNAME="${SYSEXT}-${VERSION}-${VERSION_ID}-${ARCH}"
+
+        echo "Fetching info from existing release: ${TAGNAME}"
+        curl --location --fail --output inputs.old  "${RELEASEURL}/${TAGNAME}/inputs"  || touch inputs.old
+        old="$(cat inputs.old | sha256sum)"
+
+        if [[ "${new}" == "${old}" ]]; then
+          echo "No changes in inputs since last release. Skipping."
+          exit 0
+        fi
+
+        echo "Detected changes. Building new sysext for: ${TAGNAME}"
+        just resume-build ${IMAGE}
 
     - name: "Publish sysext"
       env:
