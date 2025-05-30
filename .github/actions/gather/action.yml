@@ -5,8 +5,9 @@ inputs:
     description: "The list of sysexts to generate releases for"
     required: true
 
-# This composite action needs the RELEASEURL environment variables to be set at
-# the workflow level
+# This composite action needs the following environment variables to be set at
+# the workflow or job level:
+# - RELEASEURL: Mandatory, needed to fetch older releases
 
 runs:
   using: "composite"
