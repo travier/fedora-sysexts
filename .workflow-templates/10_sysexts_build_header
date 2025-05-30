@@ -5,6 +5,7 @@
       options: "--privileged --security-opt label=disable --user 0:0"
     env:
       IMAGE: "%%IMAGE%%"
+      FORCE_REBUILD: ${{ inputs.force-rebuild }}
     steps:
       - name: "Checkout repo"
         uses: actions/checkout@v4
