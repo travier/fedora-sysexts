@@ -443,7 +443,9 @@ setup-rootfs target arch=arch:
     echo "➡️ Setting up extension config file"
     ${SUDO} install -d -m0755 usr/lib/extension-release.d
     {
-    echo "ID=\"fedora\""
+    # We can not restict the ID to `fedora` here as it will break support for
+    # Universal Blue. See: https://github.com/systemd/systemd/pull/37648
+    echo "ID=\"_any\""
     echo "VERSION_ID=\"${version_id}\""
     echo "ARCHITECTURE=\"${arch}\""
     if [[ "${reload_manager}"  == "true" ]]; then

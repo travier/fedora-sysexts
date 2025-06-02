@@ -14,6 +14,12 @@ on:
   schedule:
     - cron:  '0 0 * * *'
   workflow_dispatch:
+    inputs:
+      force-rebuild:
+        description: 'Force rebuild of all sysexts'
+        required: true
+        default: false
+        type: boolean
 
 # Needed to allow creating a release
 permissions:
@@ -33,6 +39,7 @@ jobs:
       options: "--privileged --security-opt label=disable --user 0:0"
     env:
       IMAGE: "quay.io/fedora-ostree-desktops/base-atomic:41"
+      FORCE_REBUILD: ${{ inputs.force-rebuild }}
     steps:
       - name: "Checkout repo"
         uses: actions/checkout@v4
@@ -377,6 +384,7 @@ jobs:
       options: "--privileged --security-opt label=disable --user 0:0"
     env:
       IMAGE: "quay.io/fedora-ostree-desktops/base-atomic:42"
+      FORCE_REBUILD: ${{ inputs.force-rebuild }}
     steps:
       - name: "Checkout repo"
         uses: actions/checkout@v4
@@ -721,6 +729,7 @@ jobs:
       options: "--privileged --security-opt label=disable --user 0:0"
     env:
       IMAGE: "quay.io/fedora-ostree-desktops/silverblue:41"
+      FORCE_REBUILD: ${{ inputs.force-rebuild }}
     steps:
       - name: "Checkout repo"
         uses: actions/checkout@v4
@@ -747,6 +756,7 @@ jobs:
       options: "--privileged --security-opt label=disable --user 0:0"
     env:
       IMAGE: "quay.io/fedora-ostree-desktops/silverblue:42"
+      FORCE_REBUILD: ${{ inputs.force-rebuild }}
     steps:
       - name: "Checkout repo"
         uses: actions/checkout@v4
@@ -773,6 +783,7 @@ jobs:
       options: "--privileged --security-opt label=disable --user 0:0"
     env:
       IMAGE: "quay.io/fedora-ostree-desktops/kinoite:41"
+      FORCE_REBUILD: ${{ inputs.force-rebuild }}
     steps:
       - name: "Checkout repo"
         uses: actions/checkout@v4
@@ -799,6 +810,7 @@ jobs:
       options: "--privileged --security-opt label=disable --user 0:0"
     env:
       IMAGE: "quay.io/fedora-ostree-desktops/kinoite:42"
+      FORCE_REBUILD: ${{ inputs.force-rebuild }}
     steps:
       - name: "Checkout repo"
         uses: actions/checkout@v4
@@ -825,6 +837,7 @@ jobs:
       options: "--privileged --security-opt label=disable --user 0:0"
     env:
       IMAGE: "quay.io/fedora/fedora-coreos:stable"
+      FORCE_REBUILD: ${{ inputs.force-rebuild }}
     steps:
       - name: "Checkout repo"
         uses: actions/checkout@v4
@@ -929,6 +942,7 @@ jobs:
       options: "--privileged --security-opt label=disable --user 0:0"
     env:
       IMAGE: "quay.io/fedora/fedora-coreos:next"
+      FORCE_REBUILD: ${{ inputs.force-rebuild }}
     steps:
       - name: "Checkout repo"
         uses: actions/checkout@v4
@@ -1033,6 +1047,7 @@ jobs:
       options: "--privileged --security-opt label=disable --user 0:0"
     env:
       IMAGE: "quay.io/fedora-ostree-desktops/base-atomic:41"
+      FORCE_REBUILD: ${{ inputs.force-rebuild }}
     steps:
       - name: "Checkout repo"
         uses: actions/checkout@v4
@@ -1329,6 +1344,7 @@ jobs:
       options: "--privileged --security-opt label=disable --user 0:0"
     env:
       IMAGE: "quay.io/fedora-ostree-desktops/base-atomic:42"
+      FORCE_REBUILD: ${{ inputs.force-rebuild }}
     steps:
       - name: "Checkout repo"
         uses: actions/checkout@v4
@@ -1625,6 +1641,7 @@ jobs:
       options: "--privileged --security-opt label=disable --user 0:0"
     env:
       IMAGE: "quay.io/fedora-ostree-desktops/silverblue:41"
+      FORCE_REBUILD: ${{ inputs.force-rebuild }}
     steps:
       - name: "Checkout repo"
         uses: actions/checkout@v4
@@ -1651,6 +1668,7 @@ jobs:
       options: "--privileged --security-opt label=disable --user 0:0"
     env:
       IMAGE: "quay.io/fedora-ostree-desktops/silverblue:42"
+      FORCE_REBUILD: ${{ inputs.force-rebuild }}
     steps:
       - name: "Checkout repo"
         uses: actions/checkout@v4
@@ -1677,6 +1695,7 @@ jobs:
       options: "--privileged --security-opt label=disable --user 0:0"
     env:
       IMAGE: "quay.io/fedora-ostree-desktops/kinoite:41"
+      FORCE_REBUILD: ${{ inputs.force-rebuild }}
     steps:
       - name: "Checkout repo"
         uses: actions/checkout@v4
@@ -1703,6 +1722,7 @@ jobs:
       options: "--privileged --security-opt label=disable --user 0:0"
     env:
       IMAGE: "quay.io/fedora-ostree-desktops/kinoite:42"
+      FORCE_REBUILD: ${{ inputs.force-rebuild }}
     steps:
       - name: "Checkout repo"
         uses: actions/checkout@v4
@@ -1729,6 +1749,7 @@ jobs:
       options: "--privileged --security-opt label=disable --user 0:0"
     env:
       IMAGE: "quay.io/fedora/fedora-coreos:stable"
+      FORCE_REBUILD: ${{ inputs.force-rebuild }}
     steps:
       - name: "Checkout repo"
         uses: actions/checkout@v4
@@ -1833,6 +1854,7 @@ jobs:
       options: "--privileged --security-opt label=disable --user 0:0"
     env:
       IMAGE: "quay.io/fedora/fedora-coreos:next"
+      FORCE_REBUILD: ${{ inputs.force-rebuild }}
     steps:
       - name: "Checkout repo"
         uses: actions/checkout@v4

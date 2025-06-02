@@ -9,7 +9,8 @@ limitations section. Use at your own risk.**
 
 This project makes sysexts available for Fedora CoreOS, Fedora Atomic Desktops,
 Fedora IoT, and other Fedora Bootable Container (bootc) systems (and classic
-ostree/rpm-ostree systems).
+ostree/rpm-ostree systems). Those sysexts should also work for Universal Blue
+images such as Bazzite, Bluefin, Aurora, uCore.
 
 ## What are sysexts?
 
