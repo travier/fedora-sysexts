@@ -1,5 +1,8 @@
 name := "emacs"
-packages := "emacs libvterm"
+packages := "
+emacs
+libvterm
+"
 dnf_weak_deps := "false"
 base_images := "
 quay.io/fedora-ostree-desktops/base-atomic:41 x86_64,aarch64
