@@ -3,6 +3,7 @@ packages := "
 guestfs-tools
 libguestfs
 libguestfs-xfs
+libosinfo
 libvirt-client
 libvirt-daemon
 libvirt-daemon-config-network
@@ -15,7 +16,7 @@ libvirt-daemon-driver-secret
 libvirt-daemon-driver-storage-core
 libvirt-dbus
 netcat
-qemu
+qemu-kvm
 qemu-img
 swtpm
 virt-install
