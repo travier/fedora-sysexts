@@ -16,7 +16,7 @@ libvirt-daemon-driver-secret
 libvirt-daemon-driver-storage-core
 libvirt-dbus
 netcat
-qemu
+qemu-kvm
 qemu-img
 swtpm
 virt-install
