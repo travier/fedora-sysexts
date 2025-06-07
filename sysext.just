@@ -596,36 +596,40 @@ reset-selinux-labels target arch=arch:
         SUDO="sudo"
     fi
 
-    dnf_opts=""
-    if [[ "{{dnf_weak_deps}}" == false ]]; then
-        dnf_opts="--setopt=install_weak_deps=False"
-    fi
-    if [[ -n "{{exclude_packages}}" ]]; then
-        excluded_packages="$(echo "{{exclude_packages}}" | xargs)"
-        for p in ${excluded_packages}; do
-            echo "➖ Excluding package: ${p}"
-            dnf_opts+=" --exclude=${p}"
-        done
-    fi
-
+    # Only install the packages in the container if we have an SELinux policy
+    # module in the sysext and might thus need specific labels
     pre_commands=""
-    if [[ -n "{{pre_commands}}" ]]; then
-        pre_commands+="{{pre_commands}} ; "
-    fi
+    if [[ -d "./rootfs/usr/share/selinux/packages" ]]; then
+        dnf_opts=""
+        if [[ "{{dnf_weak_deps}}" == false ]]; then
+            dnf_opts="--setopt=install_weak_deps=False"
+        fi
+        if [[ -n "{{exclude_packages}}" ]]; then
+            excluded_packages="$(echo "{{exclude_packages}}" | xargs)"
+            for p in ${excluded_packages}; do
+                echo "➖ Excluding package: ${p}"
+                dnf_opts+=" --exclude=${p}"
+            done
+        fi
 
-    disablerepos=""
-    if [[ -n "{{disable_repos}}" ]]; then
-        for r in {{disable_repos}}; do
-            echo "➖ Disabling repo: ${r}"
-            disablerepos+=" --disablerepo=${r}"
-        done
-    fi
+        if [[ -n "{{pre_commands}}" ]]; then
+            pre_commands+="{{pre_commands}} ; "
+        fi
 
-    if [[ -n "{{packages}}" ]]; then
-        pre_commands+="export FORCE_COLUMNS=100 && dnf install -y ${dnf_opts} ${disablerepos} ./rpms/* && "
-    fi
+        disablerepos=""
+        if [[ -n "{{disable_repos}}" ]]; then
+            for r in {{disable_repos}}; do
+                echo "➖ Disabling repo: ${r}"
+                disablerepos+=" --disablerepo=${r}"
+            done
+        fi
 
-    mkdir -p ../.dnf-cache
+        if [[ -n "{{packages}}" ]]; then
+            pre_commands+="export FORCE_COLUMNS=100 && dnf install -y ${dnf_opts} ${disablerepos} ./rpms/* && "
+        fi
+
+        mkdir -p ../.dnf-cache
+    fi
 
     filecontexts="/etc/selinux/targeted/contexts/files/file_contexts"
     echo "🏷️ Resetting SELinux labels"
