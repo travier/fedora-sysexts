@@ -665,46 +665,26 @@ reset-selinux-labels target arch=arch:
         SUDO="sudo"
     fi
 
-    # Only install the packages in the container if we have an SELinux policy
-    # module in the sysext and might thus need specific labels
+    # Load the SELinux modules as needed in the build container to make sure
+    # custom labels get set for files in the sysext. The SELinux policy modules
+    # are not setup in the final system yet, when the sysext is merged.
     pre_commands=""
-    if [[ -d "./rootfs/usr/share/selinux/packages" ]]; then
-        dnf_opts=""
-        if [[ "{{dnf_weak_deps}}" == false ]]; then
-            dnf_opts="--setopt=install_weak_deps=False"
+    selinux_modules=(
+        '/usr/share/selinux/packages'
+        '/usr/share/selinux/packages/targeted'
+    )
+    for d in "${selinux_modules[@]}"; do
+        if [[ -d "./rootfs/${d}" ]]; then
+            echo "🏷️ Will install SELinux modules:"
+            echo "$(ls ./rootfs/${d}/*.pp*)"
+            pre_commands+="semodule --noreload --priority 200 --install './rootfs/${d}/'*.pp* ; "
         fi
-        if [[ -n "{{exclude_packages}}" ]]; then
-            excluded_packages="$(echo "{{exclude_packages}}" | xargs)"
-            for p in ${excluded_packages}; do
-                echo "➖ Excluding package: ${p}"
-                dnf_opts+=" --exclude=${p}"
-            done
-        fi
-
-        if [[ -n "{{pre_commands}}" ]]; then
-            pre_commands+="{{pre_commands}} ; "
-        fi
-
-        disablerepos=""
-        if [[ -n "{{disable_repos}}" ]]; then
-            for r in {{disable_repos}}; do
-                echo "➖ Disabling repo: ${r}"
-                disablerepos+=" --disablerepo=${r}"
-            done
-        fi
-
-        if [[ -n "{{packages}}" ]]; then
-            pre_commands+="export FORCE_COLUMNS=100 && dnf install -y ${dnf_opts} ${disablerepos} ./rpms/* && "
-        fi
-
-        mkdir -p ../.dnf-cache
-    fi
+    done
 
     filecontexts="/etc/selinux/targeted/contexts/files/file_contexts"
     echo "🏷️ Resetting SELinux labels"
     podman run -ti {{podman_opts}} \
         --volume "${PWD}:/var/srv" \
-        --volume "${PWD}/../.dnf-cache:/var/cache/libdnf5" \
         --workdir "/var/srv" \
         --privileged \
         "{{target}}" \
