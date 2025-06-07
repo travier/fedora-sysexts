@@ -24,8 +24,9 @@ supported options for building those sysexts are:
 Make sure that you have the following packages installed:
 - `cpio`
 - `erofs-utils`
+- `jq`
 - [`just`](https://github.com/casey/just)
-- `podman`
+- `podman` (only when not using the host redirection script above)
 - `wget`
 
 To build the `python` sysext:
