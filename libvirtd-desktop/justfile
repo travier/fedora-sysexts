@@ -3,6 +3,7 @@ packages := "
 guestfs-tools
 libguestfs
 libguestfs-xfs
+libosinfo
 libvirt-client
 libvirt-daemon
 libvirt-daemon-config-network
