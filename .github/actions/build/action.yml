@@ -58,7 +58,14 @@ runs:
 
         VERSION_ID="$(cat ./version_id)"
         VERSION="$(cat ./version)"
-        ARCH="$(uname -m | sed 's/_/-/g')"
+        if [[ "$(uname -m)" == "x86_64" ]]; then
+            ARCH="x86-64"
+        elif [[ "$(uname -m)" == "aarch64" ]]; then
+            ARCH="arm64"
+        else
+            echo "Unsupported architecture"
+            exit 1
+        fi
         TAGNAME="${SYSEXT}-${VERSION}-${VERSION_ID}-${ARCH}"
 
         echo "Fetching info from existing release: ${TAGNAME}"
@@ -88,7 +95,14 @@ runs:
 
         VERSION="$(cat ./version)"
         VERSION_ID="$(cat ./version_id)"
-        ARCH="$(uname -m | sed 's/_/-/g')"
+        if [[ "$(uname -m)" == "x86_64" ]]; then
+            ARCH="x86-64"
+        elif [[ "$(uname -m)" == "aarch64" ]]; then
+            ARCH="arm64"
+        else
+            echo "Unsupported architecture"
+            exit 1
+        fi
         TAGNAME="${SYSEXT}-${VERSION}-${VERSION_ID}-${ARCH}"
 
         if [[ ! -f "./${TAGNAME}.raw" ]]; then

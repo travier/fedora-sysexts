@@ -454,7 +454,14 @@ setup-rootfs target arch=arch:
     fi
 
     # Post process architecture to match systemd architecture list
-    arch="$(echo {{arch}} | sed 's/_/-/g')"
+    if [[ {{arch}} == "x86_64" ]]; then
+        arch="x86-64"
+    elif [[ {{arch}} == "aarch64" ]]; then
+        arch="arm64"
+    else
+        echo "Unsupported architecture"
+        exit 1
+    fi
 
     echo "➡️ Setting up extension config file"
     ${SUDO} install -d -m0755 usr/lib/extension-release.d
@@ -688,7 +695,14 @@ build-erofs target arch=arch:
     version="$(cat ./version)"
     version_id="$(cat ./version_id)"
     # Post process architecture to match systemd architecture list
-    arch="$(echo {{arch}} | sed 's/_/-/g')"
+    if [[ {{arch}} == "x86_64" ]]; then
+        arch="x86-64"
+    elif [[ {{arch}} == "aarch64" ]]; then
+        arch="arm64"
+    else
+        echo "Unsupported architecture"
+        exit 1
+    fi
 
     echo "🔒 Creating EROFS sysext ({{compression}})"
     ${SUDO} mkfs.erofs -z{{compression}} {{name}}-${version}-${version_id}-${arch}.raw rootfs > /dev/null
