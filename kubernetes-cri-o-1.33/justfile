@@ -15,10 +15,11 @@ upholds := "
 crio.service
 kubelet.service
 "
-# Until cri-o1.33 lands in F42 stable repos
-# https://bodhi.fedoraproject.org/updates/FEDORA-2025-cc94bb0a48
-enable_repos := "updates-testing"
 version_package := "kubernetes" + kube_version
+# Setup folder that is expected by Kubernetes
+files := "usr"
+# Cleanup file needed by git as this is an empty directory
+cleanup_files := "/usr/libexec/kubernetes/kubelet-plugins/volume/exec/.keep"
 base_images := "
 quay.io/fedora/fedora-coreos:stable x86_64,aarch64
 quay.io/fedora/fedora-coreos:next x86_64,aarch64
@@ -27,17 +28,3 @@ quay.io/fedora/fedora-coreos:next x86_64,aarch64
 import '../sysext.just'
 
 all: default
-
-install-manual:
-    #!/bin/bash
-    set -euo pipefail
-    # set -x
-    if [[ "${UID}" == "0" ]]; then
-        SUDO=""
-    else
-        SUDO="sudo"
-    fi
-    cd rootfs
-
-    # Setup folder that is expected by Kubernetes
-    ${SUDO} install -d -m 755 -o 0 -g 0 usr/libexec/kubernetes/kubelet-plugins/volume/exec
