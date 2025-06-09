@@ -24,4 +24,3 @@ install-manual:
 
     # Empty out /var
     ${SUDO} rm var/lib/unbound/root.key
-    ${SUDO} rmdir var/lib/unbound var/lib var/cache/dnf var/cache var

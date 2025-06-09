@@ -30,7 +30,6 @@ install-manual:
 
     # Move /var content
     ${SUDO} mv var/lib/nordvpn usr/share
-    ${SUDO} rmdir var/lib var
     # Fix permission for tmpfiles config
     ${SUDO} chmod 644 usr/lib/tmpfiles.d/nordvpn.conf
     # Remove service mask

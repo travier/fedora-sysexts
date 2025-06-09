@@ -30,9 +30,6 @@ install-manual:
 
     cd rootfs
 
-    # Remove /var
-    ${SUDO} rmdir var/cache/tailscale var/cache var
-
     # Move service from /lib to /usr/lib
     ${SUDO} mv lib/systemd/system/tailscaled.service usr/lib/systemd/system/
     ${SUDO} rmdir lib/systemd/system lib/systemd lib

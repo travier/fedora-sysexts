@@ -24,9 +24,3 @@ install-manual:
 
     # Empty out /var
     ${SUDO} rm ./var/lib/freeipmi/ipckey
-    ${SUDO} rmdir \
-        ./var/cache/ipmimonitoringsdrcache \
-        ./var/cache \
-        ./var/lib/freeipmi \
-        ./var/lib \
-        ./var
