@@ -30,7 +30,6 @@ install-manual:
 
     # Move /var content
     ${SUDO} mv var/lib/nordvpn usr/share
-    ${SUDO} rmdir var/lib var
     # Fix permission for tmpfiles config
     ${SUDO} chmod 644 usr/lib/tmpfiles.d/nordvpn.conf
     # Remove service mask
@@ -44,5 +43,4 @@ install-manual:
 
     # Move nordvpn-gui to /usr
     ${SUDO} mv opt/nordvpn-gui usr/lib/nordvpn-gui
-    ${SUDO} rmdir opt
     ${SUDO} ln -sf /usr/lib/nordvpn-gui/nordvpn-gui usr/bin/nordvpn-gui

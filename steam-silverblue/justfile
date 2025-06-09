@@ -32,6 +32,3 @@ install-manual:
     # Merge /lib with /usr/lib
     ${SUDO} mv ./lib/* ./usr/lib
     ${SUDO} rmdir ./lib
-
-    # Empty out /var & /run
-    ${SUDO} rm -rf ./var ./run

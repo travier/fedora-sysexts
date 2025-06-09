@@ -38,7 +38,3 @@ install-manual:
 
     # Setup folder that is expected by Kubernetes
     ${SUDO} install -d -m 755 -o 0 -g 0 usr/libexec/kubernetes/kubelet-plugins/volume/exec
-
-    # Ignore folder in /var
-    ${SUDO} rmdir var/lib/containers
-    ${SUDO} rmdir var/lib/kubelet var/lib var
