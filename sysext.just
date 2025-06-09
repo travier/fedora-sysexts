@@ -57,6 +57,9 @@ compression := "lz4"
 # Defaut to false.
 debug := env('JUST_DEBUG', '')
 
+# Default podman options
+podman_opts := "--rm --arch=" + arch + " --security-opt label=disable"
+
 # Default, empty, just recipe
 default:
     #!/bin/bash
@@ -259,10 +262,7 @@ download-rpms target arch=arch:
     fi
 
     if [[ -n "{{rpm_fusion_repos}}" ]]; then
-        release=$(podman run --rm \
-            --arch={{arch}} \
-            --security-opt label=disable \
-            "{{target}}" \
+        release=$(podman run {{podman_opts}} "{{target}}" \
             bash -c 'rpm -E %fedora' | tr -d '\n')
         for r in {{rpm_fusion_repos}}; do
             if [[ "${r}" != "free" ]] && [[ "${r}" != "nonfree" ]]; then
@@ -281,12 +281,10 @@ download-rpms target arch=arch:
 
     echo "⬇️ Downloading packages (${dnf_arches}): ${packages}"
     # dnf install --downloadonly --downloaddir . ${dnf_arch} ${enablerepos} ${packages}
-    podman run --rm -ti \
-        --arch={{arch}} \
+    podman run -ti {{podman_opts}} \
         --volume "${PWD}:/var/srv" \
         --volume "${PWD}/../../.dnf-cache:/var/cache/libdnf5" \
         --workdir "/var/srv" \
-        --security-opt label=disable \
         "{{target}}" \
         bash -xc "export FORCE_COLUMNS=100 && ${pre_commands}dnf download --resolve ${dnf_arch} ${dnf_opts} ${disablerepos} ${enablerepos} ${packages}"
 
@@ -365,10 +363,7 @@ inputs target arch=arch:
     if [[ -f ./version ]]; then
         version="$(cat ./version)"
     else
-        version=$(podman run --rm \
-            --arch={{arch}} \
-            --security-opt label=disable \
-            "{{target}}" \
+        version=$(podman run {{podman_opts}} "{{target}}" \
             bash -c 'source /etc/os-release ; echo -n ${OSTREE_VERSION}')
     fi
     # Remove special characters from the version
@@ -380,10 +375,7 @@ inputs target arch=arch:
     echo "{{target}}@$(podman inspect {{target}} | jq -r '.[0].Digest')" > ./digest
 
     # Store version_id (Fedora release)
-    version_id=$(podman run --rm \
-        --arch={{arch}} \
-        --security-opt label=disable \
-        "{{target}}" \
+    version_id=$(podman run {{podman_opts}} "{{target}}" \
         bash -c 'source /etc/os-release ; echo -n ${VERSION_ID}')
     echo "${version_id}" > ./version_id
 
@@ -668,12 +660,10 @@ reset-selinux-labels target arch=arch:
 
     filecontexts="/etc/selinux/targeted/contexts/files/file_contexts"
     echo "🏷️ Resetting SELinux labels"
-    podman run --rm -ti \
-        --arch={{arch}} \
+    podman run -ti {{podman_opts}} \
         --volume "${PWD}:/var/srv" \
         --volume "${PWD}/../.dnf-cache:/var/cache/libdnf5" \
         --workdir "/var/srv" \
-        --security-opt label=disable \
         --privileged \
         "{{target}}" \
         bash -c "${pre_commands}cd rootfs && setfiles -r . ${filecontexts} . && chcon --user=system_u --recursive ."
