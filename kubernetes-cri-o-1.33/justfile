@@ -15,9 +15,6 @@ upholds := "
 crio.service
 kubelet.service
 "
-# Until cri-o1.33 lands in F42 stable repos
-# https://bodhi.fedoraproject.org/updates/FEDORA-2025-cc94bb0a48
-enable_repos := "updates-testing"
 version_package := "kubernetes" + kube_version
 base_images := "
 quay.io/fedora/fedora-coreos:stable x86_64,aarch64
