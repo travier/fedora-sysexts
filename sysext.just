@@ -46,6 +46,9 @@ dnf_arch := ""
 # Do not install any additional files by default
 files := ""
 
+# Path to files to manually exclude from the sysext
+cleanup_files := ""
+
 # Do not setup any upholds for units by default
 upholds := ""
 
@@ -576,7 +579,16 @@ validate:
 
     cd rootfs
 
-    # First, we remove all empty directories in /var, /run and /opt
+    # Remove files as requested
+    if [[ -n "{{cleanup_files}}" ]]; then
+        cleanup=($(echo "{{cleanup_files}}" | xargs))
+        for f in "${cleanup[@]}"; do
+            echo "🧹 Cleaning up file: ${f}"
+            rm ./${f}
+        done
+    fi
+
+    # Remove all empty directories in /var, /run and /opt
     for d in 'var' 'run' 'opt'; do
         if [[ -d "./${d}" ]]; then
             echo "🧹 Cleaning up empty directories in /${d}"
