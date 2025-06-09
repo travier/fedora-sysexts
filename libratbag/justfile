@@ -1,0 +1,11 @@
+name := "libratbag"
+packages := "libratbag-ratbagd"
+upholds := "ratbagd.service"
+base_images := "
+quay.io/fedora-ostree-desktops/base-atomic:41 x86_64,aarch64
+quay.io/fedora-ostree-desktops/base-atomic:42 x86_64,aarch64
+"
+
+import '../sysext.just'
+
+all: default
