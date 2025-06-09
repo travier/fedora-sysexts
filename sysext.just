@@ -568,7 +568,21 @@ validate:
 
     failed_checks=0
 
+    if [[ "${UID}" == "0" ]]; then
+        SUDO=""
+    else
+        SUDO="sudo"
+    fi
+
     cd rootfs
+
+    # First, we remove all empty directories in /var, /run and /opt
+    for d in 'var' 'run' 'opt'; do
+        if [[ -d "./${d}" ]]; then
+            echo "🧹 Cleaning up empty directories in /${d}"
+            ${SUDO} find "./${d}" -type d -empty -delete
+        fi
+    done
 
     # Check sbin/bin merge starting with Fedora 42
     if [[ "${version_id}" -ge 42 ]] && [[ -d "usr/sbin" ]]; then
