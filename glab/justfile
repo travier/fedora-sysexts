@@ -1,0 +1,35 @@
+name := "glab"
+packages := "glab"
+base_images := "
+quay.io/fedora-ostree-desktops/base-atomic:41 x86_64,aarch64
+quay.io/fedora-ostree-desktops/base-atomic:42 x86_64,aarch64
+"
+
+import '../sysext.just'
+
+all: default
+
+# Custom download step to get the rpm
+download-rpms target arch=arch:
+    #!/bin/bash
+    set -euo pipefail
+    # set -x
+
+    mkdir rpms
+    cd rpms
+
+    version=$(curl -s --location --fail https://gitlab.com/api/v4/projects/34675721/releases/permalink/latest | jq --raw-output '.tag_name' | sed 's/^v//')
+
+    echo "⬇️ Downloading glab v${version}"
+
+    if [[ "{{arch}}" == "x86_64" ]]; then
+        arch=amd64
+    else
+        arch=arm64
+    fi
+
+    curl -s --location --fail --output "glab_${version}_linux_${arch}.rpm" \
+        "https://gitlab.com/gitlab-org/cli/-/releases/v${version}/downloads/glab_${version}_linux_${arch}.rpm"
+    curl -s --location --fail \
+        "https://gitlab.com/gitlab-org/cli/-/releases/v${version}/downloads/checksums.txt" | \
+        grep "glab_${version}_linux_${arch}.rpm" >> glab_${version}_linux_${arch}.rpm.sha256sum
