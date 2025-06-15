@@ -30,13 +30,10 @@ install-manual:
 
     cd rootfs
 
-    # Move service from /lib to /usr/lib
-    ${SUDO} mv lib/systemd/system/tailscaled.service usr/lib/systemd/system/
-    ${SUDO} rmdir lib/systemd/system lib/systemd lib
-
-    # Merge sbin to bin for F42+
     VERSION_ID="$(source /etc/os-release ; echo -n ${VERSION_ID})"
-    if [[ "${VERSION_ID}" -ge 42 ]]; then
-        ${SUDO} mv usr/sbin/tailscaled usr/bin/tailscaled
-        ${SUDO} rmdir usr/sbin
+
+    if [[ "${VERSION_ID}" -eq 41 ]]; then
+        # Move service from /lib to /usr/lib for F41
+        ${SUDO} mv lib/systemd/system/tailscaled.service usr/lib/systemd/system/
+        ${SUDO} rmdir lib/systemd/system lib/systemd lib
     fi
