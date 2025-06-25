@@ -28,9 +28,9 @@ install-manual:
         SUDO="sudo"
     fi
 
-    cd rootfs
+    VERSION_ID="$(cat version_id)"
 
-    VERSION_ID="$(source /etc/os-release ; echo -n ${VERSION_ID})"
+    cd rootfs
 
     if [[ "${VERSION_ID}" -eq 41 ]]; then
         # Move service from /lib to /usr/lib for F41
