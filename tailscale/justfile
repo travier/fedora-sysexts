@@ -28,7 +28,7 @@ install-manual:
         SUDO="sudo"
     fi
 
-    VERSION_ID="$(cat version_id)"
+    VERSION_ID="$(cat ./version_id)"
 
     cd rootfs
 
