@@ -12,7 +12,9 @@ all: default
 download-manual arch=arch:
     #!/bin/bash
     set -euo pipefail
-    # set -x
+    if [[ -n "{{debug}}" ]]; then
+      set -x
+    fi
 
     mkdir binaries
     cd binaries
@@ -44,7 +46,9 @@ version:
 install-manual:
     #!/bin/bash
     set -euo pipefail
-    # set -x
+    if [[ -n "{{debug}}" ]]; then
+      set -x
+    fi
 
     if [[ "${UID}" == "0" ]]; then
         SUDO=""

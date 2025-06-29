@@ -12,7 +12,10 @@ all: default
 download-rpms target arch=arch:
     #!/bin/bash
     set -euo pipefail
-    # set -x
+    if [[ -n "{{debug}}" ]]; then
+      set -x
+    fi
+
     mkdir -p rpms
     curl --location --fail --output rpms/1password-cli.rpm \
         "https://downloads.1password.com/linux/rpm/stable/x86_64/1password-cli-latest.x86_64.rpm"
