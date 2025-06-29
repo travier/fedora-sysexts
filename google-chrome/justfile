@@ -14,7 +14,9 @@ all: default
 install-manual:
     #!/bin/bash
     set -euo pipefail
-    # set -x
+    if [[ -n "{{debug}}" ]]; then
+      set -x
+    fi
 
     if [[ "${UID}" == "0" ]]; then
         SUDO=""

@@ -13,7 +13,9 @@ all: default
 download-rpms target arch=arch:
     #!/bin/bash
     set -euo pipefail
-    # set -x
+    if [[ -n "{{debug}}" ]]; then
+      set -x
+    fi
 
     mkdir rpms
     cd rpms
