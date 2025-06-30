@@ -13,7 +13,10 @@ all: default
 download-rpms target arch=arch:
     #!/bin/bash
     set -euo pipefail
-    # set -x
+    if [[ -n "{{debug}}" ]]; then
+      set -x
+    fi
+
     mkdir -p rpms
     curl --location --fail --output rpms/bitwarden.rpm \
         "https://bitwarden.com/download/?app=desktop&platform=linux&variant=rpm"
@@ -21,7 +24,9 @@ download-rpms target arch=arch:
 install-manual:
     #!/bin/bash
     set -euo pipefail
-    # set -x
+    if [[ -n "{{debug}}" ]]; then
+      set -x
+    fi
 
     if [[ "${UID}" == "0" ]]; then
         SUDO=""
