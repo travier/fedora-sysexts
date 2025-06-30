@@ -1,0 +1,13 @@
+FROM baseimage
+
+RUN <<EORUN
+set -xeuo pipefail
+sudo dnf install -y dnf-plugins-core
+sudo dnf config-manager -y addrepo --from-repofile=https://brave-browser-rpm-release.s3.brave.com/brave-browser.repo
+sudo dnf install -y brave-browser
+sudo mv /opt/brave.com /usr/lib
+sudo rmdir opt
+sudo ln -sf /usr/lib/brave.com/brave/brave-browser usr/bin/brave-browser-stable
+rm -rf /etc/cron.daily
+dnf clean all
+EORUN
