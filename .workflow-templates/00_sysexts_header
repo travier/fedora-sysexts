@@ -28,7 +28,7 @@ permissions:
 # Prevent multiple workflow runs from racing to ensure that pushes are made
 # sequentialy for the main branch. Also cancel in progress workflow runs.
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref || github.run_id }}-${{ inputs.sysext }}
+  group: ${{ github.workflow }}-${{ github.ref || github.run_id }}
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
