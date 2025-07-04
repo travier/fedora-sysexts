@@ -1,0 +1,34 @@
+name := "openconnect"
+packages := "openconnect"
+copr_repos := "dwmw2/openconnect"
+version_package := "openconnect"
+base_images := "
+quay.io/fedora-ostree-desktops/base-atomic:41 x86_64
+quay.io/fedora-ostree-desktops/base-atomic:42 x86_64
+"
+
+import '../sysext.just'
+
+all: default
+
+install-manual:
+    #!/bin/bash
+    set -euo pipefail
+    if [[ -n "{{debug}}" ]]; then
+      set -x
+    fi
+
+    if [[ "${UID}" == "0" ]]; then
+        SUDO=""
+    else
+        SUDO="sudo"
+    fi
+
+    VERSION_ID="$(cat ./version_id)"
+
+    cd rootfs
+
+    # Replace sbin with bin for F42+
+    if [[ "${VERSION_ID}" -ge 42 ]]; then
+        ${SUDO} mv usr/sbin usr/bin
+    fi
