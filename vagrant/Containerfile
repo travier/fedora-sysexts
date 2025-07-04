@@ -1,0 +1,18 @@
+FROM baseimage
+
+RUN <<EORUN
+set -xeuo pipefail
+mv /opt{,.bak}
+mkdir /opt
+dnf install -y dnf5-plugins
+dnf config-manager addrepo --from-repofile="https://rpm.releases.hashicorp.com/fedora/hashicorp.repo"
+dnf install -y \
+    --disablerepo=fedora \
+    --disablerepo=updates \
+    --disablerepo=updates-archive \
+    vagrant
+mv /opt/vagrant /usr/lib/vagrant
+rmdir /opt/{vagrant,}
+mv /opt{.bak,}
+dnf clean all
+EORUN
