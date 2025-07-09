@@ -161,6 +161,12 @@ jobs:
           sysext: 'fuse2'
           image: ${{ env.IMAGE }}
 
+      - name: "Build sysext: gh"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'gh'
+          image: ${{ env.IMAGE }}
+
       - name: "Build sysext: git-absorb"
         uses: ./.github/actions/build
         with:
@@ -546,6 +552,12 @@ jobs:
         uses: ./.github/actions/build
         with:
           sysext: 'fuse2'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: gh"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'gh'
           image: ${{ env.IMAGE }}
 
       - name: "Build sysext: git-absorb"
@@ -1229,6 +1241,12 @@ jobs:
           sysext: 'fuse2'
           image: ${{ env.IMAGE }}
 
+      - name: "Build sysext: gh"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'gh'
+          image: ${{ env.IMAGE }}
+
       - name: "Build sysext: git-absorb"
         uses: ./.github/actions/build
         with:
@@ -1554,6 +1572,12 @@ jobs:
         uses: ./.github/actions/build
         with:
           sysext: 'fuse2'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: gh"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'gh'
           image: ${{ env.IMAGE }}
 
       - name: "Build sysext: git-absorb"
@@ -2133,4 +2157,4 @@ jobs:
       - name: "Gather all sysexts releases"
         uses: ./.github/actions/gather
         with:
-          sysexts: '1password-cli;1password-gui;adobe-source-code-pro-fonts;bandwhich;bitwarden;btop;bwm-ng;chromium;cilium-cli;cloud-hypervisor;distrobox;docker-ce;emacs;erofs-utils;fd-find;firefox;fish;fuse2;gdb;git-absorb;git-delta;git-lfs;glab;google-chrome;helix;htop;igt-gpu-tools;incus;inxi;iotop;iwd;just;keepassxc;krb5-workstation;kubernetes-1.29;kubernetes-1.30;kubernetes-1.31;kubernetes-1.32;kubernetes-1.33;kubernetes-cri-o-1.29;kubernetes-cri-o-1.30;kubernetes-cri-o-1.31;kubernetes-cri-o-1.32;kubernetes-cri-o-1.33;libratbag;libvirtd;libvirtd-desktop;microsoft-edge;moby-engine;mullvad-vpn;neovim;nordvpn;nordvpn-gui;openconnect;openh264;openssl;python3;ripgrep;semanage;source-foundry-hack-fonts;steam-devices;strace;tailscale;tmux;tree;vagrant;vim;virtctl;vscode;vscodium;wasmtime;wireguard-tools;wireshark-kinoite;wireshark-silverblue;youki;zoxide;zsh;'
+          sysexts: '1password-cli;1password-gui;adobe-source-code-pro-fonts;bandwhich;bitwarden;btop;bwm-ng;chromium;cilium-cli;cloud-hypervisor;distrobox;docker-ce;emacs;erofs-utils;fd-find;firefox;fish;fuse2;gdb;gh;git-absorb;git-delta;git-lfs;glab;google-chrome;helix;htop;igt-gpu-tools;incus;inxi;iotop;iwd;just;keepassxc;krb5-workstation;kubernetes-1.29;kubernetes-1.30;kubernetes-1.31;kubernetes-1.32;kubernetes-1.33;kubernetes-cri-o-1.29;kubernetes-cri-o-1.30;kubernetes-cri-o-1.31;kubernetes-cri-o-1.32;kubernetes-cri-o-1.33;libratbag;libvirtd;libvirtd-desktop;microsoft-edge;moby-engine;mullvad-vpn;neovim;nordvpn;nordvpn-gui;openconnect;openh264;openssl;python3;ripgrep;semanage;source-foundry-hack-fonts;steam-devices;strace;tailscale;tmux;tree;vagrant;vim;virtctl;vscode;vscodium;wasmtime;wireguard-tools;wireshark-kinoite;wireshark-silverblue;youki;zoxide;zsh;'
