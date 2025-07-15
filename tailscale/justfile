@@ -3,7 +3,7 @@ packages := "tailscale"
 files := "usr"
 # TODO: Disabled as this interactively query for confirmation and can not be bypassed
 # external_repos := "https://pkgs.tailscale.com/stable/fedora/tailscale.repo"
-# TODO: Workaround belown but something weird is going on here
+# TODO: Workaround below but something weird is going on here
 pre_commands := "dnf config-manager addrepo --from-repofile=https://pkgs.tailscale.com/stable/fedora/tailscale.repo && sed -i 's/repo_gpgcheck=1/repo_gpgcheck=0/g' /etc/yum.repos.d/tailscale.repo"
 upholds := "
 tailscaled.service
