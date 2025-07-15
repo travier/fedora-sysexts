@@ -56,12 +56,16 @@ upholds := ""
 # compression := "zstd"
 compression := "lz4"
 
-# print more logs to help debugging. Enable by setting JUST_DEBUG env variable.
-# Defaut to false.
+# Print more logs to help debugging. Enable by setting JUST_DEBUG env variable.
+# Default to false.
 debug := env('JUST_DEBUG', '')
 
+# Set JUST_PODMAN_EXTRA_OPTS to pass extra opts to podman commands.
+# Use '--pull=never' for example to disable image update checks and pulls
+podman_extra_opts := env('JUST_PODMAN_EXTRA_OPTS', '')
+
 # Default podman options
-podman_opts := "--rm --arch=" + arch + " --security-opt label=disable"
+podman_opts := "--rm --arch=" + arch + " --security-opt label=disable" + podman_extra_opts
 
 # Default, empty, just recipe
 default:
