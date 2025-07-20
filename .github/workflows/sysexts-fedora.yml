@@ -161,6 +161,12 @@ jobs:
           sysext: 'fish'
           image: ${{ env.IMAGE }}
 
+      - name: "Build sysext: foot"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'foot'
+          image: ${{ env.IMAGE }}
+
       - name: "Build sysext: fuse2"
         uses: ./.github/actions/build
         with:
@@ -564,6 +570,12 @@ jobs:
         uses: ./.github/actions/build
         with:
           sysext: 'fish'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: foot"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'foot'
           image: ${{ env.IMAGE }}
 
       - name: "Build sysext: fuse2"
@@ -1265,6 +1277,12 @@ jobs:
           sysext: 'fish'
           image: ${{ env.IMAGE }}
 
+      - name: "Build sysext: foot"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'foot'
+          image: ${{ env.IMAGE }}
+
       - name: "Build sysext: fuse2"
         uses: ./.github/actions/build
         with:
@@ -1608,6 +1626,12 @@ jobs:
         uses: ./.github/actions/build
         with:
           sysext: 'fish'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: foot"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'foot'
           image: ${{ env.IMAGE }}
 
       - name: "Build sysext: fuse2"
