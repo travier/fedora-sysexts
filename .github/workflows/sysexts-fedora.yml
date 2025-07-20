@@ -257,6 +257,12 @@ jobs:
           sysext: 'keepassxc'
           image: ${{ env.IMAGE }}
 
+      - name: "Build sysext: kitty"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'kitty'
+          image: ${{ env.IMAGE }}
+
       - name: "Build sysext: krb5-workstation"
         uses: ./.github/actions/build
         with:
@@ -660,6 +666,12 @@ jobs:
         uses: ./.github/actions/build
         with:
           sysext: 'keepassxc'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: kitty"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'kitty'
           image: ${{ env.IMAGE }}
 
       - name: "Build sysext: krb5-workstation"
@@ -1355,6 +1367,12 @@ jobs:
           sysext: 'keepassxc'
           image: ${{ env.IMAGE }}
 
+      - name: "Build sysext: kitty"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'kitty'
+          image: ${{ env.IMAGE }}
+
       - name: "Build sysext: krb5-workstation"
         uses: ./.github/actions/build
         with:
@@ -1698,6 +1716,12 @@ jobs:
         uses: ./.github/actions/build
         with:
           sysext: 'keepassxc'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: kitty"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'kitty'
           image: ${{ env.IMAGE }}
 
       - name: "Build sysext: krb5-workstation"
