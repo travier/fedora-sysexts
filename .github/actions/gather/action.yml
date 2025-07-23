@@ -60,7 +60,7 @@ runs:
           else
             echo "Creating new release: ${sysext}"
 
-            sed "s/%%SYSEXT%%/${sysext}/g" .workflow-templates/systemd-sysupdate.conf > ${sysext}.conf
+            sed "s/%%SYSEXT%%/${sysext}/g" .github/workflow-templates/systemd-sysupdate.conf > ${sysext}.conf
 
             {
             echo "Versions available:"

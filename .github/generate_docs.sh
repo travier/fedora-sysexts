@@ -15,7 +15,7 @@ main() {
     local -r extensionsurl="https://extensions.fcos.fr/extensions"
     local -r releaseurl="https://github.com/travier/fedora-sysexts/releases/tag"
 
-    local -r tmpl=".docs-templates/"
+    local -r tmpl=".github/docs-templates"
 
     if [[ ! -d "${tmpl}" ]]; then
         echo "Could not find the templates. Is this script run from the root of the repo?"
@@ -24,7 +24,7 @@ main() {
 
     navorder=1
 
-    for s in $(git ls-tree -d --name-only HEAD | grep -Ev ".github|.workflow-templates|docs"); do
+    for s in $(git ls-tree -d --name-only HEAD | grep -Ev ".github|docs"); do
         if [[ -f ./${s}/.docs-ignore ]]; then
             continue
         fi
