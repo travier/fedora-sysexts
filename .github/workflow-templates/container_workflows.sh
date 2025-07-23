@@ -79,7 +79,7 @@ generate() {
 
     # Get the list of sysexts for a given target
     sysexts=()
-    for s in $(git ls-tree -d --name-only HEAD | grep -Ev ".github|templates"); do
+    for s in $(git ls-tree -d --name-only HEAD | grep -Ev ".github|docs"); do
         pushd "${s}" > /dev/null
         # Only require the architecture to be explicitly listed for non x86_64 for now
         if [[ "${arch}" == "x86_64" ]]; then
@@ -94,7 +94,7 @@ generate() {
         popd > /dev/null
     done
 
-    local -r tmpl=".workflow-templates/"
+    local -r tmpl=".github/workflow-templates/"
     if [[ ! -d "${tmpl}" ]]; then
         echo "Could not find the templates. Is this script run from the root of the repo?"
         exit 1

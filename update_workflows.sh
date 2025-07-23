@@ -14,6 +14,12 @@ main() {
         exit 1
     fi
 
+    local -r tmpl=".github/workflow-templates"
+    if [[ ! -d "${tmpl}" ]]; then
+        echo "Could not find the templates. Is this script run from the root of the repo?"
+        exit 1
+    fi
+
     # Remove all existing worflows
     rm -f "./.github/workflows/containers"*".yml"
     rm -f "./.github/workflows/sysexts"*".yml"
@@ -52,7 +58,7 @@ main() {
     for arch in "${arches[@]}"; do
         for image in "${images[@]}"; do
             list=()
-            for s in $(git ls-tree -d --name-only HEAD | grep -Ev ".github|.workflow-templates|docs|.docs-templates"); do
+            for s in $(git ls-tree -d --name-only HEAD | grep -Ev ".github|docs"); do
                 pushd "${s}" > /dev/null
                 # Only require the architecture to be explicitly listed for non x86_64 for now
                 if [[ "${arch}" == "x86_64" ]]; then
@@ -69,12 +75,6 @@ main() {
             sysexts["${image}-${arch}"]="$(echo "${list[@]}" | tr ' ' ';')"
         done
     done
-
-    local -r tmpl=".workflow-templates/"
-    if [[ ! -d "${tmpl}" ]]; then
-        echo "Could not find the templates. Is this script run from the root of the repo?"
-        exit 1
-    fi
 
     # Generate EROFS sysexts workflows
     {

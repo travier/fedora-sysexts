@@ -57,6 +57,13 @@ help text on the sysext page. The sysexts built only for Fedora CoreOS are also
 only built for the current Fedora releases used by each Fedora CoreOS streams
 (*stable*, *testing* and *next*).
 
+## Experimental standalone sysexts-manager
+
+A standalone sysexts manager is being developed to manage, download and update
+sysexts with a more user friendly interface. See
+[travier/sysexts-manager](https://github.com/travier/sysexts-manager) for the
+work in progress. Note that this project is also experimental right now.
+
 ## Integration with bootc / Bootable Containers
 
 The planned user experience for using those sysexts is that they are built as
@@ -64,10 +71,7 @@ container layers, pushed to a registry as distinct tags, downloaded, managed
 and updated in sync with the OS by bootc. See:
 [bootc#7](https://github.com/containers/bootc/issues/7) and
 [README.containers.md](https://github.com/travier/fedora-sysexts/blob/main/README.containers.md).
-
-This integration is currently still a work in progress. The first step will
-likely be a standalone sysext manager / updater application, which will then be
-integrated into bootc.
+This integration is currently still a work in progress.
 
 ## Installing and updating using `systemd-sysupdate`
 
