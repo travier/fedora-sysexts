@@ -25,7 +25,7 @@ main() {
     navorder=1
 
     for s in $(git ls-tree -d --name-only HEAD | grep -Ev ".github|docs"); do
-        if [[ -f ./${s}/.docs-ignore ]]; then
+        if [[ -f ./${s}/.ignore ]]; then
             continue
         fi
         navorder=$((navorder+1))
