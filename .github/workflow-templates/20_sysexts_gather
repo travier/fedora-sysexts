@@ -34,5 +34,3 @@
 
       - name: "Gather all sysexts releases"
         uses: ./.github/actions/gather
-        with:
-          sysexts: '%%SYSEXTS%%'

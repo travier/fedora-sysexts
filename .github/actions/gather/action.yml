@@ -1,9 +1,5 @@
 name: "Gather versions for sysexts"
 description: "Publish a release that references all available versions for each sysext"
-inputs:
-  sysexts:
-    description: "The list of sysexts to generate releases for"
-    required: true
 
 # This composite action needs the following environment variables to be set at
 # the workflow or job level:
@@ -15,7 +11,6 @@ runs:
     - name: "Publish release"
       env:
         GH_TOKEN: ${{ github.token }}
-        SYSEXTS: ${{ inputs.sysexts }}
       if: (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
       shell: bash
       run: |
@@ -23,7 +18,7 @@ runs:
 
         gh release list --limit 2000 --json tagName > releases.json
 
-        for sysext in $(echo ${SYSEXTS} | tr ';' ' '); do
+        for sysext in $(./.github/list_sysexts.sh); do
           rm -f ./SHA256SUMS* ./*.conf
 
           releases=(
@@ -86,7 +81,7 @@ runs:
 
         rm -f ./SHA256SUMS* ./*.conf
 
-        for sysext in $(echo ${SYSEXTS} | tr ';' ' '); do
+        for sysext in $(./.github/list_sysexts.sh); do
             curl --location --fail --output "SHA256SUMS.${sysext}" "${RELEASEURL}/${sysext}/SHA256SUMS" || touch "SHA256SUMS.${sysext}"
         done
         ls ./SHA256SUMS.* | sort -h | xargs cat > SHA256SUMS
