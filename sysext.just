@@ -562,7 +562,12 @@ move-etc:
         ${SUDO} mv --no-clobber --no-copy ./etc ./usr/etc
     fi
 
-# Validation pass that checks for common errors
+# Validation pass that checks for common errors and will also try to fix some
+# common cases:
+# - Cleanup files as requested in the justfile
+# - Remove all empty directories in /var, /run and /opt
+# - Try to merge the content of /usr/sbin with /usr/bin for Fedora 42 and later
+# - Run the checks
 validate:
     #!/bin/bash
     set -euo pipefail
@@ -599,6 +604,13 @@ validate:
             ${SUDO} find "./${d}" -type d -empty -delete
         fi
     done
+
+    # Try to merge /usr/sbin with /usr/bin for Fedora 42+
+    if [[ "${version_id}" -ge 42 ]] && [[ -d "usr/sbin" ]]; then
+        echo "➡️ Moving /usr/sbin to /usr/bin"
+        ${SUDO} mv --verbose --no-clobber ./usr/sbin/* ./usr/bin
+        ${SUDO} rmdir usr/sbin
+    fi
 
     # Check sbin/bin merge starting with Fedora 42
     if [[ "${version_id}" -ge 42 ]] && [[ -d "usr/sbin" ]]; then

@@ -28,8 +28,6 @@ install-manual:
         SUDO="sudo"
     fi
 
-    VERSION_ID="$(cat ./version_id)"
-
     cd rootfs
 
     # Move /var content
@@ -38,8 +36,3 @@ install-manual:
     ${SUDO} chmod 644 usr/lib/tmpfiles.d/nordvpn.conf
     # Remove service mask
     ${SUDO} rm usr/lib/systemd/system/nordvpn.service
-    # Merge sbin to bin for F42+
-    if [[ "${VERSION_ID}" -ge 42 ]]; then
-        ${SUDO} mv usr/sbin/nordvpnd usr/bin/nordvpnd
-        ${SUDO} rmdir usr/sbin
-    fi
