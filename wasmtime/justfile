@@ -59,7 +59,7 @@ install-manual:
 
     cd rootfs
 
-    echo "➡️ Installing bandwhich"
+    echo "➡️ Installing wasmtime"
     ${SUDO} install -D -m 755 ../binaries/wasmtime usr/bin/wasmtime
     ${SUDO} install -D -m 644 ../binaries/LICENSE usr/share/licenses/wasmtime/LICENSE
 
