@@ -30,12 +30,10 @@ install-manual:
         SUDO="sudo"
     fi
 
-    VERSION_ID="$(cat ./version_id)"
-
     cd rootfs
 
-    if [[ "${VERSION_ID}" -eq 41 ]]; then
-        # Move service from /lib to /usr/lib for F41
+    # Move service from /lib to /usr/lib as needed
+    if [[ -f "lib/systemd/system/tailscaled.service" ]]; then
         ${SUDO} mv lib/systemd/system/tailscaled.service usr/lib/systemd/system/
         ${SUDO} rmdir lib/systemd/system lib/systemd lib
     fi
