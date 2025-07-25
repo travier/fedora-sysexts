@@ -1538,6 +1538,12 @@ jobs:
           sysext: 'python3'
           image: ${{ env.IMAGE }}
 
+      - name: "Build sysext: qemu-guest-agent"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'qemu-guest-agent'
+          image: ${{ env.IMAGE }}
+
       - name: "Build sysext: semanage"
         uses: ./.github/actions/build
         with:
@@ -1647,6 +1653,12 @@ jobs:
         uses: ./.github/actions/build
         with:
           sysext: 'python3'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: qemu-guest-agent"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'qemu-guest-agent'
           image: ${{ env.IMAGE }}
 
       - name: "Build sysext: semanage"
@@ -2999,6 +3011,12 @@ jobs:
           sysext: 'python3'
           image: ${{ env.IMAGE }}
 
+      - name: "Build sysext: qemu-guest-agent"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'qemu-guest-agent'
+          image: ${{ env.IMAGE }}
+
       - name: "Build sysext: semanage"
         uses: ./.github/actions/build
         with:
@@ -3108,6 +3126,12 @@ jobs:
         uses: ./.github/actions/build
         with:
           sysext: 'python3'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: qemu-guest-agent"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'qemu-guest-agent'
           image: ${{ env.IMAGE }}
 
       - name: "Build sysext: semanage"

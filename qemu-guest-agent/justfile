@@ -1,0 +1,14 @@
+name := "qemu-guest-agent"
+packages := "qemu-guest-agent"
+upholds := "
+qemu-guest-agent.service
+"
+files := "usr"
+base_images := "
+quay.io/fedora/fedora-coreos:stable x86_64,aarch64
+quay.io/fedora/fedora-coreos:next x86_64,aarch64
+"
+
+import '../sysext.just'
+
+all: default
