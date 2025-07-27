@@ -36,18 +36,15 @@ Install the sysext:
 ```
 install_sysext %%SYSEXT%%
 ```
-</details>
 
-<details markdown="block">
-<summary>Merging</summary>
-Note that this will merge all installed sysexts unconditionally:
+Reboot your system or refresh the merged sysexts:
 
 ```
 sudo systemctl restart systemd-sysext.service
 systemd-sysext status
 ```
 
-You can also reboot the system.
+Note that this will merge all installed sysexts unconditionally.
 </details>
 
 <details markdown="block">
