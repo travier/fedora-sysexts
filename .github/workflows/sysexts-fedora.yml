@@ -347,6 +347,12 @@ jobs:
           sysext: 'openssl'
           image: ${{ env.IMAGE }}
 
+      - name: "Build sysext: qutebrowser"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'qutebrowser'
+          image: ${{ env.IMAGE }}
+
       - name: "Build sysext: ripgrep"
         uses: ./.github/actions/build
         with:
@@ -762,6 +768,12 @@ jobs:
         uses: ./.github/actions/build
         with:
           sysext: 'openssl'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: qutebrowser"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'qutebrowser'
           image: ${{ env.IMAGE }}
 
       - name: "Build sysext: ripgrep"
