@@ -142,6 +142,9 @@ runs:
           "${TAGNAME}" \
           || true
 
+        # Wait a bit to avoid API errors and reduce flakes
+        sleep 2
+
         gh release create \
           --title "${SYSEXT} ${VERSION} for Fedora ${VERSION_ID} (${ARCH})" \
           --notes-file notes \
