@@ -74,11 +74,13 @@ runs:
 
         if [[ "${new}" == "${old}" ]]; then
           echo "No changes in inputs since last release. Skipping."
+          echo "PUBLISH=0" >> "$GITHUB_ENV"
           exit 0
         fi
 
         echo "Detected changes. Building new sysext for: ${TAGNAME}"
         just resume-build ${IMAGE}
+        echo "PUBLISH=1" >> "$GITHUB_ENV"
 
     - name: "Publish sysext"
       env:
@@ -88,6 +90,11 @@ runs:
       shell: bash
       run: |
         set -euxo pipefail
+
+        if [ "${{ env.PUBLISH }}" == "0" ]; then
+            echo "No new release. Skipping Publish"
+            exit 0
+        fi
 
         git config --global --add safe.directory "${PWD}"
 
