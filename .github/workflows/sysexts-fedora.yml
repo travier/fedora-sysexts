@@ -119,6 +119,12 @@ jobs:
           sysext: 'distrobox'
           image: ${{ env.IMAGE }}
 
+      - name: "Build sysext: dnclient"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'dnclient'
+          image: ${{ env.IMAGE }}
+
       - name: "Build sysext: docker-ce"
         uses: ./.github/actions/build
         with:
@@ -540,6 +546,12 @@ jobs:
         uses: ./.github/actions/build
         with:
           sysext: 'distrobox'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: dnclient"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'dnclient'
           image: ${{ env.IMAGE }}
 
       - name: "Build sysext: docker-ce"
@@ -1259,6 +1271,12 @@ jobs:
           sysext: 'distrobox'
           image: ${{ env.IMAGE }}
 
+      - name: "Build sysext: dnclient"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'dnclient'
+          image: ${{ env.IMAGE }}
+
       - name: "Build sysext: docker-ce"
         uses: ./.github/actions/build
         with:
@@ -1614,6 +1632,12 @@ jobs:
         uses: ./.github/actions/build
         with:
           sysext: 'distrobox'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: dnclient"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'dnclient'
           image: ${{ env.IMAGE }}
 
       - name: "Build sysext: docker-ce"
