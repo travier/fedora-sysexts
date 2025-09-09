@@ -8,7 +8,7 @@
       FORCE_REBUILD: ${{ inputs.force-rebuild }}
     steps:
       - name: "Checkout repo"
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: "Setup artifacts and dnf cache directories"
         run: |
