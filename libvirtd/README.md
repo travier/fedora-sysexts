@@ -3,6 +3,10 @@
 `libvirtd`, `qemu-kvm`, `swtpm`, `virt-install` and `guestfs-tools` for server
 usage (no GUI support).
 
+For desktop usage, see the
+[`libvirtd-desktop` sysext](https://travier.github.io/fedora-sysexts/libvirtd-desktop/)
+instead.
+
 See the [Virtual Machine Manager Flatpak](https://flathub.org/apps/org.virt_manager.virt-manager).
 
 ## How to use
@@ -37,5 +41,4 @@ See the [Virtual Machine Manager Flatpak](https://flathub.org/apps/org.virt_mana
 
 ## Compatibility
 
-This sysext is compatible with all Fedora variants (CoreOS, Atomic Desktops,
-etc.).
+This sysext is compatible with Fedora CoreOS only.
