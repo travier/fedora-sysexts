@@ -1,0 +1,32 @@
+kube_version := "1.34"
+name := "kubernetes-" + kube_version
+packages := "
+cri-tools"  + kube_version + "
+kubernetes" + kube_version + "
+kubernetes" + kube_version + "-client
+kubernetes" + kube_version + "-kubeadm
+"
+exclude_packages := "
+cri-o
+cri-tools
+"
+upholds := "
+kubelet.service
+"
+version_package := "kubernetes" + kube_version
+# Setup folder that is expected by Kubernetes
+files := "usr"
+# Cleanup file needed by git as this is an empty directory
+cleanup_files := "/usr/libexec/kubernetes/kubelet-plugins/volume/exec/.keep"
+base_images := "
+quay.io/fedora/fedora-coreos:stable x86_64,aarch64
+quay.io/fedora/fedora-coreos:next x86_64,aarch64
+"
+
+# Until kubernetes1.34 lands in F42 stable repos
+# https://bodhi.fedoraproject.org/updates/?search=&packages=kubernetes1.34&releases=F42
+enable_repos := "updates-testing"
+
+import '../sysext.just'
+
+all: default
