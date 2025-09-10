@@ -86,12 +86,7 @@ runs:
         done
         ls ./SHA256SUMS.* | sort -h | xargs cat > SHA256SUMS
 
-        {
-        echo "Versions available:"
-        echo "\`\`\`"
-        cat ./SHA256SUMS
-        echo "\`\`\`"
-        } > notes
+        echo "See SHA256SUMS from this release for all the versions available." > notes
 
         gh release delete \
           --cleanup-tag \
