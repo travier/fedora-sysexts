@@ -1,0 +1,14 @@
+name := "WALinuxAgent"
+packages := "
+WALinuxAgent
+azure-vm-utils
+hyperv-daemons
+"
+base_images := "
+quay.io/fedora/fedora-coreos:stable x86_64,aarch64
+quay.io/fedora/fedora-coreos:next x86_64,aarch64
+"
+
+import '../sysext.just'
+
+all: default

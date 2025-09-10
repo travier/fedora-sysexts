@@ -1,0 +1,17 @@
+name := "google-guest-agent"
+packages := "
+google-compute-engine-guest-configs
+google-compute-engine-oslogin
+google-guest-agent
+"
+upholds := "
+google-guest-agent.service
+"
+base_images := "
+quay.io/fedora/fedora-coreos:stable x86_64,aarch64
+quay.io/fedora/fedora-coreos:next x86_64,aarch64
+"
+
+import '../sysext.just'
+
+all: default
