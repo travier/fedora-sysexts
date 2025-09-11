@@ -1454,10 +1454,28 @@ jobs:
           git config --global --add safe.directory "$GITHUB_WORKSPACE"
           git fetch --no-tags --prune --depth=1 origin +refs/heads/main:refs/remotes/origin/main
 
+      - name: "Build sysext: WALinuxAgent"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'WALinuxAgent'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: amazon-ec2-utils"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'amazon-ec2-utils'
+          image: ${{ env.IMAGE }}
+
       - name: "Build sysext: gdb"
         uses: ./.github/actions/build
         with:
           sysext: 'gdb'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: google-guest-agent"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'google-guest-agent'
           image: ${{ env.IMAGE }}
 
       - name: "Build sysext: kubernetes-1.29"
@@ -1571,10 +1589,28 @@ jobs:
           git config --global --add safe.directory "$GITHUB_WORKSPACE"
           git fetch --no-tags --prune --depth=1 origin +refs/heads/main:refs/remotes/origin/main
 
+      - name: "Build sysext: WALinuxAgent"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'WALinuxAgent'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: amazon-ec2-utils"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'amazon-ec2-utils'
+          image: ${{ env.IMAGE }}
+
       - name: "Build sysext: gdb"
         uses: ./.github/actions/build
         with:
           sysext: 'gdb'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: google-guest-agent"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'google-guest-agent'
           image: ${{ env.IMAGE }}
 
       - name: "Build sysext: kubernetes-1.29"
@@ -2927,10 +2963,28 @@ jobs:
           git config --global --add safe.directory "$GITHUB_WORKSPACE"
           git fetch --no-tags --prune --depth=1 origin +refs/heads/main:refs/remotes/origin/main
 
+      - name: "Build sysext: WALinuxAgent"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'WALinuxAgent'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: amazon-ec2-utils"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'amazon-ec2-utils'
+          image: ${{ env.IMAGE }}
+
       - name: "Build sysext: gdb"
         uses: ./.github/actions/build
         with:
           sysext: 'gdb'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: google-guest-agent"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'google-guest-agent'
           image: ${{ env.IMAGE }}
 
       - name: "Build sysext: kubernetes-1.29"
@@ -3044,10 +3098,28 @@ jobs:
           git config --global --add safe.directory "$GITHUB_WORKSPACE"
           git fetch --no-tags --prune --depth=1 origin +refs/heads/main:refs/remotes/origin/main
 
+      - name: "Build sysext: WALinuxAgent"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'WALinuxAgent'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: amazon-ec2-utils"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'amazon-ec2-utils'
+          image: ${{ env.IMAGE }}
+
       - name: "Build sysext: gdb"
         uses: ./.github/actions/build
         with:
           sysext: 'gdb'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: google-guest-agent"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'google-guest-agent'
           image: ${{ env.IMAGE }}
 
       - name: "Build sysext: kubernetes-1.29"
