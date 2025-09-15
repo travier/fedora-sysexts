@@ -209,6 +209,9 @@ download-rpms target arch=arch:
         exit 0
     fi
 
+    # Always disable the openh264 repo by default
+    dnf5 config-manager setopt fedora-cisco-openh264.enabled=0
+
     enablerepos=""
     if [[ -n "{{enable_repos}}" ]]; then
         for r in {{enable_repos}}; do
