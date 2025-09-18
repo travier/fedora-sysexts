@@ -145,9 +145,12 @@ runs:
         # Wait a bit to avoid API errors and reduce flakes
         sleep 2
 
+        # Ignore failures as those are generally GitHub API flakes and the
+        # release does get created. If it does not, it will be on the next run.
         gh release create \
           --title "${SYSEXT} ${VERSION} for Fedora ${VERSION_ID} (${ARCH})" \
           --notes-file notes \
           "${TAGNAME}" \
           --latest=false \
-          ./*.raw ./SHA256SUMS ./inputs ./scripts ./digest
+          ./*.raw ./SHA256SUMS ./inputs ./scripts ./digest \
+          || true
