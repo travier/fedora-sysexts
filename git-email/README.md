@@ -1,4 +1,4 @@
-# git-lfs
+# git-email
 
 ## Compatibility
 
