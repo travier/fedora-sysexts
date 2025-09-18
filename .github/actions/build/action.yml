@@ -91,25 +91,6 @@ runs:
 
         git config --global --add safe.directory "${PWD}"
 
-        retry() {
-            if [[ "${#}" -lt 3 ]]; then
-                echo "retry usage: <number of tries> <time between retries> <command> ..."
-                return 1
-            fi
-            tries="${1}"
-            sleep="${2}"
-            shift 2
-            for i in $(seq 1 ${tries}); do
-                if [[ ${i} -gt 1 ]]; then
-                    # echo "[+] Command failed. Waiting for ${sleep} seconds"
-                    sleep ${sleep}
-                fi
-                # echo "[+] Running (try: ${i}): ${@}"
-                "${@}" && r=0 && break || r=$?
-            done
-            return $r
-        }
-
         cd "${SYSEXT}"
 
         VERSION="$(cat ./version)"
@@ -161,9 +142,15 @@ runs:
           "${TAGNAME}" \
           || true
 
-        retry 3 30 gh release create \
+        # Wait a bit to avoid API errors and reduce flakes
+        sleep 2
+
+        # Ignore failures as those are generally GitHub API flakes and the
+        # release does get created. If it does not, it will be on the next run.
+        gh release create \
           --title "${SYSEXT} ${VERSION} for Fedora ${VERSION_ID} (${ARCH})" \
           --notes-file notes \
           "${TAGNAME}" \
           --latest=false \
-          ./*.raw ./SHA256SUMS ./inputs ./scripts ./digest
+          ./*.raw ./SHA256SUMS ./inputs ./scripts ./digest \
+          || true
