@@ -1,0 +1,9 @@
+FROM baseimage
+
+RUN <<EORUN
+set -xeuo pipefail
+dnf install -y \
+    git-email \
+    msmtp \
+dnf clean all
+EORUN
