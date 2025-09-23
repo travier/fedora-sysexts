@@ -311,6 +311,12 @@ jobs:
           sysext: 'moby-engine'
           image: ${{ env.IMAGE }}
 
+      - name: "Build sysext: mosh"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'mosh'
+          image: ${{ env.IMAGE }}
+
       - name: "Build sysext: mullvad-vpn"
         uses: ./.github/actions/build
         with:
@@ -746,6 +752,12 @@ jobs:
           sysext: 'moby-engine'
           image: ${{ env.IMAGE }}
 
+      - name: "Build sysext: mosh"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'mosh'
+          image: ${{ env.IMAGE }}
+
       - name: "Build sysext: mullvad-vpn"
         uses: ./.github/actions/build
         with:
@@ -1149,6 +1161,12 @@ jobs:
         uses: ./.github/actions/build
         with:
           sysext: 'moby-engine'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: mosh"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'mosh'
           image: ${{ env.IMAGE }}
 
       - name: "Build sysext: mullvad-vpn"
@@ -1928,6 +1946,12 @@ jobs:
           sysext: 'moby-engine'
           image: ${{ env.IMAGE }}
 
+      - name: "Build sysext: mosh"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'mosh'
+          image: ${{ env.IMAGE }}
+
       - name: "Build sysext: mullvad-vpn"
         uses: ./.github/actions/build
         with:
@@ -2297,6 +2321,12 @@ jobs:
           sysext: 'moby-engine'
           image: ${{ env.IMAGE }}
 
+      - name: "Build sysext: mosh"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'mosh'
+          image: ${{ env.IMAGE }}
+
       - name: "Build sysext: mullvad-vpn"
         uses: ./.github/actions/build
         with:
@@ -2652,6 +2682,12 @@ jobs:
         uses: ./.github/actions/build
         with:
           sysext: 'moby-engine'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: mosh"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'mosh'
           image: ${{ env.IMAGE }}
 
       - name: "Build sysext: mullvad-vpn"
