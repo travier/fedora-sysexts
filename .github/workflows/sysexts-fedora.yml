@@ -71,6 +71,12 @@ jobs:
           sysext: 'adobe-source-code-pro-fonts'
           image: ${{ env.IMAGE }}
 
+      - name: "Build sysext: arm-image-installer"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'arm-image-installer'
+          image: ${{ env.IMAGE }}
+
       - name: "Build sysext: bandwhich"
         uses: ./.github/actions/build
         with:
@@ -512,6 +518,12 @@ jobs:
           sysext: 'adobe-source-code-pro-fonts'
           image: ${{ env.IMAGE }}
 
+      - name: "Build sysext: arm-image-installer"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'arm-image-installer'
+          image: ${{ env.IMAGE }}
+
       - name: "Build sysext: bandwhich"
         uses: ./.github/actions/build
         with:
@@ -945,6 +957,12 @@ jobs:
         uses: ./.github/actions/build
         with:
           sysext: 'adobe-source-code-pro-fonts'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: arm-image-installer"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'arm-image-installer'
           image: ${{ env.IMAGE }}
 
       - name: "Build sysext: bandwhich"
@@ -1730,6 +1748,12 @@ jobs:
           sysext: 'adobe-source-code-pro-fonts'
           image: ${{ env.IMAGE }}
 
+      - name: "Build sysext: arm-image-installer"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'arm-image-installer'
+          image: ${{ env.IMAGE }}
+
       - name: "Build sysext: bandwhich"
         uses: ./.github/actions/build
         with:
@@ -2105,6 +2129,12 @@ jobs:
           sysext: 'adobe-source-code-pro-fonts'
           image: ${{ env.IMAGE }}
 
+      - name: "Build sysext: arm-image-installer"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'arm-image-installer'
+          image: ${{ env.IMAGE }}
+
       - name: "Build sysext: bandwhich"
         uses: ./.github/actions/build
         with:
@@ -2478,6 +2508,12 @@ jobs:
         uses: ./.github/actions/build
         with:
           sysext: 'adobe-source-code-pro-fonts'
+          image: ${{ env.IMAGE }}
+
+      - name: "Build sysext: arm-image-installer"
+        uses: ./.github/actions/build
+        with:
+          sysext: 'arm-image-installer'
           image: ${{ env.IMAGE }}
 
       - name: "Build sysext: bandwhich"
