@@ -607,6 +607,16 @@ validate:
         fi
     done
 
+    # Try to merge /lib64 with /usr/lib64
+    if [[ -d "lib64" ]]; then
+        echo "➡️ Moving /lib64 to /usr/lib64"
+        if [[ ! -d "usr/lib64" ]]; then
+            install -dm 0755 ./usr/lib64
+        fi
+        ${SUDO} mv --verbose --no-clobber ./lib64/* ./usr/lib64
+        ${SUDO} rmdir lib64
+    fi
+
     # Try to merge /usr/sbin with /usr/bin for Fedora 42+
     if [[ "${version_id}" -ge 42 ]] && [[ -d "usr/sbin" ]]; then
         echo "➡️ Moving /usr/sbin to /usr/bin"
