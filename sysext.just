@@ -209,9 +209,6 @@ download-rpms target arch=arch:
         exit 0
     fi
 
-    # Always disable the openh264 repo by default
-    dnf5 config-manager setopt fedora-cisco-openh264.enabled=0
-
     enablerepos=""
     if [[ -n "{{enable_repos}}" ]]; then
         for r in {{enable_repos}}; do
@@ -252,7 +249,9 @@ download-rpms target arch=arch:
 
     packages="$(echo "{{packages}}" | xargs)"
 
-    pre_commands=""
+    # Always disable the openh264 repo by default
+    pre_commands="dnf5 config-manager setopt fedora-cisco-openh264.enabled=0; "
+
     if [[ -n "{{pre_commands}}" ]]; then
         pre_commands+="{{pre_commands}} ; "
     fi
@@ -607,6 +606,16 @@ validate:
             ${SUDO} find "./${d}" -type d -empty -delete
         fi
     done
+
+    # Try to merge /lib64 with /usr/lib64
+    if [[ -d "lib64" ]]; then
+        echo "➡️ Moving /lib64 to /usr/lib64"
+        if [[ ! -d "usr/lib64" ]]; then
+            install -dm 0755 ./usr/lib64
+        fi
+        ${SUDO} mv --verbose --no-clobber ./lib64/* ./usr/lib64
+        ${SUDO} rmdir lib64
+    fi
 
     # Try to merge /usr/sbin with /usr/bin for Fedora 42+
     if [[ "${version_id}" -ge 42 ]] && [[ -d "usr/sbin" ]]; then
