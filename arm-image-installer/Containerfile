@@ -1,0 +1,8 @@
+FROM baseimage
+
+RUN <<EORUN
+set -xeou pipefail
+dnf -y install arm-image-installer
+dnf clean all
+EORUN
+
