@@ -15,8 +15,8 @@ main() {
         exit 1
     fi
 
-    local -r extensionsurl="https://extensions.fcos.fr/extensions"
-    local -r releaseurl="https://github.com/travier/fedora-sysexts/releases/tag"
+    local -r extensionsurl="https://extensions.fcos.fr/fedora"
+    local -r releaseurl="https://github.com/fedora-sysexts/fedora/releases/tag"
 
     local -r tmpl=".github/docs-templates"
 
