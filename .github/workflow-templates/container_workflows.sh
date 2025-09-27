@@ -82,7 +82,7 @@ generate() {
 
     # Get the list of sysexts for a given target
     sysexts=()
-    for s in $(git ls-tree -d --name-only HEAD | grep -Ev ".github|docs"); do
+    for s in $(git ls-tree -d --name-only HEAD | grep -Ev ".github|docs|LICENSES"); do
         pushd "${s}" > /dev/null
         # Only require the architecture to be explicitly listed for non x86_64 for now
         if [[ "${arch}" == "x86_64" ]]; then

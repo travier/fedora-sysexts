@@ -17,7 +17,7 @@ main() {
 
     # Get the list of sysexts
     sysexts=()
-    for s in $(git ls-tree -d --name-only HEAD | grep -Ev ".github|docs"); do
+    for s in $(git ls-tree -d --name-only HEAD | grep -Ev ".github|docs|LICENSES"); do
         if [[ -f ./${s}/.ignore ]]; then
             continue
         fi
