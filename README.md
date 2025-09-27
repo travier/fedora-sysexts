@@ -65,6 +65,6 @@ This project is heavily inspired by the work done by
 [Thilo](https://github.com/t-lo) on the
 [Flatcar sysext bakery](https://flatcar.github.io/sysext-bakery/).
 
-## License
+## Licenses
 
-[MIT](LICENSE).
+See [LICENSES](LICENSES).

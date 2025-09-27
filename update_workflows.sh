@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# SPDX-FileCopyrightText: Timothée Ravier <tim@siosm.fr>
+# SPDX-License-Identifier: MIT
+
 # Re-generate the GitHub workflows based on templates. We do not use a matrix
 # build strategy in GitHub worflows to reduce overall build time and avoid
 # pulling the same base container image multiple time, once for each individual

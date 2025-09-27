@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: Timothée Ravier <tim@siosm.fr>
+# SPDX-License-Identifier: CC0-1.0
+
 title: "extensions.fcos.fr"
 description: "Experimental systemd system extensions (sysexts) for Fedora image based systems"
 baseurl: "/fedora-sysexts"

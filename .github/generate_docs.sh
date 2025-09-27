@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# SPDX-FileCopyrightText: Timothée Ravier <tim@siosm.fr>
+# SPDX-License-Identifier: CC0-1.0
+
 # Re-generate the docs for the GitHub Pages workflow.
 # TODO: Note somewhere for which images the sysext is for?
 

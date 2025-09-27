@@ -1,0 +1,31 @@
+version = 1
+
+[[annotations]]
+path = [
+    ".github/docs-templates/body.md",
+    ".github/docs-templates/header.md",
+    ".github/workflow-templates/**",
+    "CONTRIBUTING.md",
+    "README.containers.md",
+    "README.md",
+    "docs/.bundle/config",
+    "docs/Gemfile.lock",
+    "docs/index.md",
+]
+SPDX-FileCopyrightText = [
+    "Timothée Ravier <tim@siosm.fr>"
+]
+SPDX-License-Identifier = "CC0-1.0"
+
+[[annotations]]
+path = [
+  "*/Containerfile",
+  "*/README.md",
+  "*/justfile",
+  "iwd/usr/lib/NetworkManager/conf.d/wifi_backend.conf",
+  "qemu-guest-agent/usr/lib/systemd/system/qemu-guest-agent.service.d/override.conf",
+]
+SPDX-FileCopyrightText = [
+    "Fedora sysexts contributors"
+]
+SPDX-License-Identifier = "MIT"

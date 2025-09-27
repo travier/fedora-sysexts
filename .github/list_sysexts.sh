@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# SPDX-FileCopyrightText: Timothée Ravier <tim@siosm.fr>
+# SPDX-License-Identifier: CC0-1.0
+
 # Dynamically generate the list of sysexts to publish. Mainly used for the
 # gather action in CI.
 
