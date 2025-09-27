@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# SPDX-FileCopyrightText: Timothée Ravier <tim@siosm.fr>
+# SPDX-License-Identifier: CC0-1.0
+
 # Re-generate the docs for the GitHub Pages workflow.
 # TODO: Note somewhere for which images the sysext is for?
 
@@ -12,8 +15,8 @@ main() {
         exit 1
     fi
 
-    local -r extensionsurl="https://extensions.fcos.fr/extensions"
-    local -r releaseurl="https://github.com/travier/fedora-sysexts/releases/tag"
+    local -r extensionsurl="https://extensions.fcos.fr/fedora"
+    local -r releaseurl="https://github.com/fedora-sysexts/fedora/releases/tag"
 
     local -r tmpl=".github/docs-templates"
 
@@ -24,7 +27,7 @@ main() {
 
     navorder=1
 
-    for s in $(git ls-tree -d --name-only HEAD | grep -Ev ".github|docs"); do
+    for s in $(git ls-tree -d --name-only HEAD | grep -Ev ".github|docs|LICENSES"); do
         if [[ -f ./${s}/.ignore ]]; then
             continue
         fi

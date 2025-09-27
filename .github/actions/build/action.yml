@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: Timothée Ravier <tim@siosm.fr>
+# SPDX-License-Identifier: CC0-1.0
+
 name: "Build and publish a sysext"
 description: "Build and publish a systemd system extension under a versioned release"
 inputs:

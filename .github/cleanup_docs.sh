@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# SPDX-FileCopyrightText: Timothée Ravier <tim@siosm.fr>
+# SPDX-License-Identifier: CC0-1.0
+
 # Clean up the docs folder from generated markdown pages.
 
 set -euo pipefail
@@ -11,7 +14,7 @@ main() {
         exit 1
     fi
 
-    for s in $(git ls-tree -d --name-only HEAD | grep -Ev ".github|docs"); do
+    for s in $(git ls-tree -d --name-only HEAD | grep -Ev ".github|docs|LICENSES"); do
         rm -rf "./docs/${s}"
     done
 }

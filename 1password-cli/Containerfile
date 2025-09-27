@@ -1,7 +1,0 @@
-FROM baseimage
-
-RUN <<EORUN
-set -xeuo pipefail
-dnf install -y "https://downloads.1password.com/linux/rpm/stable/x86_64/1password-cli-latest.x86_64.rpm"
-dnf clean all
-EORUN

@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: Timothée Ravier <tim@siosm.fr>
+# SPDX-License-Identifier: MIT
+
 # Do no use this justfile directly. See sub-directories.
 
 # Explicitely allow overriding variables and recipes in justfiles importing this one

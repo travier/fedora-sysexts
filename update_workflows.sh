@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# SPDX-FileCopyrightText: Timothée Ravier <tim@siosm.fr>
+# SPDX-License-Identifier: MIT
+
 # Re-generate the GitHub workflows based on templates. We do not use a matrix
 # build strategy in GitHub worflows to reduce overall build time and avoid
 # pulling the same base container image multiple time, once for each individual
@@ -64,7 +67,7 @@ main() {
     for arch in "${arches[@]}"; do
         for image in "${images[@]}"; do
             list=()
-            for s in $(git ls-tree -d --name-only HEAD | grep -Ev ".github|docs"); do
+            for s in $(git ls-tree -d --name-only HEAD | grep -Ev ".github|docs|LICENSES"); do
                 pushd "${s}" > /dev/null
                 # Only require the architecture to be explicitly listed for non x86_64 for now
                 if [[ "${arch}" == "x86_64" ]]; then

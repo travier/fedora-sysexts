@@ -1,7 +1,10 @@
-title: "extensions.fcos.fr"
-description: "Experimental systemd system extensions (sysexts) for Fedora image based systems"
-baseurl: "/fedora-sysexts"
-url: "https://travier.github.io"
+# SPDX-FileCopyrightText: Timothée Ravier <tim@siosm.fr>
+# SPDX-License-Identifier: CC0-1.0
+
+title: "extensions.fcos.fr (Fedora)"
+description: "Fedora RPM based sysexts for Fedora"
+baseurl: "/fedora"
+url: "https://fedora-sysexts.github.io"
 permalink: "/:title/"
 markdown: "kramdown"
 kramdown:
@@ -23,7 +26,7 @@ exclude:
 # Aux links for the upper right navigation
 aux_links:
   "Sources on GitHub":
-    - "https://github.com/travier/fedora-sysexts"
+    - "https://github.com/fedora-sysexts/fedora"
 
 # Footer last edited timestamp
 last_edit_timestamp: true
@@ -32,7 +35,7 @@ last_edit_time_format: "%b %e %Y at %I:%M %p"
 # Footer "Edit this page on GitHub" link text
 gh_edit_link: true
 gh_edit_link_text: "Edit this page on GitHub"
-gh_edit_repository: "https://github.com/travier/fedora-sysexts"
+gh_edit_repository: "https://github.com/fedora-sysexts/fedora"
 gh_edit_branch: "main"
 gh_edit_source: "docs"
 gh_edit_view_mode: "tree"
