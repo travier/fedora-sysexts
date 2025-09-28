@@ -5,7 +5,8 @@ nav_order: 1
 # Fedora RPM based sysexts for Fedora image based systems
 
 **NOTE: This project is a work in progress. Make sure to read the [known
-limitations section](https://extensions.fcos.fr). Use at your own risk.**
+limitations section](https://extensions.fcos.fr/known-issues). Use at your own
+risk.**
 
 This sub project gathers systemd system extensions (sysexts) made exclusively
 from official Fedora packages.
