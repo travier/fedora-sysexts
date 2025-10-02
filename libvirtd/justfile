@@ -48,6 +48,7 @@ quay.io/fedora/fedora-coreos:stable x86_64,aarch64
 quay.io/fedora/fedora-coreos:next x86_64,aarch64
 "
 # Pending nfs-utils packaging rework
+# Fixed in Fedora 44
 pre_commands := "dnf remove -y nfs-utils-coreos"
 
 import '../sysext.just'
