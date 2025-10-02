@@ -1,6 +1,5 @@
 name := "gdb"
 packages := "gdb"
-cleanup_files := "/var/lib/unbound/root.key"
 base_images := "
 quay.io/fedora/fedora-coreos:stable x86_64,aarch64
 quay.io/fedora/fedora-coreos:next x86_64,aarch64
@@ -9,3 +8,21 @@ quay.io/fedora/fedora-coreos:next x86_64,aarch64
 import '../sysext.just'
 
 all: default
+
+install-manual:
+    #!/bin/bash
+    set -euo pipefail
+    if [[ -n "{{debug}}" ]]; then
+      set -x
+    fi
+
+    if [[ "${UID}" == "0" ]]; then
+        SUDO=""
+    else
+        SUDO="sudo"
+    fi
+
+    cd rootfs
+
+    # Not needed in Fedora 43 anymore
+    ${SUDO} rm -f ./var/lib/unbound/root.key
