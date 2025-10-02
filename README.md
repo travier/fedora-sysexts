@@ -15,6 +15,22 @@ For general explainations about systemd system extensions (sysexts) and how
 to use them, see the documentation from the main page:
 [extensions.fcos.fr](https://extensions.fcos.fr).
 
+## Disabling fetching tags
+
+This project uses GitHub releases to publish sysexts, and those releases also
+create Git tags, thus you might want to disable fetching tags for the remote
+using:
+
+```bash
+git config remote.origin.tagopt "--no-tags"
+```
+
+and then remove all local tags with:
+
+```bash
+git tag -l | xargs git tag -d > /dev/null
+```
+
 ## Building
 
 Building those images currently require `root` privileges. The currently
